@@ -68,17 +68,6 @@ func Select(db *sql.DB) {
 	}
 	fmt.Println(string(js))
 	
-
-	// for rows.Next() {
-	// 	var player, team string
-	// 	var career_pts int
-	// 	// err := rows.Scan(&player)
-	// 	err := rows.Scan(&player, &team, &career_pts)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	fmt.Printf("Player: %s | Team: %s | Career Points: %d\n", player, team, career_pts)	
-	// }
 }
 
 func RowsToJSON(rows *sql.Rows) ([]byte, error) {
