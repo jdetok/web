@@ -44,10 +44,10 @@ func (app *application) mount() *http.ServeMux {
 	mux.HandleFunc("GET /v1/health", app.healthCheckHandler)
 
 // base nba endpoint
-	mux.HandleFunc("GET /v1/nba", app.nbaHandler)
+	mux.HandleFunc("GET /nba", app.nbaHandler)
 
 // testing kicking off the select via request
-	mux.HandleFunc("GET /v1/select", app.selectHandler)
+	mux.HandleFunc("GET /select", app.selectHandler)
 	
 // return mux instance - call app.mount() to get mux then app.run(mux) to run server
 	return mux

@@ -40,9 +40,9 @@ func Connect() (*sql.DB, error) {
 	return db, nil
 }
 
-func Select(db *sql.DB) {
+func Select(db *sql.DB) ([]byte, error) {
 	q := `
-	select a.player, b.team, sum(c.pts) as career_pts
+	select a.player, b.team, sum(c.pts) as pts, avg(c.pts) as pts_pg 
 	from player a
 	inner join team b on b.team_id = a.team_id
 	inner join p_box c on c.player_id = a.player_id
@@ -60,14 +60,16 @@ func Select(db *sql.DB) {
 	if err != nil {
 		fmt.Printf("Error querying: %s", err)
 		log.Fatal(err)
+		return nil, err
 	}
 	
 	js, err := RowsToJSON(rows)
 	if err != nil {
 		fmt.Println("Error occured")
+		return nil, err
 	}
 	fmt.Println(string(js))
-	
+	return js, nil
 }
 
 func RowsToJSON(rows *sql.Rows) ([]byte, error) {
