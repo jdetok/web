@@ -45,6 +45,9 @@ func (app *application) mount() *http.ServeMux {
 
 // base nba endpoint
 	mux.HandleFunc("GET /v1/nba", app.nbaHandler)
+
+// testing kicking off the select via request
+	mux.HandleFunc("GET /v1/select", app.selectHandler)
 	
 // return mux instance - call app.mount() to get mux then app.run(mux) to run server
 	return mux
