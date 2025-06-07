@@ -21,6 +21,9 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+	
+
 	w.Write([]byte(string(js)))
 }
 
