@@ -95,20 +95,20 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 	for rows.Next() {
 		scanArgs := make([]interface{}, count)
 
-	for i, v := range colTypes {
-		switch v.DatabaseTypeName() {
-		case "VARCHAR", "TEXT", "UUID", "TIMESTAMP":
-			scanArgs[i] = new(sql.NullString)
-		case "BOOL":
-			scanArgs[i] = new(sql.NullBool)
-		case "INT4", "INT8", "INT":
-			scanArgs[i] = new(sql.NullInt64)
-		case "FLOAT", "FLOAT8", "FLOAT4":
-			scanArgs[i] = new(sql.NullFloat64)
-		default:
-			scanArgs[i] = new(sql.NullString)
-	}
-}
+		for i, v := range colTypes {
+			switch v.DatabaseTypeName() {
+			case "VARCHAR", "TEXT", "UUID", "TIMESTAMP":
+				scanArgs[i] = new(sql.NullString)
+			case "BOOL":
+				scanArgs[i] = new(sql.NullBool)
+			case "INT4", "INT8", "INT":
+				scanArgs[i] = new(sql.NullInt64)
+			case "FLOAT", "FLOAT8", "FLOAT4":
+				scanArgs[i] = new(sql.NullFloat64)
+			default:
+				scanArgs[i] = new(sql.NullString)
+			}
+		}
 
 		err := rows.Scan(scanArgs...)
 		if err != nil {
