@@ -7,4 +7,3 @@ The external folder contains code to call SportRadar's Sports API to retrieve NB
 - Put team ids in an array and loop through it to call team profile endpoint
 -- this will return the specified team's players and other info
 -- https://api.sportradar.com/nba/trial/v8/en/teams/<TEAM_ID>/profile.json
-

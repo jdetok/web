@@ -17,7 +17,7 @@ func TeamIds(league clean.LeagueResp) ([]string, error) {
 	return teamIds, nil
 }
 
-func TeamProfile(teamIds []string) ([]string, error) {
+func TeamProfileUrls(teamIds []string) ([]string, error) {
 	root := env.GetString("API_ROOT")
 
 	var urls []string
@@ -28,4 +28,19 @@ func TeamProfile(teamIds []string) ([]string, error) {
 		fmt.Println(url)
 	}
 	return urls, nil
+}
+
+func TeamProfiles(urls []string) ([][]byte, []string, error) {
+	var resps [][]byte
+	var respsstr []string
+	
+	for _, url := range urls {
+		res, err := Get(url)
+		if err != nil {
+			fmt.Printf("Error getting team profile at %s", url)
+		}
+		resps = append(resps, res)
+		respsstr = append(respsstr, string(res))
+	}
+	return resps, respsstr, nil
 }

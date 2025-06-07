@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/jdetok/web/internal/env"
-	"github.com/joho/godotenv"
 )
 
 type GeneralURL struct {
@@ -49,30 +48,17 @@ func Get(url string) ([]byte, error) {
 		fmt.Printf("Error occured: %e", err)
 		return nil, err
 	}
-	// fmt.Println(string(body))
+	
 	return body, nil
 }
 
-
+// general requests - just pass a string for everything after the root url (after en/)
 func GetRequest(ext string) ([]byte, error){
-	// load from .env
-	if err := godotenv.Load(); err != nil {
-		fmt.Printf("Error occured getting env: %e", err)
-		return nil, err
-	}
-
 	var genurl GeneralURL
 	genurl.Root = env.GetString("API_ROOT")
 	genurl.Ext = ext
 	
-	// genurl.Ext = "seasons/2024/REG/teams/583eca2f-fb46-11e1-82cb-f4ce4684ea4c/statistics.json"
 	var url string = genurl.Root + genurl.Ext
-
-	// url, err := genurl.ReqGenURL()
-	// if err != nil {
-	// 	fmt.Printf("Error occured building url: %e", err)
-	// 	return nil, err
-	// }
 
 	res, err := Get(url)
 	if err != nil {
@@ -80,6 +66,6 @@ func GetRequest(ext string) ([]byte, error){
 		return nil, err
 	}
 	
-	// return []byte response
+// return json []byte response
 	return res, nil
 }

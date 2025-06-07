@@ -8,15 +8,9 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jdetok/web/internal/env"
-	"github.com/joho/godotenv"
 )
 
 func Connect() (*sql.DB, error) {
-	err := godotenv.Load()
-	if err != nil {
-		 log.Println("dotenv didn't work")
-	}
-
 // get components of connection string from .env
 	dbUser := env.GetString("DB_USER")
 	dbHost := env.GetString("DB_HOST")
@@ -35,7 +29,7 @@ func Connect() (*sql.DB, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
-	fmt.Println("Connected to MariaDB!")
+	// fmt.Println("Connected to MariaDB!")
 	
 	return db, nil
 }
@@ -68,7 +62,7 @@ func Select(db *sql.DB) ([]byte, error) {
 		fmt.Println("Error occured")
 		return nil, err
 	}
-	fmt.Println(string(js))
+
 	return js, nil
 }
 

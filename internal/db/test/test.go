@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello db")
+	fmt.Println("TESTING DATABASE PACKAGE")
 
 	database, err := db.Connect()
     if err != nil {
@@ -16,9 +16,10 @@ func main() {
 
     js, err := db.Select(database)
 	if err != nil {
-		fmt.Printf("Error occured getting data from database")
+		fmt.Printf("Error occured getting data from database: %s", err)
 		return
 	}
 
-	fmt.Println(js)
+	// js is a []byte - print it as a string
+	fmt.Println(string(js))
 }
