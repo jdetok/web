@@ -2,13 +2,21 @@ package main
 
 import (
 	"log"
+
+	"github.com/jdetok/web/internal/env"
+	"github.com/joho/godotenv"
 ) 
 
 func main() {
 
+    err := godotenv.Load()
+	if err != nil {
+		 log.Println("dotenv didn't work")
+	}
+
     // configs go here - 8080 for testing, will derive real vals from environment
     cfg := config{
-        addr: ":8080",
+        addr: env.GetString("SRV_IP"),
     }
 
     // initialize the app with the configs
