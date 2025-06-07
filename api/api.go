@@ -36,7 +36,7 @@ func (app *application) mount() *http.ServeMux {
 	
 // handles root requests -- requests to http://url should be routed to /v1
 // SERVES STATIC SITE IN WEB DIRECTORY
-	mux.Handle("/", http.FileServer(http.Dir("/home/jdeto/go/src/go-api/web/src")))
+	mux.Handle("/", http.FileServer(http.Dir("/home/jdeto/go/github.com/jdetok/web/www/src")))
 	
 	// mux.HandleFunc("GET /", app.rootHandler)
 	
