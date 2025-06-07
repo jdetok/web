@@ -1,11 +1,21 @@
 package env
 
 import (
+	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
+func LoadEnv() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Printf("Error occured getting env: %e", err)
+	}
+}
+
 func GetString(key string) string {
+	LoadEnv()
 	val, found := os.LookupEnv(key)
 	if !found {
 		return ""
@@ -14,6 +24,7 @@ func GetString(key string) string {
 }
 
 func GetInt(key string) int {
+	LoadEnv()
 	val, found := os.LookupEnv(key)
 	if !found {
 		return 0

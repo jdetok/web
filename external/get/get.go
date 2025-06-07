@@ -23,12 +23,12 @@ func (comps GeneralURL) ReqGenURL() (string, error) {
 	return comps.Root + comps.Ext, nil
 }
 
-func Get(url string) (string, error) {
+func Get(url string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
 		fmt.Printf("Error occured: %e", err)
-		return "", err
+		return nil, err
 	} 
 
 	req.Header.Add("accept", "application/json")
@@ -38,7 +38,7 @@ func Get(url string) (string, error) {
 
 	if err != nil {
 		fmt.Printf("Error occured: %e", err)
-		return "", err
+		return nil, err
 	}
 
 	defer res.Body.Close()
@@ -47,34 +47,39 @@ func Get(url string) (string, error) {
 
 	if err != nil {
 		fmt.Printf("Error occured: %e", err)
-		return "", err
+		return nil, err
 	}
 	// fmt.Println(string(body))
-	return string(body), nil
+	return body, nil
 }
 
 
-func GetRequest(){
+func GetRequest(ext string) ([]byte, error){
 	// load from .env
 	if err := godotenv.Load(); err != nil {
 		fmt.Printf("Error occured getting env: %e", err)
-		return
+		return nil, err
 	}
 
 	var genurl GeneralURL
 	genurl.Root = env.GetString("API_ROOT")
-	genurl.Ext = "seasons/2024/REG/teams/583eca2f-fb46-11e1-82cb-f4ce4684ea4c/statistics.json"
+	genurl.Ext = ext
+	
+	// genurl.Ext = "seasons/2024/REG/teams/583eca2f-fb46-11e1-82cb-f4ce4684ea4c/statistics.json"
+	var url string = genurl.Root + genurl.Ext
 
-	url, err := genurl.ReqGenURL()
-	if err != nil {
-		fmt.Printf("Error occured building url: %e", err)
-	}
+	// url, err := genurl.ReqGenURL()
+	// if err != nil {
+	// 	fmt.Printf("Error occured building url: %e", err)
+	// 	return nil, err
+	// }
 
 	res, err := Get(url)
 	if err != nil {
 		fmt.Printf("Error requesting url: %e", err)
+		return nil, err
 	}
-
-	fmt.Println(res)
 	
+	// return []byte response
+	return res, nil
 }
