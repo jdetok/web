@@ -113,7 +113,7 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 				} else {
 					masterData[v.Name()] = nil
 				}	
-			continue
+				continue
 			}
 
 			if z, ok := scanArgs[i].(*sql.NullString); ok {
@@ -122,7 +122,7 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 				} else {
 					masterData[v.Name()] = nil
 				}	
-			continue
+				continue
 			}
 
 			if z, ok := scanArgs[i].(*sql.NullInt64); ok {
@@ -131,7 +131,7 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 				} else {
 					masterData[v.Name()] = nil
 				}	
-			continue
+				continue
 			}
 
 			if z, ok := scanArgs[i].(*sql.NullFloat64); ok {
@@ -140,7 +140,7 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 				} else {
 					masterData[v.Name()] = nil
 				}	
-			continue
+				continue
 			}
 
 			masterData[v.Name()] = scanArgs[i]
