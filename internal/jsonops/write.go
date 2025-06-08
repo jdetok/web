@@ -1,6 +1,7 @@
 package jsonops
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -13,4 +14,14 @@ func SaveJSON(path string, body []byte) {
 		return
 	}
 	fmt.Printf("JSON response saved at %s\n", path)
-} 
+}
+
+func MapToJSON(path string, m map[string]any) []byte {
+// marshal the map to return []byte
+	body, err := json.MarshalIndent(m, "", "  ")
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil
+	}
+	return body
+}

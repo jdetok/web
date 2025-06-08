@@ -8,6 +8,10 @@ import (
 
 func main() {
 	fmt.Println("TESTING INTERNAL JSON PACKAGE")
-	res := jsonops.ReadJSON("external/get/resp/teams.json")
-	fmt.Println(res)
-}	
+	res := jsonops.ReadJSON("json/teams.json")
+	// fmt.Println(res)
+
+	var body []byte = jsonops.MapToJSON("", res)
+
+	jsonops.SaveJSON("json/test.json", body)
+}
