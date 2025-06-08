@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/jdetok/web/external/clean"
 	"github.com/jdetok/web/external/get"
@@ -12,6 +13,8 @@ func main() {
 	fmt.Println("TESTING EXTERNAL GET REQUEST PACKAGE")
 
 	res, err := get.GetRequest("league/teams.json")
+	fmt.Println("Intentional delay before requesting new endpoint...")
+	time.Sleep(5 * time.Second)
 	if err != nil {
 		fmt.Printf("Error occured: %s", err)
 	}
@@ -39,13 +42,13 @@ func main() {
 		fmt.Printf("Error occured: %s", errl)
 	}
 // uncomment to print the urls
-	fmt.Println(urls)
+	// fmt.Println(urls)
 
 	resps, respsstr, err := get.TeamProfiles(urls)
 	if err != nil {
 		fmt.Printf("Error occured: %s", errl)
 	}
 
-	fmt.Println(resps)
-	fmt.Println(respsstr)
+	fmt.Printf("Len raw: %d\n", len(resps))
+	fmt.Printf("Len string: %d\n", len(respsstr))
 }

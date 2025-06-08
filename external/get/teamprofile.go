@@ -2,6 +2,7 @@ package get
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/jdetok/web/external/clean"
 	"github.com/jdetok/web/internal/env"
@@ -34,13 +35,17 @@ func TeamProfiles(urls []string) ([][]byte, []string, error) {
 	var resps [][]byte
 	var respsstr []string
 	
-	for _, url := range urls {
-		res, err := Get(url)
+	for i, url := range urls {
+		res, _, err := Get(url, i, true)
 		if err != nil {
 			fmt.Printf("Error getting team profile at %s", url)
 		}
 		resps = append(resps, res)
 		respsstr = append(respsstr, string(res))
+		
+// only one call per second
+		time.Sleep(2 * time.Second)
+		
 	}
 	return resps, respsstr, nil
 }
