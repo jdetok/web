@@ -6,21 +6,19 @@
 # add the following line to ~/.vshrc (and source it after saving)
 # alias gi=~/scripts/git-common.sh
 
-# msg=""
-
+# accept -m as arg & assign to msg for commit
+# if a different arg is passed, prompt for the msg 
 while getopts "m:" opt; do
     case $opt in
         m) msg="$OPTARG" ;;
-        *) read -p "msg: " msg 
+        *) read -p "invalid opt, enter commit msg: " msg 
     esac 
 done
 
-
+# if no message is passed prompt for one
 if [ -z "$msg" ]; then
-    read -p "msg: " msg
+    read -p "commit msg can't be empty: " msg
 fi 
 
-
-git add . && \
-git commit -m "$msg" && \
-git push
+# run git commands
+git add . && git commit -m "$msg" && git push
