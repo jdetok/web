@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 )
 
+// 	TODO - FIGURE OUT HOW TO RETAIN THE ORDER OF FIELDS WHEN CONVERTED TO JSON
+
 func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 	colTypes, err := rows.ColumnTypes()
 
@@ -14,10 +16,10 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 
 	count := len(colTypes)
 	
-	finalRows := []interface{}{};
+	finalRows := []any{};
 
 	for rows.Next() {
-		scanArgs := make([]interface{}, count)
+		scanArgs := make([]any, count)
 
 		for i, v := range colTypes {
 			switch v.DatabaseTypeName() {
@@ -84,7 +86,7 @@ func RowsToJSON(rows *sql.Rows) ([]byte, error) {
 		finalRows = append(finalRows, masterData)
 	}
 
-	js, err :=  json.Marshal(finalRows)
+	js, err :=  json.MarshalIndent(finalRows, "", "  ")
 	if err != nil {
 		return nil, err
 	}

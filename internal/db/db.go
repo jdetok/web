@@ -34,7 +34,25 @@ func Connect() (*sql.DB, error) {
 }
 
 // TODO - split out player part & make this a more general select
-func Select(db *sql.DB) ([]byte, error) {
+func Select(db *sql.DB, q string) ([]byte, error) {
+
+	rows, err := db.Query(q)
+	if err != nil {
+		fmt.Printf("Error querying: %s", err)
+		log.Fatal(err)
+		return nil, err
+	}
+	
+	js, err := RowsToJSON(rows)
+	if err != nil {
+		fmt.Println("Error occured")
+		return nil, err
+	}
+	return js, nil
+}
+
+// TODO - split out player part & make this a more general select
+func TestSelect(db *sql.DB) ([]byte, error) {
 	q := `
 	select a.player, b.team, sum(c.pts) as pts, avg(c.pts) as pts_pg 
 	from player a
