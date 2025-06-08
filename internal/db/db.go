@@ -33,6 +33,7 @@ func Connect() (*sql.DB, error) {
 	return db, nil
 }
 
+// TODO - split out player part & make this a more general select
 func Select(db *sql.DB) ([]byte, error) {
 	q := `
 	select a.player, b.team, sum(c.pts) as pts, avg(c.pts) as pts_pg 

@@ -1,6 +1,12 @@
 #!/bin/bash
 
-msg=""
+# run git add ., git commit, & git push with the following command: 
+# gi -m <commit message goes here>
+
+# add the following line to ~/.vshrc (and source it after saving)
+# alias gi=~/scripts/git-common.sh
+
+# msg=""
 
 while getopts "m:" opt; do
     case $opt in
