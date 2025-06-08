@@ -18,7 +18,8 @@ func SaveJSON(path string, body []byte) {
 
 func MapToJSON(path string, m map[string]any) []byte {
 // marshal the map to return []byte
-	body, err := json.MarshalIndent(m, "", "  ")
+// two spaces of indent
+	body, err := json.MarshalIndent(m, "", "    ")
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil

@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func ReadJSON(path string) map[string]any {
+func MapJSONFile(path string) map[string]any {
 	jsonFile, err := os.Open(path)
 
 	if err != nil {
