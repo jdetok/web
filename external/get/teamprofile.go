@@ -18,6 +18,7 @@ func TeamIds(league clean.LeagueResp) ([]string, error) {
 	return teamIds, nil
 }
 
+// takes list of team ids and generates list of urls to get their team profile
 func TeamProfileUrls(teamIds []string) ([]string, error) {
 	root := env.GetString("API_ROOT")
 
@@ -31,6 +32,7 @@ func TeamProfileUrls(teamIds []string) ([]string, error) {
 	return urls, nil
 }
 
+// takes the list of urls and requests each
 func TeamProfiles(urls []string) ([][]byte, []string, error) {
 	var resps [][]byte
 	var respsstr []string
@@ -44,8 +46,7 @@ func TeamProfiles(urls []string) ([][]byte, []string, error) {
 		respsstr = append(respsstr, string(res))
 		
 // only one call per second
-		time.Sleep(2 * time.Second)
-		
+		time.Sleep(1 * time.Second)
 	}
 	return resps, respsstr, nil
 }

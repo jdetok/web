@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/jdetok/web/internal/env"
+	"github.com/jdetok/web/internal/jsonops"
 )
 
 type GeneralURL struct {
@@ -94,21 +94,21 @@ func Get(url string, num int, save bool) ([]byte, int, error) {
 		}
 		jsonpath := root + file
 
-		SaveJSON(jsonpath, body)
+		jsonops.SaveJSON(jsonpath, body)
 		return body, res.StatusCode, nil
 	}
 	return body, res.StatusCode, nil
 }
 
 // save returned json to file
-func SaveJSON(path string, body []byte) {
-	err := os.WriteFile(path, body, 0644)
-	if err != nil {
-		fmt.Printf("Error writing JSON response to file at %s: %s\n", path, err)
-		return
-	}
-	fmt.Printf("JSON response saved at %s\n", path)
-} 
+// func SaveJSON(path string, body []byte) {
+// 	err := os.WriteFile(path, body, 0644)
+// 	if err != nil {
+// 		fmt.Printf("Error writing JSON response to file at %s: %s\n", path, err)
+// 		return
+// 	}
+// 	fmt.Printf("JSON response saved at %s\n", path)
+// } 
 
 // general requests - just pass a string for everything after the root url (after en/)
 func GetRequest(ext string) ([]byte, error){

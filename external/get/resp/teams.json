@@ -1,0 +1,183 @@
+{
+  "teams": [
+    {
+      "id": "583ec87d-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "76ers",
+      "alias": "PHI",
+      "market": "Philadelphia"
+    },
+    {
+      "id": "583ecefd-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Bucks",
+      "alias": "MIL",
+      "market": "Milwaukee"
+    },
+    {
+      "id": "583ec5fd-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Bulls",
+      "alias": "CHI",
+      "market": "Chicago"
+    },
+    {
+      "id": "583ec773-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Cavaliers",
+      "alias": "CLE",
+      "market": "Cleveland"
+    },
+    {
+      "id": "583eccfa-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Celtics",
+      "alias": "BOS",
+      "market": "Boston"
+    },
+    {
+      "id": "583ecdfb-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Clippers",
+      "alias": "LAC",
+      "market": "LA"
+    },
+    {
+      "id": "583eca88-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Grizzlies",
+      "alias": "MEM",
+      "market": "Memphis"
+    },
+    {
+      "id": "583ecb8f-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Hawks",
+      "alias": "ATL",
+      "market": "Atlanta"
+    },
+    {
+      "id": "583ecea6-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Heat",
+      "alias": "MIA",
+      "market": "Miami"
+    },
+    {
+      "id": "583ec97e-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Hornets",
+      "alias": "CHA",
+      "market": "Charlotte"
+    },
+    {
+      "id": "583ece50-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Jazz",
+      "alias": "UTA",
+      "market": "Utah"
+    },
+    {
+      "id": "583ed0ac-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Kings",
+      "alias": "SAC",
+      "market": "Sacramento"
+    },
+    {
+      "id": "583ec70e-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Knicks",
+      "alias": "NYK",
+      "market": "New York"
+    },
+    {
+      "id": "583ecae2-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Lakers",
+      "alias": "LAL",
+      "market": "Los Angeles"
+    },
+    {
+      "id": "583ed157-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Magic",
+      "alias": "ORL",
+      "market": "Orlando"
+    },
+    {
+      "id": "583ecf50-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Mavericks",
+      "alias": "DAL",
+      "market": "Dallas"
+    },
+    {
+      "id": "583ec9d6-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Nets",
+      "alias": "BKN",
+      "market": "Brooklyn"
+    },
+    {
+      "id": "583ed102-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Nuggets",
+      "alias": "DEN",
+      "market": "Denver"
+    },
+    {
+      "id": "583ec7cd-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Pacers",
+      "alias": "IND",
+      "market": "Indiana"
+    },
+    {
+      "id": "583ecc9a-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Pelicans",
+      "alias": "NOP",
+      "market": "New Orleans"
+    },
+    {
+      "id": "583ec928-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Pistons",
+      "alias": "DET",
+      "market": "Detroit"
+    },
+    {
+      "id": "583ecda6-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Raptors",
+      "alias": "TOR",
+      "market": "Toronto"
+    },
+    {
+      "id": "583ecb3a-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Rockets",
+      "alias": "HOU",
+      "market": "Houston"
+    },
+    {
+      "id": "583ecd4f-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Spurs",
+      "alias": "SAS",
+      "market": "San Antonio"
+    },
+    {
+      "id": "583ecfa8-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Suns",
+      "alias": "PHX",
+      "market": "Phoenix"
+    },
+    {
+      "id": "583ecfff-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Thunder",
+      "alias": "OKC",
+      "market": "Oklahoma City"
+    },
+    {
+      "id": "583eca2f-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Timberwolves",
+      "alias": "MIN",
+      "market": "Minnesota"
+    },
+    {
+      "id": "583ed056-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Trail Blazers",
+      "alias": "POR",
+      "market": "Portland"
+    },
+    {
+      "id": "583ec825-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Warriors",
+      "alias": "GSW",
+      "market": "Golden State"
+    },
+    {
+      "id": "583ec8d4-fb46-11e1-82cb-f4ce4684ea4c",
+      "name": "Wizards",
+      "alias": "WAS",
+      "market": "Washington"
+    }]
+}
