@@ -14,6 +14,8 @@ type OrderedField struct {
 	Value any
 }
 
+// writes bytes directly to ensure the order of the json objects is the same as the select order
+// was originally using a map but it reordered the columns
 func (row OrderedRow) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteByte('{')
@@ -28,27 +30,17 @@ func (row OrderedRow) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-
+// separate objects with if not first i
 		if i > 0 {
 			buf.WriteByte(',')
 		}
+// write the json lines to 
 		fmt.Fprintf(&buf, "%s:%s", keyJSON, valJSON)
 	}
 	buf.WriteByte('}')
 	return buf.Bytes(), nil
 }
 
-// func (row OrderedRow) OldMarshalJSON() ([]byte, error) {
-// 	m := make(map[string]any, len(row))
-// 	for _, field := range row {
-// 		m[field.Key] = field.Value
-// 	}
-// 	return json.Marshal(m)
-// }
-
-func (row OrderedRow) RemoveKeyValue() {}
-
-// 	TODO - FIGURE OUT HOW TO RETAIN THE ORDER OF FIELDS WHEN CONVERTED TO JSON
 func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 	colTypes, err := rows.ColumnTypes()
 	if err != nil {
@@ -71,7 +63,7 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 		// masterData := map[string]any{}
 		var rowOrdered OrderedRow
 		for i, v := range colTypes {
-			val, err := AssignName(scanArgs[i], map[string]any{}, v)
+			val, err := GetDBType(scanArgs[i], map[string]any{}, v)
 			if err != nil {
 				return nil, err
 			}
@@ -122,74 +114,25 @@ func ConvertTypes(colTypes []*sql.ColumnType) ([]any, error){
 	return scanArgs, nil
 }
 
-func AssignName(arg any, data map[string]any, colType *sql.ColumnType) (any, error) {
+func GetDBType(arg any, data map[string]any, col *sql.ColumnType) (any, error) {
 	if z, ok := arg.(*sql.NullBool); ok {
 		if z.Valid {
-			data[colType.Name()] = z.Bool
+			data[col.Name()] = z.Bool
 		}
 	} else if z, ok := arg.(*sql.NullString); ok {
 		if z.Valid {
-			data[colType.Name()] = z.String
+			data[col.Name()] = z.String
 		}
 	} else if z, ok := arg.(*sql.NullInt64); ok {
 		if z.Valid {
-			data[colType.Name()] = z.Int64
+			data[col.Name()] = z.Int64
 		}
 	} else if z, ok := arg.(*sql.NullFloat64); ok {
 		if z.Valid {
-			data[colType.Name()] = z.Float64
+			data[col.Name()] = z.Float64
 		}
-	} else if data[colType.Name()] == nil {
-		data[colType.Name()] = nil
+	} else if data[col.Name()] == nil {
+		data[col.Name()] = nil
 	}
-	return data[colType.Name()], nil
+	return data[col.Name()], nil
 }
-
-
-
-
-// // REC
-// func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
-// 	colTypes, err := rows.ColumnTypes()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-	
-// 	finalRows := []any{};
-
-// 	for rows.Next() {
-// 		scanArgs, err := ConvertTypes(colTypes)
-// 		if err != nil {
-// 			fmt.Println("Error in convert types function")
-// 		}
-
-// 		err = rows.Scan(scanArgs...)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-
-// 		masterData := map[string]any{}
-// 		for i, v := range colTypes {
-// 			masterData[v.Name()], err = AssignName(scanArgs[i], masterData, v)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 		}
-// 		finalRows = append(finalRows, masterData)
-// 	}
-// // indented json if indent == true
-// 	if indent {
-// 		js, err :=  json.MarshalIndent(finalRows, "", "  ")	
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		return js, nil
-// 	}
-	
-// // unindented json if indent == false
-// 	js, err :=  json.Marshal(finalRows)	
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return js, nil
-// }
