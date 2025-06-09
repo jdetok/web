@@ -14,7 +14,7 @@ func main() {
         fmt.Printf("An error occured: %s", err)
     }
 
-    js, err := db.Select(database, db.CarrerStats)
+    js, err := db.Select(database, db.CarrerStats, false)
 	if err != nil {
 		fmt.Printf("Error occured getting data from database: %s", err)
 		return

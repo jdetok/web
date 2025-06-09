@@ -34,8 +34,8 @@ func Connect() (*sql.DB, error) {
 }
 
 // TODO - split out player part & make this a more general select
-func Select(db *sql.DB, q string) ([]byte, error) {
-
+func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
+// query db - returns sql.Rows type
 	rows, err := db.Query(q)
 	if err != nil {
 		fmt.Printf("Error querying: %s", err)
@@ -43,7 +43,8 @@ func Select(db *sql.DB, q string) ([]byte, error) {
 		return nil, err
 	}
 	
-	js, err := RowsToJSON(rows)
+// return the response as json
+	js, err := RowsToJSON(rows, indent_resp)
 	if err != nil {
 		fmt.Println("Error occured")
 		return nil, err
@@ -75,7 +76,7 @@ func TestSelect(db *sql.DB) ([]byte, error) {
 		return nil, err
 	}
 	
-	js, err := RowsToJSON(rows)
+	js, err := RowsToJSON(rows, false)
 	if err != nil {
 		fmt.Println("Error occured")
 		return nil, err
