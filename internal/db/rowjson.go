@@ -41,6 +41,52 @@ func (row OrderedRow) MarshalJSON() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// called in RowsToJSON
+func convertTypes(colTypes []*sql.ColumnType) ([]any, error){
+	count := len(colTypes)
+	scanArgs := make([]any, count)
+
+	for i, v := range colTypes {
+		switch v.DatabaseTypeName() {
+		case "VARCHAR", "TEXT", "UUID", "TIMESTAMP":
+			scanArgs[i] = new(sql.NullString)
+		case "BOOL":
+			scanArgs[i] = new(sql.NullBool)
+		case "INT4", "INT8", "INT":
+			scanArgs[i] = new(sql.NullInt64)
+		case "FLOAT", "FLOAT8", "FLOAT4":
+			scanArgs[i] = new(sql.NullFloat64)
+		default:
+			scanArgs[i] = new(sql.NullString)
+		}
+	}	
+	return scanArgs, nil
+}
+
+// called in RowsToJSON
+func getDBType(arg any, data map[string]any, col *sql.ColumnType) (any, error) {
+	if z, ok := arg.(*sql.NullBool); ok {
+		if z.Valid {
+			data[col.Name()] = z.Bool
+		}
+	} else if z, ok := arg.(*sql.NullString); ok {
+		if z.Valid {
+			data[col.Name()] = z.String
+		}
+	} else if z, ok := arg.(*sql.NullInt64); ok {
+		if z.Valid {
+			data[col.Name()] = z.Int64
+		}
+	} else if z, ok := arg.(*sql.NullFloat64); ok {
+		if z.Valid {
+			data[col.Name()] = z.Float64
+		}
+	} else if data[col.Name()] == nil {
+		data[col.Name()] = nil
+	}
+	return data[col.Name()], nil
+}
+
 func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 	colTypes, err := rows.ColumnTypes()
 	if err != nil {
@@ -50,7 +96,7 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 	finalRows := []any{};
 
 	for rows.Next() {
-		scanArgs, err := ConvertTypes(colTypes)
+		scanArgs, err := convertTypes(colTypes)
 		if err != nil {
 			fmt.Println("Error in convert types function")
 		}
@@ -63,7 +109,7 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 		// masterData := map[string]any{}
 		var rowOrdered OrderedRow
 		for i, v := range colTypes {
-			val, err := GetDBType(scanArgs[i], map[string]any{}, v)
+			val, err := getDBType(scanArgs[i], map[string]any{}, v)
 			if err != nil {
 				return nil, err
 			}
@@ -91,48 +137,4 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 		return nil, err
 	}
 	return js, nil
-}
-
-func ConvertTypes(colTypes []*sql.ColumnType) ([]any, error){
-	count := len(colTypes)
-	scanArgs := make([]any, count)
-
-	for i, v := range colTypes {
-		switch v.DatabaseTypeName() {
-		case "VARCHAR", "TEXT", "UUID", "TIMESTAMP":
-			scanArgs[i] = new(sql.NullString)
-		case "BOOL":
-			scanArgs[i] = new(sql.NullBool)
-		case "INT4", "INT8", "INT":
-			scanArgs[i] = new(sql.NullInt64)
-		case "FLOAT", "FLOAT8", "FLOAT4":
-			scanArgs[i] = new(sql.NullFloat64)
-		default:
-			scanArgs[i] = new(sql.NullString)
-		}
-	}	
-	return scanArgs, nil
-}
-
-func GetDBType(arg any, data map[string]any, col *sql.ColumnType) (any, error) {
-	if z, ok := arg.(*sql.NullBool); ok {
-		if z.Valid {
-			data[col.Name()] = z.Bool
-		}
-	} else if z, ok := arg.(*sql.NullString); ok {
-		if z.Valid {
-			data[col.Name()] = z.String
-		}
-	} else if z, ok := arg.(*sql.NullInt64); ok {
-		if z.Valid {
-			data[col.Name()] = z.Int64
-		}
-	} else if z, ok := arg.(*sql.NullFloat64); ok {
-		if z.Valid {
-			data[col.Name()] = z.Float64
-		}
-	} else if data[col.Name()] == nil {
-		data[col.Name()] = nil
-	}
-	return data[col.Name()], nil
 }
