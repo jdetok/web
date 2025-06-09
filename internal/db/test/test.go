@@ -13,8 +13,8 @@ func main() {
     if err != nil {
         fmt.Printf("An error occured: %s", err)
     }
-
-    js, err := db.Select(database, db.CarrerStats, false)
+// pass true inse
+    js, err := db.Select(database, db.CarrerStats, true)
 	if err != nil {
 		fmt.Printf("Error occured getting data from database: %s", err)
 		return
