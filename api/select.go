@@ -8,14 +8,14 @@ import (
 )
 
 func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Testing selecting from database via HTTP request\n"))
+	w.Write([]byte("Testing selecting players from database via HTTP request\n"))
 		
     database, err := db.Connect()
     if err != nil {
         log.Printf("An error occured: %s", err)
     }
 
-    js, err := db.Select(database)
+    js, err := db.Select(database, db.CarrerStats, true)
 	if err != nil {
 		w.Write([]byte("Error occured getting data from database"))
 		return
@@ -27,3 +27,22 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(string(js)))
 }
 
+func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Testing selecting games from database via HTTP request\n"))
+		
+    database, err := db.Connect()
+    if err != nil {
+        log.Printf("An error occured: %s", err)
+    }
+
+    js, err := db.Select(database, db.Games, true)
+	if err != nil {
+		w.Write([]byte("Error occured getting data from database"))
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	
+
+	w.Write([]byte(string(js)))
+}

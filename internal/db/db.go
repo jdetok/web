@@ -46,7 +46,7 @@ func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 // return the response as json
 	js, err := RowsToJSON(rows, indent_resp)
 	if err != nil {
-		fmt.Println("Error occured")
+		fmt.Println("Error occured converting to JSON")
 		return nil, err
 	}
 	return js, nil

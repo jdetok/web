@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jdetok/web/internal/db"
+	"github.com/jdetok/web/internal/jsonops"
 )
 
 func main() {
@@ -22,6 +23,9 @@ func main() {
 
 	// js is a []byte - print it as a string
 	fmt.Println(string(js))
+
+	// save to file
+	jsonops.SaveJSON("json/db/player_career.json", js)
 }
 
 // recovery

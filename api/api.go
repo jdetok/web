@@ -48,6 +48,8 @@ func (app *application) mount() *http.ServeMux {
 
 // testing kicking off the select via request
 	mux.HandleFunc("GET /select", app.selectHandler)
+
+	mux.HandleFunc("GET /select/games", app.selectGameHandler)
 	
 // return mux instance - call app.mount() to get mux then app.run(mux) to run server
 	return mux
