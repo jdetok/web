@@ -1,5 +1,10 @@
-fetch('js/player_career.json')
-  .then(response => response.json())
+fetch('/select')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`)
+    }
+    return response.json()
+  }) 
   .then(players => {
     const container = document.getElementById("nba");
     container.innerHTML = ""; // clear in case of previous content
