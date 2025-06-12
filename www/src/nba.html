@@ -4,13 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>jdeto!</title>
+    <title>jdeto nba!</title>
     <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+  table {
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid black;
+    width: 85%;
+    border-collapse: collapse;
+  }
+
+  table th{
+    font-size: 20px;
+  }
+  table td {
+    border: 3px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+</style>
   </head>
   <body class="center">
     <h1>NBA page</h1>
-    <h2>Career Stats</h2>
+
+    <button id="fetchBtn">See Career Stats</button>
+    <!--</!-->
+
+    <div id="status"></div>
+    <div id="output"></div>
+
     <div id="nba"></div>
-    <script src="js/index.js"></script>
+
+    <script src="js/test.js"></script>
   </body>
 </html>

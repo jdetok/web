@@ -52,6 +52,46 @@ func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 	return js, nil
 }
 
+func SelectArg(db *sql.DB, q string, indent_resp bool, r string) ([]byte, error) {
+// query db - returns sql.Rows type
+	
+
+	rows, err := db.Query(q, r)
+	if err != nil {
+		fmt.Printf("Error querying: %s", err)
+		log.Fatal(err)
+		return nil, err
+	}
+	
+// return the response as json
+	js, err := RowsToJSON(rows, indent_resp)
+	if err != nil {
+		fmt.Println("Error occured converting to JSON")
+		return nil, err
+	}
+	return js, nil
+}
+
+func SelectArgs(db *sql.DB, q string, indent_resp bool, r1, r2 string) ([]byte, error) {
+// query db - returns sql.Rows type
+	
+
+	rows, err := db.Query(q, r1, r2)
+	if err != nil {
+		fmt.Printf("Error querying: %s", err)
+		log.Fatal(err)
+		return nil, err
+	}
+	
+// return the response as json
+	js, err := RowsToJSON(rows, indent_resp)
+	if err != nil {
+		fmt.Println("Error occured converting to JSON")
+		return nil, err
+	}
+	return js, nil
+}
+
 // TODO - split out player part & make this a more general select
 func TestSelect(db *sql.DB) ([]byte, error) {
 	q := `

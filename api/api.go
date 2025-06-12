@@ -50,6 +50,12 @@ func (app *application) mount() *http.ServeMux {
 	mux.HandleFunc("GET /select", app.selectHandler)
 
 	mux.HandleFunc("GET /select/games", app.selectGameHandler)
+
+	mux.HandleFunc("GET /select/players", app.selectPlayersH)
+
+	mux.HandleFunc("GET /select/player", app.selectPlayerH)
+
+
 	
 // return mux instance - call app.mount() to get mux then app.run(mux) to run server
 	return mux
