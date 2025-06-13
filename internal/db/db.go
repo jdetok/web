@@ -13,11 +13,12 @@ func Connect() (*sql.DB, error) {
 // get components of connection string from .env
 	dbUser := env.GetString("DB_USER")
 	dbHost := env.GetString("DB_HOST")
-	dbPort := env.GetString("DB_PORT")
+	// dbPort := env.GetString("DB_PORT")
 	database := env.GetString("DB")
 
 // build connection string & attempt to connect
-	connStr := dbUser + "@tcp(" + dbHost + ":" + dbPort + ")/" + database
+	// connStr := dbUser + "@tcp(" + dbHost + ":" + dbPort + ")/" + database
+	connStr := dbUser + "@tcp(" + dbHost + ")/" + database
 	
 	db, err := sql.Open("mysql", connStr)
 

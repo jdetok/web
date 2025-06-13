@@ -67,19 +67,9 @@ async function getData(url) {
 function careerStatsBtn() {
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fetchBtn').addEventListener('click', () => {
-        getData("http://localhost/select");
+        getData("http://jdeko.me/select");
         });
     });
 };
 
 careerStatsBtn();
-
-    
-
-// async function main() {
-//   const data = await getData("http://192.168.0.8:3002/select");
-//   console.log(data);
-// }
-
-// main(); 
-
