@@ -67,7 +67,7 @@ async function getData(url) {
 function careerStatsBtn() {
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fetchBtn').addEventListener('click', () => {
-        getData("http://jdeko.me/select");
+        getData("https://jdeko.me/select");
         });
     });
 };

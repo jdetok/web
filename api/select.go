@@ -59,6 +59,11 @@ func (app *application) selectPlayerH(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Testing selecting players from database via HTTP request\n"))
+
+	log.Printf("Received request: %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
+	log.Printf("User-Agent: %s", r.UserAgent())
+	log.Printf("Referer: %s", r.Referer())
+	log.Printf("Host: %s", r.Host)
 		
     database, err := db.Connect()
     if err != nil {

@@ -23,10 +23,13 @@ func Connect() (*sql.DB, error) {
 	db, err := sql.Open("mysql", connStr)
 
 	if err != nil {
+		log.Printf("database connect error: %s", err)
 		return nil, err
+		
 	}
 // ping to confirm connection
 	if err := db.Ping(); err != nil {
+		log.Printf("database ping error: %s", err)
 		return nil, err
 	}
 	// fmt.Println("Connected to MariaDB!")
@@ -40,6 +43,7 @@ func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 	rows, err := db.Query(q)
 	if err != nil {
 		fmt.Printf("Error querying: %s", err)
+		log.Printf("database error: %s", err)
 		log.Fatal(err)
 		return nil, err
 	}
