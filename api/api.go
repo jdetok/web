@@ -33,12 +33,18 @@ func (app *application) run(mux *http.ServeMux) error {
 // returns type ServeMux for a router
 func (app *application) mount() *http.ServeMux {
 	mux := http.NewServeMux()
-	
-// handles root requests -- requests to http://url should be routed to /v1
-// SERVES STATIC SITE IN WEB DIRECTORY
-	mux.Handle("/", http.FileServer(http.Dir("/home/jdeto/go/github.com/jdetok/web/www/src")))
-	
-	// mux.HandleFunc("GET /", app.rootHandler)
+
+	mux.Handle("/js/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-store")
+		http.StripPrefix("/js/", http.FileServer(
+			http.Dir("/home/jdeto/go/github.com/jdetok/web/www/src/js"))).ServeHTTP(w, r)
+	}))
+
+	mux.Handle("/css/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-store")
+		http.StripPrefix("/css/", http.FileServer(
+			http.Dir("/home/jdeto/go/github.com/jdetok/web/www/src/css"))).ServeHTTP(w, r)
+	}))
 	
 // health check endpoint
 	mux.HandleFunc("GET /v1/health", app.healthCheckHandler)
@@ -55,7 +61,8 @@ func (app *application) mount() *http.ServeMux {
 
 	mux.HandleFunc("GET /select/player", app.selectPlayerH)
 
-
+// SERVES STATIC SITE IN WEB DIRECTORY
+	mux.Handle("/", http.FileServer(http.Dir("/home/jdeto/go/github.com/jdetok/web/www/src")))
 	
 // return mux instance - call app.mount() to get mux then app.run(mux) to run server
 	return mux

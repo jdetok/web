@@ -1,34 +1,33 @@
-// trying to dynamically create table from json keys
+// trying to dynamically create table from json
 
-// function careerStatsBtn(data) {
-//     document.addEventListener('DOMContentLoaded', () => {
-//     document.getElementById('fetchBtn').addEventListener('click', () => {
-//         getData("https://jdeko.me/select");
-//         });
-//     });
-// };
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('fetchBtn').addEventListener('click', () => {
+        getData("https://jdeko.me/select", 2, ' - ');
+    });
+});
 
-async function getData(url) {
+async function getData(url, numH, hDelim) {
     const statusEl = document.getElementById('status');
-    const outputEl = document.getElementById('output');
-    const nbaEl = document.getElementById('nba');
-    
-    statusEl.textContent = 'Loading...';
-    nbaEl.innerHTML = ''; 
-    outputEl.innerHTML = '';
+    statusEl.textContent = 'Requesting data from API...';
 
+    const outputEl = document.getElementById('output');
+    outputEl.textContent = '';
+    // changed these from innerHTML to textContent
+    const nbaEl = document.getElementById('nba');
+    nbaEl.innerHTML = ''; 
+    
+    // try to fetch JSON from API
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            err = `HTTP Error: ${response.status}`
-            console.log(err)
             throw new Error(`HTTP Error: ${response.status}`)
         }
-        console.log("getting json");
+        // make data into json object and clear status message
         const data = await response.json();
         statusEl.textContent = ''; 
-        console.log("json received");
-        tableFromJSON(data, 2, ' - ');
+        
+        // pass data 
+        tableFromJSON(data, numH, hDelim);
     }
     catch(error) {
         console.log(error);
@@ -36,21 +35,23 @@ async function getData(url) {
     };
 };
 
-// TODO - numH  as arg to determine when to start inner loop
+// dynamically create HTML table element with caption
+// elements for caption MUST BE at the beginning of the json response
+// numH is the number of json objects that will be used in the dynamic caption
+// hDelim is the delimiter that separates the objects
+// all objects after the first numH will go into the table
 function tableFromJSON(data, numH, hDelim) {
+    // clear the current nba container
     const container = document.getElementById("nba");
     container.innerHTML = "";
+
     const keys = jsonKeys(data);
     for (const r of data) {
         const pTable = document.createElement('table');
-        pTable.style.border = '1px solid black';
-        pTable.style.marginBottom = '1em';
-        // first two keys are player and team - separate for header
-        // console.log(`${r[keys[0]]} ${hDelim} ${r[keys[1]]}`);
-        
+
+        // append keys together with delimiter based off numH and hDelim
         let hdr = "";
         let h = 0;
-
         while (h < numH) {
             hdr += r[keys[h]];
             h++;
@@ -59,28 +60,26 @@ function tableFromJSON(data, numH, hDelim) {
             }
         };
 
+        // create a caption element with the hdr string
         const caption = document.createElement('caption');
         caption.textContent = hdr;
-        caption.style.fontWeight = 'bold';
         pTable.appendChild(caption);
         
-        // start inner loop at 2 to start with pts
+        // after creating header, create table with the data items 
         for (let i = numH; i < keys.length; i++) {
             const row = document.createElement('tr');
 
-            const col = document.createElement('th');
-            col.textContent = keys[i];
-            col.style.textAlign = 'left';
+            const label = document.createElement('th');
+            label.textContent = keys[i];
+            label.style.textAlign = 'right';
+            row.appendChild(label);
 
             const val = document.createElement('td');
             val.textContent = r[keys[i]];
-
-            row.appendChild(col);
+            val.style.textAlign = 'left';
             row.appendChild(val);
-            pTable.appendChild(row);
-            
 
-            // console.log(`${keys[i]}: ${r[keys[i]]}`)
+            pTable.appendChild(row);
         };
         container.append(pTable);
     };
@@ -89,9 +88,3 @@ function tableFromJSON(data, numH, hDelim) {
 function jsonKeys(data) {
     return Object.keys(data[0]);
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('fetchBtn').addEventListener('click', () => {
-        getData("https://jdeko.me/select");
-    });
-});
