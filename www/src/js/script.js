@@ -15,6 +15,7 @@ async function getData(url) {
             throw new Error(`HTTP Error: ${response.status}`)
         }
         console.log("getting json")
+        // testing starts here
         const data = await response.json()
         statusEl.textContent = ''; 
         console.log("json received")
