@@ -10,17 +10,19 @@ async function getData(url) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
+            err = `HTTP Error: ${response.status}`
+            console.log(err)
             throw new Error(`HTTP Error: ${response.status}`)
         }
-        
+        console.log("getting json")
         const data = await response.json()
         statusEl.textContent = ''; 
-
+        console.log("json received")
         // outputEl.textContent = JSON.stringify(data, null, 2);
         data.forEach(player => {
         const playerDiv = document.createElement("div");
 
-
+          console.log("writing to html")
         playerDiv.innerHTML = `
         <h3>${player.player} (${player.team})</h3>
         <table>
@@ -52,19 +54,20 @@ async function getData(url) {
           </tbody>
         </table>
         `
+        console.log("appending")
         nbaEl.appendChild(playerDiv);
         })
     }
     catch(error) {
         console.log(error);
-        statusEl.textContent = 'Failed to load player data.';
+        statusEl.textContent = "Failed to load player data.";
     };
 };
 
 function careerStatsBtn() {
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('fetchBtn').addEventListener('click', () => {
-        getData("http://192.168.0.8:3002/select");
+        getData("http://localhost/select");
         });
     });
 };
