@@ -7,10 +7,30 @@
     <title>jdeko nba!</title>
     <link rel="stylesheet" href="/css/style.css?v=12345">
   </head>
+
+  <header style="text-align: right">
+    <b style="font-size: 14px; color: rgba(240, 111, 111, 0.822)">
+      NO AFFILIATION WITH THE NATIONAL BASKETBALL ASSOCIATION
+    </b>
+  </header>
+
   <body class="center">
-    <h1>NBA page</h1>
-    
-    <button id="fetchBtn">See Career Stats</button><br><br>
+    <h1>NBA/WNBA Statistics</h1>
+
+    <form id="playerForm">
+      <label for="league">League:</label>
+      <select name="league" id="league">
+        <option value="NBA">NBA</option>
+        <option value="WNBA">WNBA</option>
+      </select>
+      <input type="text" id="playerInput" placeholder="Search for a player" />
+      <button id="fetchBtn">See Career Stats</button><br>
+    </form>
+    <p style="font-size: 16px">
+      <i>Until searching by player name is supported, use the following player IDs to use the search by player feature:</i><br>
+      <i style="font-size: 12px">NBA: 2544, 1628973, 1629630, 1629675, 1629029, 201939, 201142, 1630169</i><br>
+      <i style="font-size: 12px">WNBA: 1642299, 1642287, 1642298, 1641658, 1628886, 1630114, 1641602</i><br>
+    </p>
 
     <div id="status"></div>
     <div id="output"></div>

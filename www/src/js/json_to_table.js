@@ -1,8 +1,18 @@
 // trying to dynamically create table from json
 
+// pass no param, get all
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('fetchBtn').addEventListener('click', () => {
-        getData("https://jdeko.me/select", 2, ' - ');
+    const form = document.getElementById('playerForm');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        let url = "https://jdeko.me/select";
+        const player = document.getElementById('playerInput').value.trim();
+        const lg = document.getElementById('league').value.trim();
+        
+        if (player) {
+            url += `/player?lg=${encodeURIComponent(lg)}&player=${encodeURIComponent(player)}`
+        }
+        getData((url + `?lg=${encodeURIComponent(lg)}`), 2, ' - ');
     });
 });
 

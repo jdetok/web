@@ -64,6 +64,8 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("User-Agent: %s", r.UserAgent())
 	log.Printf("Referer: %s", r.Referer())
 	log.Printf("Host: %s", r.Host)
+	
+	lg := r.URL.Query().Get("lg")
 		
     database, err := db.Connect()
     if err != nil {
@@ -71,7 +73,7 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
         log.Printf("An error occured: %s", err)
     }
 
-    js, err := db.Select(database, db.CarrerStats, false)
+    js, err := db.SelectArg(database, db.CarrerStatsByLg, false, lg)
 	if err != nil {
 		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
 		w.Write([]byte("Error occured getting data from database"))
