@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/jdetok/web/internal/db"
+	"github.com/jdetok/web/internal/store"
 )
 
 func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
@@ -66,24 +68,32 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Host: %s", r.Host)
 	
 	lg := r.URL.Query().Get("lg")
-		
-    database, err := db.Connect()
-    if err != nil {
-		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-        log.Printf("An error occured: %s", err)
-    }
 
-    js, err := db.SelectArg(database, db.CarrerStatsByLg, false, lg)
+	var c = store.CacheJSON{}
+
+	js, err := c.LoadPlayers(db.CarrerStatsByLg, lg)
 	if err != nil {
-		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-		w.Write([]byte("Error occured getting data from database"))
-		return
+		fmt.Printf("Error getting players: %s", err)
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	
+	c.AllPlayers = js
+		
+    // database, err := db.Connect()
+    // if err != nil {
+	// 	http.Error(w, "Error retrieving data", http.StatusInternalServerError)
+    //     log.Printf("An error occured: %s", err)
+    // }
 
-	w.Write(js)
+    // js, err := db.SelectArg(database, db.CarrerStatsByLg, false, lg)
+	// if err != nil {
+	// 	http.Error(w, "Error retrieving data", http.StatusInternalServerError)
+	// 	w.Write([]byte("Error occured getting data from database"))
+	// 	return
+	// }
+
+	w.Header().Set("Content-Type", "application/json")
+
+	w.Write(c.AllPlayers)
 }
 
 func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request) {
