@@ -27,7 +27,7 @@ func main() {
     }
 
     // checks if cache needs refreshed every 30 seconds, refreshes if 300 sec since last
-    go app.checkCache(10*time.Second, 25*time.Second)
+    go app.checkCache(30*time.Second, 300*time.Second)
 
     // mount initializes mux (serves/routes HTTP) & handlers
     mux := app.mount()
