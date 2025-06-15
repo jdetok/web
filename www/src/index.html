@@ -7,63 +7,104 @@
     <title>jdeko!</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
-  <body class="center">
-    <script src="/js/json_to_table.js"></script>
-    <h1>Justin DeKock's Website!</h1>
-    <h2>This website is a passion project to show off my other passion projects</h2>
-    <p>jdeko.me is hosted on a Raspberry Pi 5 on my local network and securely accessible over the internet via 
-      <a href="https://www.cloudflare.com/">Cloudflare</a>.</p>
 
-    <div class="center">
-      <h3>
-        Interact with my <a href="nba.html" target="_blank">basketball stats site</a>
-        (<a href="nba-info.html">learn more</a>)
-      </h3>
+<!-- ===================== HEADER ===================== -->
+  <!-- <header>
+    <div class="rhdr">
+      <b>created & maintained by Justin DeKock</b><br>
     </div>
+  </header> -->
 
-    <div class="center">
-      <h3>
-        <a href="https://open.spotify.com/artist/1IVwuSp7q4ON7FWrCmiv3H?si=heTQxxzEQPCxa8wURBN1gQ" target="_blank">
-          listen to my music!</a>
-      </h3>
+<!-- ===================== BODY ======================= -->
+  <body>
+    <div class="intro">
+      <h1>welcome!</h1>
+      <h2>
+        jdeko.me is an ongoing full-stack web development project designed &
+        written by myself (Justin DeKock) and hosted locally
+      </h2>
+      
+      -- <a class="big" href="about.html">
+        learn more about the design of this website
+      </a> --
     </div>
+    <br>
+/-|-\
+<!--NBA SECTION-->
+    <div>
+      <h3>
+        <a href="nba.html" target="_blank">
+          explore my basketball stats site
+        </a>
+      </h3>
+      -- 
+      <a href="nba-info.html">
+        learn more about the site's backend</a> -- 
+    </div>
+    <br>
+/-|-\
+<!--MUSIC SECTION-->
+    <div>
+      <h3>listen to my music!</h3>
+      --
+        <a class ="med"
+          href="https://open.spotify.com/artist/1IVwuSp7q4ON7FWrCmiv3H?si=heTQxxzEQPCxa8wURBN1gQ" target="_blank">
+          spotify
+        </a> -- 
+        <a class ="med"
+          href="https://music.apple.com/us/artist/justin-dekock/1743610102" target="_blank">
+          apple music
+        </a> -- 
+        <a class ="med"
+          href="https://music.youtube.com/channel/UCs5knMo_SQyvF_DQVMNnztA?si=58cpVnf9M22yB3Qn" target="_blank">
+          youtube music
+        </a> --
+    </div><br>
+/-|-\
+    <div>
+      <h3>brontosaurus arduino circuit</h3>
+      --<br>
+      an led display consisting of 48 leds & 6 shift-registers in the shape of a brontosaurus
+      <br><a href="https://github.com/jdetok/bronto-arduino.git">see the source code</a>
+      <br>--
 
+    </div><br>
+
+/-|-\
+<!-- OTHER PROJECTS -->
     <h3>Other projects I've done:</h3>
-
     <ul class="horiz">
       <li><a href="bronto.html">brontosaurs</a></li>
-      <li><a href="https://github.com/jdetok/web/tree/main/www/src" target="_blank">html/css/js for this website!</a></li>
-      <li><a href="https://github.com/jdetok/web.git" target="_blank">HTTP server & API written in Go</a></li>
-      <li><a href="https://github.com/justindekock/dataload-nba-mariadb.git" target="_blank">ETL project wtih NBA data</a> </li>
-      <li><a href="https://github.com/justindekock/dba-mariadb.git" target="_blank">mariadb (mysql) database admin. python package</a></li>
-      
-    </ul>
-    
+      <li><a href="https://github.com/justindekock/dataload-nba-mariadb.git" target="_blank">
+        NBA data ETL (extract, transform, load) pipeline</a> </li>
+      <li><a href="https://github.com/justindekock/dba-mariadb.git" target="_blank">
+        mariadb (mysql) database admin. python package</a></li>
+    </ul><br>
+/-|-\
+<!-- CATS -->
     <h3>Wanna see my cats?</h3>
-
     <ul class="pics">
       <li>
         <figure>
           <figcaption>Here's Rosie!</figcaption>
-          <img src="img/rosie.png" alt="where's rosie :(">
+          <img src="img/pets/rosie.png" alt="where's rosie :(">
         </figure>    
       </li>
       <li>
         <figure>
           <figcaption>Here's Milk!</figcaption>
-          <img src="img/milk.png" alt="where's milk :(">
+          <img src="img/pets/milk.png" alt="where's milk :(">
         </figure>
       </li>
       <li>
         <figure>
           <figcaption>Here's Guinness!</figcaption>
-          <img src="img/guinness.png" alt="where's Guinness :(">
+          <img src="img/pets/guinness.png" alt="where's Guinness :(">
         </figure>
       </li>
     </ul>
-    
-    <div class="center">
-
+/-|-\
+<!-- SNAKES -->
     <h3>How about my snakes?</h3>
     <ul class="pics">
       <li>
@@ -71,7 +112,7 @@
           <figcaption>Here's Nut - a 
             <a href="https://en.wikipedia.org/wiki/California_kingsnake" target="_blank">
             California Kingsnake</a>!</figcaption>
-          <img src="img/nut.png" alt="image missing :(">
+          <img src="img/pets/nut.png" alt="image missing :(">
         </figure>    
       </li>
       <li>
@@ -79,16 +120,15 @@
           <figcaption>Here's Rhonda - a 
             <a href="https://en.wikipedia.org/wiki/Western_hognose_snake" target="_blank">
               Western Hognose</a>!</figcaption>
-          <img src="img/rhonda.png" alt="image missing :(">
+          <img src="img/pets/rhonda.png" alt="image missing :(">
         </figure>
       </li>
       </ul>
     </div>
-  
-  <div class="right">
-    <b>All content created and owned by Justin DeKock</b><br>
-    est. May 26, 2025
-</div>  
-    
-</body>
+/-|-\
+  </body>
+
+  <footer>
+    created & maintained by Justin DeKock
+  </footer>
 </html>

@@ -5,32 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>jdeko nba!</title>
-    <link rel="stylesheet" href="/css/style.css?v=12345">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/nba.css">
   </head>
 
-  <header style="text-align: right">
-    <b style="font-size: 14px; color: rgba(240, 111, 111, 0.822)">
-      NO AFFILIATION WITH THE NATIONAL BASKETBALL ASSOCIATION
-    </b>
+  <header class=".hdr">
+    <div class="learnmore"><b><a href="nba-info.html">Learn More about this Site</a></b></div>
+    <div class="disclaimer"><b>
+      <a class="transpar" href="https://www.nba.com/stats">NO AFFILIATION WITH THE NBA</a></b>
+    </div> 
+
   </header>
+  <br>
+  <body>
 
-  <body class="center">
+  <!--<img src="img/nba/nba-outline.png" alt="logo missing" style="float: left; max-width: 15%; background-color: transparent;";>-->
+    
     <h1>NBA/WNBA Statistics</h1>
-
+    
+    <h4>all data owned by and sourced from the NBA (<i><a class="transpar" 
+      href="https://www.nba.com/stats">National Basketball Association</a></i>)
+    </h4>
+    
+    <br>
+    
     <form id="playerForm">
       <label for="league">League:</label>
       <select name="league" id="league">
         <option value="NBA">NBA</option>
         <option value="WNBA">WNBA</option>
       </select>
-      <input type="text" id="playerInput" placeholder="Search for a player" />
+      <input type="text" id="playerInput" placeholder="Search for a player"/>
       <button id="fetchBtn">See Career Stats</button><br>
     </form>
+    <!-- TODO: add an endpoint to get these ids from database-->
     <p style="font-size: 16px">
       <i>Until searching by player name is supported, use the following player IDs to use the search by player feature:</i><br>
       <i style="font-size: 12px">NBA: 2544, 1628973, 1629630, 1629675, 1629029, 201939, 201142, 1630169</i><br>
       <i style="font-size: 12px">WNBA: 1642299, 1642287, 1642298, 1641658, 1628886, 1630114, 1641602</i><br>
     </p>
+
+    
 
     <div id="status"></div>
     <div id="output"></div>
