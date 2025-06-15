@@ -21,8 +21,8 @@ func ReadJSON(path string) []byte {
 		fmt.Println(err)
 	}
 
-	fmt.Println(byteVal)
-	 return byteVal
+	
+	return byteVal
 }
 
 func MapJSONFile(path string) map[string]any {

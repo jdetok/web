@@ -6,25 +6,32 @@ import (
 	"net/http"
 
 	"github.com/jdetok/web/internal/db"
-	"github.com/jdetok/web/internal/store"
+	"github.com/jdetok/web/internal/jsonops"
 )
 
 func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
-	//w.Write([]byte("Testing selecting players from database via HTTP request\n"))
+	fmt.Printf("Received request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
+	fmt.Printf("Referer: %s\n", r.Referer())
 	
 	lg := r.URL.Query().Get("lg")
+	var js []byte	
 
-	database, err := db.Connect()
-    if err != nil {
-		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-        log.Printf("An error occured: %s", err)
-    }
+	// query the database for WNBA players
+	if lg == "WNBA" {
+		database, err := db.Connect()
+		if err != nil {
+			http.Error(w, "Error retrieving data", http.StatusInternalServerError)
+			log.Printf("An error occured: %s", err)
+		}
 
-    js, err := db.SelectArg(database, db.CarrerStatsByLg, false, lg)
-	if err != nil {
-		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-		w.Write([]byte("Error occured getting data from database"))
-		return
+		js, err = db.SelectArg(database, db.CarrerStatsByLg, false, lg)
+		if err != nil {
+			http.Error(w, "Error retrieving data", http.StatusInternalServerError)
+			w.Write([]byte("Error occured getting data from database"))
+			return
+		}
+	} else {
+		js = jsonops.ReadJSON(app.config.cachePath + "/players.json")
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -61,39 +68,34 @@ func (app *application) selectPlayerH(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Testing selecting players from database via HTTP request\n"))
-
-	log.Printf("Received request: %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
-	log.Printf("User-Agent: %s", r.UserAgent())
-	log.Printf("Referer: %s", r.Referer())
-	log.Printf("Host: %s", r.Host)
 	
 	lg := r.URL.Query().Get("lg")
 
-	var c = store.CacheJSON{}
+	// var c = store.CacheJSON{}
 
-	js, err := c.LoadPlayers(db.CarrerStatsByLg, lg)
-	if err != nil {
-		fmt.Printf("Error getting players: %s", err)
-	}
-
-	c.AllPlayers = js
-		
-    // database, err := db.Connect()
-    // if err != nil {
-	// 	http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-    //     log.Printf("An error occured: %s", err)
-    // }
-
-    // js, err := db.SelectArg(database, db.CarrerStatsByLg, false, lg)
+	// js, err := c.LoadPlayers(db.CarrerStatsByLg, lg)
 	// if err != nil {
-	// 	http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-	// 	w.Write([]byte("Error occured getting data from database"))
-	// 	return
+	// 	fmt.Printf("Error getting players: %s", err)
 	// }
+
+	// c.AllPlayers = js
+		
+    database, err := db.Connect()
+    if err != nil {
+		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
+        log.Printf("An error occured: %s", err)
+    }
+
+    js, err := db.SelectArg(database, db.CarrerStatsByLg, false, lg)
+	if err != nil {
+		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
+		w.Write([]byte("Error occured getting data from database"))
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 
-	w.Write(c.AllPlayers)
+	w.Write(js)
 }
 
 func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request) {

@@ -8,15 +8,23 @@ import (
 
 type application struct {
 	config config
+	StartTime time.Time
+	lastUpdate time.Time
 }
 
 type config struct {
 	addr string
+	cachePath string
+}
+
+func (app *application) setStartTime() {
+	app.StartTime = time.Now()
 }
 
 func (app *application) run(mux *http.ServeMux) error {
 	
 // server configuration
+
 	srv := &http.Server{
 		Addr: app.config.addr,
 		Handler: mux,
@@ -25,8 +33,11 @@ func (app *application) run(mux *http.ServeMux) error {
 		IdleTimeout: time.Minute,
 	}
 
-	log.Printf("Server has started at %s", app.config.addr)
+	// set the time for caching
+	app.setStartTime()
 
+	log.Printf("Server has started at %s", app.config.addr)
+	
 	return srv.ListenAndServe()
 }
 
@@ -53,7 +64,7 @@ func (app *application) mount() *http.ServeMux {
 	mux.HandleFunc("GET /nba", app.nbaHandler)
 
 // testing kicking off the select via request
-	mux.HandleFunc("GET /select", app.selectHandler)
+	mux.HandleFunc("GET /select", app.selectPlayersH)
 
 	mux.HandleFunc("GET /select/games", app.selectGameHandler)
 
@@ -63,6 +74,7 @@ func (app *application) mount() *http.ServeMux {
 
 // SERVES STATIC SITE IN WEB DIRECTORY
 	mux.Handle("/", http.FileServer(http.Dir("/home/jdeto/go/github.com/jdetok/web/www/src")))
+	
 	
 // return mux instance - call app.mount() to get mux then app.run(mux) to run server
 	return mux

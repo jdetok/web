@@ -13,7 +13,7 @@ func SaveJSON(path string, body []byte) {
 		fmt.Printf("Error writing JSON response to file at %s: %s\n", path, err)
 		return
 	}
-	fmt.Printf("JSON response saved at %s\n", path)
+	//fmt.Printf("JSON response saved at %s\n", path)
 }
 
 func MapToJSON(path string, m map[string]any) []byte {
