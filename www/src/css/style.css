@@ -24,6 +24,7 @@ h1 {
 h2 {
     color: rgb(219, 169, 123);
     font-size: 30px;
+		text-align: center;
 }
 
 h3 {
@@ -33,6 +34,7 @@ h3 {
     margin-bottom: 5px;
     margin-top: 20px;
 }
+
 
 .inline {
     display: inline-block;
@@ -86,15 +88,17 @@ ul.horiz {
 ul.horiz li {
     list-style-type: circle;
     font-size: 18px;
-    padding-inline: 15px;
+    /*padding-inline: 15px;*/
 }
+
 
 ul.pics li {    
     color:rgb(198, 226, 180);
     font-size:20px;
-    display:inline-block;
-    padding-inline: 10px;
+    display:inline-flex;
+    
     text-align: center;
+		align-items: center;
 }
 
 ul.pics li figure img {
@@ -115,6 +119,50 @@ div.right {
   text-align: right;
 }
 
+
+#projects {
+	display: flex;
+	gap: 25px;           
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+}
+
+div.prjel {
+  margin: auto;
+	margin-top: 0;
+  padding-right: 2px;
+	padding-left: 2px;
+  text-align: center;
+	max-width: 40%;
+}
+
+#about {
+	display: flex;
+	gap: 25px;           
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+}
+
+div.abtel {
+  margin: auto;
+	margin-top: 0;
+  padding-right: 50px;
+	padding-left: 50px;
+  text-align: center;
+	max-width: 18%;
+}
+
+ul.nobullet {
+    list-style-type: none; 
+    margin: auto;
+		padding: 0;
+		margin-bottom: 15px;
+		margin-top: 15px;
+}
+
+
 /* tables display horizontally on large screens */
 #nba {
     display: flex;
@@ -129,6 +177,12 @@ div.right {
         flex-direction: column;
         align-items: center;
     }
+
+		#about,
+		#pics {
+			flex-direction: column;
+      align-items: center;
+		}
 
     table {
         width: 90%;
