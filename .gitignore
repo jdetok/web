@@ -1,3 +1,4 @@
 .env
 *gouser.sql
 *keys.txt
+.security
