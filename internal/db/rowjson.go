@@ -136,7 +136,8 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 	if indent {
 		js, err :=  json.MarshalIndent(finalRows, "", "  ")	
 		if err != nil {
-			return nil, err
+			e.Msg = "json.MarshalIndent() failed"
+			return nil, e.Error(err)
 		}
 		return js, nil
 	}
@@ -144,7 +145,8 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 // unindented json if indent == false
 	js, err :=  json.Marshal(finalRows)	
 	if err != nil {
-		return nil, err
+		e.Msg = "json.Marshal() failed"
+		return nil, e.Error(err)
 	}
 	return js, nil
 
