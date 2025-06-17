@@ -119,9 +119,10 @@ var CarrerStats string =
 	where a.active = 1
 	and a.lg = "NBA"
 	and e.season like "%RS"
+	and b.team = "LAL"
 	group by a.player, b.team	
 	order by pts desc
-	-- limit 30
+	limit 10
 `
 var CarrerStatsByLg string = 
 `

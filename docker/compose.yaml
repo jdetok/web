@@ -1,0 +1,12 @@
+services: 
+  apache:
+    build:
+      context: .
+      dockerfile: apache.Dockerfile
+    network_mode: "host"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes: 
+      - ./host-echout:/echout
+

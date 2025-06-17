@@ -1,0 +1,9 @@
+version: '3.8'
+
+services: 
+  go-api: 
+    build: 
+      context: ../..
+      dockerfile: docker/prod/go.Dockerfile
+    ports:
+      -"8080:8080"
