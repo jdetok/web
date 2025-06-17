@@ -5,12 +5,12 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jdetok/web/internal/env"
-	"github.com/jdetok/web/internal/err"
+	"github.com/jdetok/web/internal/errs"
 )
 
 func Connect() (*sql.DB, error) {
 // DECLARE ERRINFO TYPE
-	e := err.ErrInfo{Prefix: "database conenction",}
+	e := errs.ErrInfo{Prefix: "database conenction",}
 
 // get conn. vars from .env & build connection string
 	dbUser := env.GetString("DB_USER")
@@ -36,7 +36,7 @@ func Connect() (*sql.DB, error) {
 
 func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 // query db - returns sql.Rows type
-	e := err.ErrInfo{Prefix: "database query",}
+	e := errs.ErrInfo{Prefix: "database query",}
 	rows, err := db.Query(q)
 	if err != nil {
 		e.Msg = "db.Query failed"
@@ -55,7 +55,7 @@ func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 
 func SelectArg(db *sql.DB, q string, indent_resp bool, r string) ([]byte, error) {
 // query db - returns sql.Rows type
-	e := err.ErrInfo{Prefix: "database query (arg)",}
+	e := errs.ErrInfo{Prefix: "database query (arg)",}
 	rows, err := db.Query(q, r)
 	if err != nil {
 		e.Msg = "db.Query failed"
@@ -73,7 +73,7 @@ func SelectArg(db *sql.DB, q string, indent_resp bool, r string) ([]byte, error)
 
 func SelectArgs(db *sql.DB, q string, indent_resp bool, r1, r2 string) ([]byte, error) {
 // query db - returns sql.Rows type
-	e := err.ErrInfo{Prefix: "database query (2 args)",}
+	e := errs.ErrInfo{Prefix: "database query (2 args)",}
 	rows, err := db.Query(q, r1, r2)
 	if err != nil {
 		e.Msg = "db.Query failed"

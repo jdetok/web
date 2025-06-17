@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/jdetok/web/internal/err"
+	"github.com/jdetok/web/internal/errs"
 )
 
 type OrderedRow []OrderedField 
@@ -20,7 +20,7 @@ type OrderedField struct {
 // writes bytes directly to ensure the order of the json objects is the same as the select order
 // was originally using a map but it reordered the columns
 func (row OrderedRow) MarshalJSON() ([]byte, error) {
-	e := err.ErrInfo{Prefix: "json marshall"}
+	e := errs.ErrInfo{Prefix: "json marshall"}
 
 	var buf bytes.Buffer
 	buf.WriteByte('{')
@@ -95,7 +95,7 @@ func getDBType(arg any, data map[string]any, col *sql.ColumnType) (any, error) {
 }
 
 func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
-	e := err.ErrInfo{Prefix: "sql.Rows -> json conversion"}
+	e := errs.ErrInfo{Prefix: "sql.Rows -> json conversion"}
 	
 	colTypes, err := rows.ColumnTypes()
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/jdetok/web/internal/db"
+	"github.com/jdetok/web/internal/errs"
 	"github.com/jdetok/web/internal/jsonops"
 )
 
@@ -20,6 +21,7 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 	if lg == "WNBA" {
 		database, err := db.Connect()
 		if err != nil {
+			errs.HTTPErr(w, r, err)
 			http.Error(w, "Error retrieving data", http.StatusInternalServerError)
 			log.Printf("An error occured: %s", err)
 		}
