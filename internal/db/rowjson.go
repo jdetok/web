@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
-	"errors"
 	"fmt"
+
+	"github.com/jdetok/web/internal/err"
 )
 
 type OrderedRow []OrderedField 
@@ -19,6 +20,8 @@ type OrderedField struct {
 // writes bytes directly to ensure the order of the json objects is the same as the select order
 // was originally using a map but it reordered the columns
 func (row OrderedRow) MarshalJSON() ([]byte, error) {
+	e := err.ErrInfo{Prefix: "json marshall"}
+
 	var buf bytes.Buffer
 	buf.WriteByte('{')
 
@@ -26,11 +29,13 @@ func (row OrderedRow) MarshalJSON() ([]byte, error) {
 	for i, field := range row {
 		keyJSON, err := json.Marshal(field.Key)
 		if err != nil {
-			return nil, errors.New("json marshal error: key")
+			e.Msg = "key marshal failed"
+			return nil, e.Error(err)
 		}
 		valJSON, err := json.Marshal(field.Value)
 		if err != nil {
-			return nil, err
+			e.Msg = "val marshal failed"
+			return nil, e.Error(err)
 		}
 // separate objects with if not first i
 		if i > 0 {
@@ -85,14 +90,17 @@ func getDBType(arg any, data map[string]any, col *sql.ColumnType) (any, error) {
 		}
 	} else if data[col.Name()] == nil {
 		data[col.Name()] = nil
-	}
+	}	
 	return data[col.Name()], nil
 }
 
 func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
+	e := err.ErrInfo{Prefix: "sql.Rows -> json conversion"}
+	
 	colTypes, err := rows.ColumnTypes()
 	if err != nil {
-		return nil, err
+		e.Msg = "couldn't get column types"
+		return nil, e.Error(err)
 	}
 	
 	finalRows := []any{};
@@ -100,28 +108,28 @@ func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
 	for rows.Next() {
 		scanArgs, err := convertTypes(colTypes)
 		if err != nil {
-			fmt.Println("Error in convert types function")
+			e.Msg = "couldn't convert sql types to Go types"
+			return nil, e.Error(err)
 		}
 
 		err = rows.Scan(scanArgs...)
 		if err != nil {
-			return nil, err
+			e.Msg = "scanning for args failed"
+			return nil, e.Error(err)
 		}
 
-		// masterData := map[string]any{}
 		var rowOrdered OrderedRow
 		for i, v := range colTypes {
 			val, err := getDBType(scanArgs[i], map[string]any{}, v)
 			if err != nil {
-				return nil, err
+				e.Msg = "getDBType() failed"
+				return nil, e.Error(err)
 			}
-
 			rowOrdered = append(rowOrdered,  OrderedField{
 				Key: v.Name(),
 				Value: val,
 			})
 		}
-
 		finalRows = append(finalRows, rowOrdered)
 	}
 // indented json if indent == true

@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"errors"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jdetok/web/internal/env"
@@ -56,34 +55,36 @@ func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 
 func SelectArg(db *sql.DB, q string, indent_resp bool, r string) ([]byte, error) {
 // query db - returns sql.Rows type
+	e := err.ErrInfo{Prefix: "database query (arg)",}
 	rows, err := db.Query(q, r)
 	if err != nil {
-		qErr := errors.New("error querying database: " + err.Error())
-		return nil, qErr
+		e.Msg = "db.Query failed"
+		return nil, e.Error(err)
 	}
 	
 // return the response as json
 	js, err := RowsToJSON(rows, indent_resp)
 	if err != nil {
-		jErr := errors.New("error converting response to json: " + err.Error())
-		return nil, jErr
+		e.Msg = "func RowsToJSON() failed"
+		return nil, e.Error(err)
 	}
 	return js, nil
 }
 
 func SelectArgs(db *sql.DB, q string, indent_resp bool, r1, r2 string) ([]byte, error) {
 // query db - returns sql.Rows type
+	e := err.ErrInfo{Prefix: "database query (2 args)",}
 	rows, err := db.Query(q, r1, r2)
 	if err != nil {
-		qErr := errors.New("error querying database: " + err.Error())
-		return nil, qErr
+		e.Msg = "db.Query failed"
+		return nil, e.Error(err)
 	}
 	
 // return the response as json
 	js, err := RowsToJSON(rows, indent_resp)
 	if err != nil {
-		jErr := errors.New("error converting response to json: " + err.Error())
-		return nil, jErr
+		e.Msg = "func RowsToJSON() failed"
+		return nil, e.Error(err)
 	}
 	return js, nil
 }
