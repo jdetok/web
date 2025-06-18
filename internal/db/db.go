@@ -34,12 +34,30 @@ func Connect() (*sql.DB, error) {
 	return db, nil
 }
 
+func SelectPlayers(player, lg string) ([]byte, error) {
+	e := errs.ErrInfo{Prefix: "players select",}
+	db, err := Connect()
+	if err != nil {
+		e.Msg = "database connection failed"
+		return nil, e.Error(err)
+	}
+	var playerId []byte
+	err = db.QueryRow(Players.Q, player, lg).Scan(&playerId)
+	if err != nil {
+		e.Msg = "query failed"
+		return nil, e.Error(err)
+	}
+
+
+	return playerId, nil
+}
+
 func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 // query db - returns sql.Rows type
 	e := errs.ErrInfo{Prefix: "database query",}
 	rows, err := db.Query(q)
 	if err != nil {
-		e.Msg = "db.Query failed"
+		e.Msg = "query failed"
 		return nil, e.Error(err)
 	}
 	

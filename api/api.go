@@ -53,7 +53,8 @@ func (app *application) mount() *http.ServeMux {
 	mux.HandleFunc("GET /select", app.selectPlayersH)
 	mux.HandleFunc("GET /select/games", app.selectGameHandler)
 	mux.HandleFunc("GET /select/players", app.selectPlayersH)
-	mux.HandleFunc("GET /select/player", app.selectPlayerH)
+	mux.HandleFunc("GET /select/player", app.selectPlayerHTest)
+	//mux.HandleFunc("GET /select/player", app.selectPlayerH)
 
 // SERVES STATIC SITE IN WEB DIRECTORY, DON'T CACHE JS & CSS
 	mux.Handle("/js/", http.HandlerFunc(app.jsNoCache))

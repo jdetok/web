@@ -9,10 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const player = document.getElementById('playerInput').value.trim();
         const lg = document.getElementById('league').value.trim();
         
-        if (player) {
+        if (player.length > 1) {
             url += `/player?lg=${encodeURIComponent(lg)}&player=${encodeURIComponent(player)}`
+            getData(url, 2, ' - ');
+        } else {
+            getData((url + `?lg=${encodeURIComponent(lg)}`), 2, ' - ');
         }
-        getData((url + `?lg=${encodeURIComponent(lg)}`), 2, ' - ');
+        
     });
 });
 

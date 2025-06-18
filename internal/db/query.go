@@ -11,6 +11,16 @@ type Queries struct {
 	DbQueries []Query
 }
 
+var Players = Query{
+	Args: []string{},
+	Q: `
+	select a.player_id
+	from player a
+	where a.player = ?
+	and a.lg = ?
+	`,
+}
+
 var AllPlayerStats = Query{
 	Args: []string{},
 	Q: `
@@ -119,10 +129,10 @@ var CarrerStats string =
 	where a.active = 1
 	and a.lg = "NBA"
 	and e.season like "%RS"
-	and b.team = "LAL"
+	-- and b.team = "LAL"
 	group by a.player, b.team	
 	order by pts desc
-	limit 10
+	
 `
 var CarrerStatsByLg string = 
 `
