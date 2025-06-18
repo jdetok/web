@@ -1,82 +1,47 @@
-// when an endpoint like /select is requested, it should first check if a json string
-// is stored in this store package
-// any time a select is run on the database, it should return the data as json to this package
-// then this package returns it to the handler
-
 package store
 
 import (
 	"fmt"
 	"time"
 
+	"github.com/jdetok/web/internal/db"
+	"github.com/jdetok/web/internal/env"
 	"github.com/jdetok/web/internal/jsonops"
 )
 
-type CacheJSON struct {
-	AllPlayers []byte
-	lastUpdate time.Time
-}
+// runs every interval seconds, updates if time since last update is > threshold
+func CheckCache(lastUpdate *time.Time, inteval time.Duration, threshold time.Duration) {
+	ticker := time.NewTicker(inteval)
+	defer ticker.Stop()
 
-// var c = CacheJSON{
-// 	lastUpdate: time.Now(),
-// }
+	for range ticker.C {
+		if time.Since(*lastUpdate) > threshold {
+			fmt.Printf("Refreshing cache at %v...\n", time.Now().Format("2006-01-02 15:04:05"))
+			if newTime := UpdateCache(); newTime != nil {
+			*lastUpdate = *newTime
+			}
+		}
+	}
+} 
 
-func CheckCache(j CacheJSON) {
-	age := time.Since(j.lastUpdate)
-	fmt.Println((age))	
-}
+// query all players from database & save to JSON
+func UpdateCache() *time.Time {
+	cachePath:= env.GetString("CACHE_PATH")
+	database, err := db.Connect()
+	if err != nil {
+		fmt.Println("Error connection to databse: ", err)
+		return nil
+	}
+	js, err := db.Select(database, db.CarrerStats, false)
+	if err != nil {
+		fmt.Println("Error getting data from databse: ", err)
+		return nil
+	}
 
-// func main() {
-
-
-// 	js, err := c.LoadPlayers(db.CarrerStatsByLg, "NBA")
-// 	if err != nil {
-// 		fmt.Printf("Error getting players: %s", err)
-// 	}
-
-// 	c.AllPlayers = js
-// 	fmt.Println(c.AllPlayers)
-// 	// time.Sleep(5 * time.Second)
-
-// 	age := time.Since(c.lastUpdate)
-
-// 	if (age > (5 * time.Second)) {
-// 		fmt.Printf("Longer than 5! (%v)\n", age)
-// 	} else {
-// 		fmt.Printf("Less than 5 - not time yet! (%v)\n", age)
-// 	}
-
-// 	// CheckCache(c)	
-// }
-
-
-func (j CacheJSON) LoadPlayers(query, arg string) ([]byte, error) {
-
-	// database, err := db.Connect()
-    // if err != nil {
-	// 	log.Printf("Error occured connecting to database: %s", err)
-	// 	return nil, err
-    // }
-
-	// js, err := db.SelectArg(database, query, false, arg)
-	// if err != nil {
-	// 	log.Printf("Error occured selecting to database: %s", err)
-	// 	return nil, err
-	// }
-
-	// jsonops.SaveJSON("./internal/store/json/players.json", js)
-
-	js := jsonops.ReadJSON("./internal/store/json/players.json")
+	jsonops.SaveJSON(cachePath + "/players.json", js)
 	
-	// save the file with this time attached, then read time back in with .parse() and detemine 
-	// whether to query database or just hit json
-	fileTime := time.Now().Format("010206_150405")
+	updateTime := time.Now()
 
-	fmt.Println(fileTime)
-	fmt.Printf("%T\n", fileTime)
-
-	return js, nil
+	return &updateTime
 }
-
-
 

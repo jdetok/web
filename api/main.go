@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/jdetok/web/internal/env"
+	"github.com/jdetok/web/internal/store"
 	"github.com/joho/godotenv"
 ) 
 
@@ -26,8 +27,10 @@ func main() {
         config: cfg,
     }
 
+    app.lastUpdate = time.Now()
+
     // checks if cache needs refreshed every 30 seconds, refreshes if 300 sec since last
-    go app.checkCache(30*time.Second, 300*time.Second)
+    go store.CheckCache(&app.lastUpdate, 30*time.Second, 300*time.Second)
 
     // mount initializes mux (serves/routes HTTP) & handlers
     mux := app.mount()
