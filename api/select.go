@@ -1,18 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/errs"
 	"github.com/jdetok/web/internal/jsonops"
+	"github.com/jdetok/web/internal/logs"
 )
 
 func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Received request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
-	fmt.Printf("Referer: %s\n", r.Referer())
+	logs.LogHTTP(r)
+	// fmt.Printf("Received request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
+	// fmt.Printf("Referer: %s\n", r.Referer())
 	
 	lg := r.URL.Query().Get("lg")
 	var js []byte	
@@ -42,7 +43,7 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 // need to write function to accept player name as string, search if in DB, then query this with id
 func (app *application) selectPlayerH(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Testing selecting players from database via HTTP request\n"))
-	
+	logs.LogHTTP(r)
 	lg := r.URL.Query().Get("lg")
 	player := r.URL.Query().Get("player")
 
@@ -65,7 +66,7 @@ func (app *application) selectPlayerH(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Testing selecting players from database via HTTP request\n"))
-	
+	logs.LogHTTP(r)
 	lg := r.URL.Query().Get("lg")
 
 	// var c = store.CacheJSON{}
@@ -96,6 +97,7 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request) {
+	logs.LogHTTP(r)
 	w.Write([]byte("Testing selecting games from database via HTTP request\n"))
 		
     database, err := db.Connect()
