@@ -21,15 +21,14 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 	if lg == "WNBA" {
 		database, err := db.Connect()
 		if err != nil {
+			// TODO!!!
 			errs.HTTPErr(w, r, err)
-			http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-			log.Printf("An error occured: %s", err)
+			return
 		}
 
 		js, err = db.SelectArg(database, db.CarrerStatsByLg, false, lg)
 		if err != nil {
-			http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-			w.Write([]byte("Error occured getting data from database"))
+			errs.HTTPErr(w, r, err)
 			return
 		}
 	} else {
@@ -37,8 +36,6 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	
-
 	w.Write(js)
 }
 
@@ -57,9 +54,7 @@ func (app *application) selectPlayerH(w http.ResponseWriter, r *http.Request) {
 
     js, err := db.SelectArgs(database, db.LgPlayerStat.Q, false, lg, player)
 	if err != nil {
-		http.Error(w, "Error retrieving data", http.StatusInternalServerError)
-		w.Write([]byte("Error occured getting data from database"))
-		return
+		errs.HTTPErr(w, r, err)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -115,7 +110,5 @@ func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	
-
 	w.Write(js)
 }

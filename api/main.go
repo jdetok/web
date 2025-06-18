@@ -31,9 +31,5 @@ func main() {
 
     // mount initializes mux (serves/routes HTTP) & handlers
     mux := app.mount()
-
-    // run the server with the initialized mux 
-    
     log.Fatal(app.run(mux))
-
 }
