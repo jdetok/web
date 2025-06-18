@@ -12,8 +12,6 @@ import (
 
 func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
-	// fmt.Printf("Received request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
-	// fmt.Printf("Referer: %s\n", r.Referer())
 	
 	lg := r.URL.Query().Get("lg")
 	var js []byte	
@@ -33,11 +31,10 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
+		// read cached json for nba 
 		js = jsonops.ReadJSON(app.config.cachePath + "/players.json")
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
+	app.JSONWriter(w, js)
 }
 
 // need to write function to accept player name as string, search if in DB, then query this with id
@@ -57,26 +54,13 @@ func (app *application) selectPlayerH(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errs.HTTPErr(w, r, err)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	
-
-	w.Write(js)
+	app.JSONWriter(w, js)
 }
 
 func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 	//w.Write([]byte("Testing selecting players from database via HTTP request\n"))
 	logs.LogHTTP(r)
 	lg := r.URL.Query().Get("lg")
-
-	// var c = store.CacheJSON{}
-
-	// js, err := c.LoadPlayers(db.CarrerStatsByLg, lg)
-	// if err != nil {
-	// 	fmt.Printf("Error getting players: %s", err)
-	// }
-
-	// c.AllPlayers = js
 		
     database, err := db.Connect()
     if err != nil {
@@ -91,14 +75,12 @@ func (app *application) selectHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-
-	w.Write(js)
+	app.JSONWriter(w, js)
 }
 
 func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
-	w.Write([]byte("Testing selecting games from database via HTTP request\n"))
+	// w.Write([]byte("Testing selecting games from database via HTTP request\n"))
 		
     database, err := db.Connect()
     if err != nil {
@@ -110,7 +92,5 @@ func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request
 		w.Write([]byte("Error occured getting data from database"))
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
+	app.JSONWriter(w, js)
 }

@@ -21,6 +21,11 @@ func (app *application) setStartTime() {
 	app.StartTime = time.Now()
 }
 
+func (app *application) JSONWriter(w http.ResponseWriter, js []byte) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
+}
+
 func (app *application) run(mux *http.ServeMux) error {
 	
 // server configuration

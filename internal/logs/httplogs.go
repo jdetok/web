@@ -3,9 +3,12 @@ package logs
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func LogHTTP(r *http.Request) {
-	fmt.Printf("Received request: %s %s from %s\n", r.Method, r.URL.Path, r.RemoteAddr)
-	fmt.Printf("Referer: %s\n", r.Referer())
+	fmt.Printf("===REQUEST RECEIVED - %v===\n", time.Now().Format("2006-01-02 15:04:05"))
+	fmt.Printf("- Remote Addr: %v\n", r.RemoteAddr)
+	fmt.Printf("- Referrer: %v\n", r.Referer())
+	fmt.Printf("- %v %v\n\n", r.Method, r.RequestURI)
 }
