@@ -1,19 +1,3 @@
-// EXAMPLE IMPLEMENTATION:
-/*
-// beginning of function ...
-e := err.ErrInfo{Prefix: "database conenction error",}
-...
-if err := db.Ping(); err != nil {
-		e.Msg = "db.Ping() failed"
-		return nil, e.ConstructError(err)
-	}
-*/
-// EXAMPLE OUTPUT:
-/*
-*database conenction error: db.Ping() failed
-**Error 1045 (28000): Access denied for user 'x'@'0.0.0.0' (using password: YES)
- */
-
 package errs
 
 import (
@@ -33,3 +17,19 @@ func (e ErrInfo) Error(err error) error {
 func HTTPErr(w http.ResponseWriter, e error) {
 	http.Error(w, e.Error(), http.StatusInternalServerError)
 }
+
+// EXAMPLE IMPLEMENTATION:
+/*
+// beginning of function ...
+e := err.ErrInfo{Prefix: "database conenction error",}
+...
+if err := db.Ping(); err != nil {
+		e.Msg = "db.Ping() failed"
+		return nil, e.ConstructError(err)
+	}
+*/
+// EXAMPLE OUTPUT:
+/*
+*database conenction error: db.Ping() failed
+**Error 1045 (28000): Access denied for user 'x'@'0.0.0.0' (using password: YES)
+ */
