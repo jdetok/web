@@ -76,7 +76,7 @@ func (app *application) selectPlayerHTest(w http.ResponseWriter, r *http.Request
 
 	fmt.Println(string(js))
 	app.JSONWriter(w, js)
-	
+}	
 	
 	// database, err := db.Connect()
     // if err != nil {
@@ -88,7 +88,7 @@ func (app *application) selectPlayerHTest(w http.ResponseWriter, r *http.Request
 	// 	errs.HTTPErr(w, r, err)
 	// }
 	
-}
+
 
 func (app *application) selectGameHandler(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)

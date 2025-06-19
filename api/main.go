@@ -28,8 +28,12 @@ func main() {
         config: cfg,
     }
 
-    // checks if cache needs refreshed every 30 seconds, refreshes if 300 sec since last
-    go store.CheckCache(&app.lastUpdate, 30*time.Second, 300*time.Second)
+    // checks if cache needs refreshed every 30 seconds, refreshes if 60 sec since last
+    go store.CheckCache(&app.lastUpdate, 5*time.Second, 60*time.Second)
+
+    mux := app.mount()
+    log.Fatal(app.run(mux))
+}
 
     // TURN BACK ON ASAP
     // // force a write to cache before server starts to ensure no stale data
@@ -41,6 +45,3 @@ func main() {
     // }
 
     // mount & start server (routers/handlers in api.go)
-    mux := app.mount()
-    log.Fatal(app.run(mux))
-}
