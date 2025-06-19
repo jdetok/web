@@ -33,7 +33,3 @@ func (e ErrInfo) Error(err error) error {
 func HTTPErr(w http.ResponseWriter, e error) {
 	http.Error(w, e.Error(), http.StatusInternalServerError)
 }
-
-func HTTPErrOld(w http.ResponseWriter, r *http.Request, e error) {
-	http.Error(w, e.Error(), http.StatusInternalServerError)
-}
