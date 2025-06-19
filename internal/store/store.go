@@ -35,21 +35,60 @@ func UpdateCache() (*time.Time, error) {
 	e := errs.ErrInfo{Prefix: "cache update",}
 
 	cachePath:= env.GetString("CACHE_PATH")
-	database, err := db.Connect()
-	if err != nil {
-		e.Msg = "database connection failed"
-		return nil, e.Error(err)
-	}
-	js, err := db.Select(database, "select * from v_nba_rs_totals", false)
+	// database, err := db.Connect()
+	// if err != nil {
+	// 	e.Msg = "database connection failed"
+	// 	return nil, e.Error(err)
+	// }
+
+	fmt.Println("updating /nba_rs_totals.json...")
+	rsTots, err := db.NewSelect("select * from v_nba_rs_totals", false)
 	if err != nil {
 		e.Msg = "database query failed"
 		return nil, e.Error(err)
 	}
-	err = jsonops.SaveJSON(cachePath + "/nba_rs_totals.json", js)
+	err = jsonops.SaveJSON(cachePath + "/nba_rs_totals.json", rsTots)
 	if err != nil {
 		e.Msg = "saving db response to json failed"
 		return nil, e.Error(err)
 	}
+
+	fmt.Println("updating /nba_rs_avgs.json...")
+	rsAvgs, err := db.NewSelect("select * from v_nba_rs_avgs", false)
+	if err != nil {
+		e.Msg = "database query failed"
+		return nil, e.Error(err)
+	}
+	err = jsonops.SaveJSON(cachePath + "/nba_rs_avgs.json", rsAvgs)
+	if err != nil {
+		e.Msg = "saving db response to json failed"
+		return nil, e.Error(err)
+	}
+
+	fmt.Println("updating /nba_po_totals.json...")
+	poTots, err := db.NewSelect("select * from v_nba_po_totals", false)
+	if err != nil {
+		e.Msg = "database query failed"
+		return nil, e.Error(err)
+	}
+	err = jsonops.SaveJSON(cachePath + "/nba_po_totals.json", poTots)
+	if err != nil {
+		e.Msg = "saving db response to json failed"
+		return nil, e.Error(err)
+	}
+
+	fmt.Println("updating /nba_po_avgs.json...")
+	poAvgs, err := db.NewSelect("select * from v_nba_po_avgs", false)
+	if err != nil {
+		e.Msg = "database query failed"
+		return nil, e.Error(err)
+	}
+	err = jsonops.SaveJSON(cachePath + "/nba_po_avgs.json", poAvgs)
+	if err != nil {
+		e.Msg = "saving db response to json failed"
+		return nil, e.Error(err)
+	}
+
 	updateTime := time.Now()
 	return &updateTime, nil
 }

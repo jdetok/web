@@ -21,6 +21,7 @@ func main() {
     cfg := config{
         addr: env.GetString("SRV_IP"),
         cachePath: env.GetString("CACHE_PATH"),
+        // TODO - ADD IN DB CONNECTION POOl
     }
 
     // initialize the app with the configs

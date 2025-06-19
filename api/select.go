@@ -15,23 +15,16 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 	
 	lg := r.URL.Query().Get("lg")
 	var js []byte	
-
+	var err error
 	// query the database for WNBA players
 	if lg == "WNBA" {
-		database, err := db.Connect()
-		if err != nil {
-			// TODO!!!
-			errs.HTTPErr(w, r, err)
-			return
-		}
-
-		js, err = db.SelectArg(database, db.CarrerStatsByLg, false, lg)
+		js, err = db.NewSelect("select * from v_wnba_rs_totals", false)
 		if err != nil {
 			errs.HTTPErr(w, r, err)
 			return
-		}
+		} 
+	// return the cached json for nba players
 	} else {
-	// read cached json for nba 
 		js = jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
 	}
 	app.JSONWriter(w, js)

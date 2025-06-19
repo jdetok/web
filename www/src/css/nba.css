@@ -1,3 +1,4 @@
+
 .hdr {
     font-size: 14px;
     padding-top: 5px;
@@ -10,9 +11,13 @@ div.disclaimer {
 }
 
 div.learnmore {
-    float: right;
-    padding-right: 10px;
+    /* float: right;
+    padding-right: 10px; */
     color:rgba(223, 206, 231, 0.822);
+}
+
+h1.nba {
+    margin: 0;
 }
 
 h4 {
@@ -27,6 +32,42 @@ h3.nbarefr {
     font-size: 14;
     padding: 8px;
 }
+
+.pageForm {
+    align-items: center;
+}
+
+#playerForm {
+  display: flex;
+  justify-content: center;
+  /*margin-top: 50px;  optional vertical spacing */
+}
+
+.searchForm {
+    display: flex;
+    align-items: flex-start; 
+    gap: 5px;
+}
+
+.opts {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end; /*right aligns the select boxes*/  
+    align-self: right;
+}
+
+.opt {
+    display: inline;
+}
+
+.opts select {
+    width: fit-content;
+}
+
+/* #playerInput {
+    width: 100%;
+} */
 
 table {
     margin-left: auto;
@@ -48,3 +89,4 @@ table tr td{
     font-size: 20px;
     padding: 4px;
 }
+

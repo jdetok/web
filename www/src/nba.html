@@ -10,7 +10,6 @@
   </head>
 
   <header class=".hdr">
-    <div class="learnmore"><b><a href="nba-info.html">Learn More about this Site</a></b></div>
     <div class="disclaimer"><b>
       <a class="transpar" href="https://www.nba.com/stats" target="_blank">
         NO AFFILIATION WITH THE NBA</a></b>
@@ -22,8 +21,9 @@
 
   <!--<img src="img/nba/nba-outline.png" alt="logo missing" style="float: left; max-width: 15%; background-color: transparent;";>-->
     
-    <h1>NBA/WNBA Statistics</h1>
-    
+    <h1 class="nba">NBA/WNBA Statistics</h1>
+    <!--<div class="learnmore"><b><a href="nba-info.html">Learn More about this Site</a></b></div>-->
+    <a href="nba-info.html">Learn More about this Site</a>
     <h4>all data owned by and sourced from the NBA (<i><a class="transpar" 
       href="https://www.nba.com/stats" target="_blank">
       National Basketball Association</a></i>)
@@ -31,15 +31,35 @@
     
     <br>
     
+    <div class="pageForm">
     <form id="playerForm">
-      <label for="league">League:</label>
-      <select name="league" id="league">
-        <option value="NBA">NBA</option>
-        <option value="WNBA">WNBA</option>
-      </select>
-      <input type="text" id="playerInput" placeholder="Search for a player"/>
-      <button id="fetchBtn">See Career Stats</button><br>
+      <div class="searchForm">
+        <div class="opts">
+          <div class="opt">
+          <label for="league">League:</label>
+          <select name="league" id="league">
+            <option value="NBA">NBA</option>
+            <option value="WNBA">WNBA</option>
+          </select>
+          </div>
+
+          <div class="opt">
+          <label for="statType">Totals/Avgs:</label>
+          <select name="statType" id="statType">
+            <option value="tot">Totals</option>
+            <option value="avg">Averages</option>
+          </select>
+          </div>
+        </div>
+        <div>
+          <input type="text" id="playerInput" placeholder="Search for a specific player"/>
+          <button id="fetchBtn">Search</button><br>
+        </div>
+      </div>
     </form>
+    </div>
+
+
     <p>
       <i>click See Career Stats to view all active players</i>
     </p>

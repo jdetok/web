@@ -34,6 +34,30 @@ func Connect() (*sql.DB, error) {
 	return db, nil
 }
 
+func NewSelect(q string, indent_resp bool) ([]byte, error) {
+// query db - returns sql.Rows type
+	e := errs.ErrInfo{Prefix: "database query",}
+	db, err := Connect()
+	if err != nil {
+		e.Msg = "database connection failed"
+		return nil, e.Error(err)
+	}
+	
+	rows, err := db.Query(q)
+	if err != nil {
+		e.Msg = "query failed"
+		return nil, e.Error(err)
+	}
+// convert the response to json
+	js, err := RowsToJSON(rows, indent_resp)
+	if err != nil {
+		e.Msg = "func RowsToJSON() failed"
+		return nil, e.Error(err)
+	}
+// return the response as json
+	return js, nil
+}
+
 func SelectPlayers(player, lg string) ([]byte, error) {
 	e := errs.ErrInfo{Prefix: "players select",}
 	db, err := Connect()
