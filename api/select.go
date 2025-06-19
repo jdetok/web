@@ -17,7 +17,7 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 	var js []byte	
 	var err error
 	// query the database for WNBA players
-	if lg == "WNBA" {
+	if lg == "wnba" {
 		js, err = db.NewSelect("select * from v_wnba_rs_totals", false)
 		if err != nil {
 			errs.HTTPErr(w, r, err)
@@ -25,7 +25,7 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 		} 
 	// return the cached json for nba players
 	} else {
-		js = jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
+		js, err = jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
 	}
 	app.JSONWriter(w, js)
 }

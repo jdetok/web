@@ -8,7 +8,11 @@ import (
 
 // read existing unformatted file, unmarshal to a map than re marshal as indented
 func Indent(oldFile, newFile string) {
-	var m map[string]any = MapJSONFile(oldFile)
+	//var m map[string]any = MapJSONFile(oldFile)
+	m, err := MapJSONFile(oldFile)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	body, err := json.MarshalIndent(m, "", "    ")
 	if err != nil {
@@ -20,8 +24,12 @@ func Indent(oldFile, newFile string) {
 
 // read an indented json file & create an unindented version
 func SingleLine(oldFile, newFile string) {
-	var m map[string]any = MapJSONFile(oldFile)
+	//var m map[string]any = MapJSONFile(oldFile)
 
+	m, err := MapJSONFile(oldFile)
+	if err != nil {
+		fmt.Println(err)
+	}
 	body, err := json.Marshal(m)
 	if err != nil {
 		fmt.Println(err.Error())

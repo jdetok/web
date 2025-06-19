@@ -49,6 +49,10 @@ func (app *application) run(mux *http.ServeMux) error {
 func (app *application) mount() *http.ServeMux {
 	mux := http.NewServeMux()
 
+// TESTING UPDATED ENDPOINTS 06/19
+	// for when a user doesn't specify a player -- ?lg=&stype=
+	mux.HandleFunc("GET /bball/players/all", app.getStats)
+
 // testing kicking off the select via request
 	mux.HandleFunc("GET /select", app.selectPlayersH)
 	mux.HandleFunc("GET /select/games", app.selectGameHandler)

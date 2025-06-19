@@ -31,6 +31,8 @@
     
     <br>
     
+    <!--IDEA - CONVERT THIS DIV TO A TABLE-->
+    <!--TODO - ADD SEASON TYPE SELECTOR-->
     <div class="pageForm">
     <form id="playerForm">
       <div class="searchForm">
@@ -38,8 +40,8 @@
           <div class="opt">
           <label for="league">League:</label>
           <select name="league" id="league">
-            <option value="NBA">NBA</option>
-            <option value="WNBA">WNBA</option>
+            <option value="nba">NBA</option>
+            <option value="wnba">WNBA</option>
           </select>
           </div>
 
@@ -63,20 +65,12 @@
     <p>
       <i>click See Career Stats to view all active players</i>
     </p>
-    <!-- TODO: add an endpoint to get these ids from database-->
-    <!-- <p style="font-size: 16px">
-      <i>Until searching by player name is supported, use the following player IDs to use the search by player feature:</i><br>
-      <i style="font-size: 12px">NBA: 2544, 1628973, 1629630, 1629675, 1629029, 201939, 201142, 1630169</i><br>
-      <i style="font-size: 12px">WNBA: 1642299, 1642287, 1642298, 1641658, 1628886, 1630114, 1641602</i><br>
-    </p> -->
-
-    
 
     <div id="status"></div>
     <div id="output"></div>
 
     <div id="nba"></div>
 
-    <script src="/js/json_to_table.js"></script>
+    <script src="/js/nba.js"></script>
   </body>
 </html>

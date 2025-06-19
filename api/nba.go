@@ -11,20 +11,81 @@ import (
 
 func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
-	// TODO - build in selector in HTML for avg/total
+	
 	lg := r.URL.Query().Get("lg")
-	var js []byte	
-	var err error
-	// query the database for WNBA players
-	if lg == "WNBA" {
-		js, err = db.NewSelect("select * from v_wnba_rs_totals", false)
-		if err != nil {
-			errs.HTTPErr(w, r, err)
-			return
-		} 
-	// return the cached json for nba players
-	} else {
-		js = jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
+	sType := r.URL.Query().Get("stype")
+
+	// TODO - switch statements to their own functions
+	switch lg {
+	case "nba":
+		switch sType {
+		case "tot":
+			js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
+			if err != nil {
+				errs.HTTPErr(w, r, err)
+			}
+			app.JSONWriter(w, js)
+		case "avg":
+			js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_avgs.json")
+			if err != nil {
+				errs.HTTPErr(w, r, err)
+			}
+			app.JSONWriter(w, js)
+		default: 
+			js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
+			if err != nil {
+				errs.HTTPErr(w, r, err)
+			}
+			app.JSONWriter(w, js)
+		}
+	case "wnba":
+		switch sType {
+		case "tot":
+			js, err := getResp("select * from v_wnba_rs_totals")
+			if err != nil {
+				errs.HTTPErr(w, r, err)
+			}
+			app.JSONWriter(w, js)
+		case "avg":
+			js, err := getResp("select * from v_wnba_rs_avgs")
+			if err != nil {
+				errs.HTTPErr(w, r, err)
+			}
+			app.JSONWriter(w, js)
+		default: 
+			js, err := getResp("select * from v_wnba_rs_totals")
+			if err != nil {
+				errs.HTTPErr(w, r, err)
+			}
+			app.JSONWriter(w, js)
+		}
 	}
-	app.JSONWriter(w, js)
 }
+
+func getResp(q string) ([]byte, error) {
+	e := errs.ErrInfo{Prefix: "HTTP database request"}
+	js, err := db.NewSelect(q, false)
+	if err != nil {
+		e.Msg = "failed getting response from database"
+		return nil, e.Error(err)
+	} 
+	return js, nil
+}
+
+// 	var js []byte	
+// 	var err error
+// 	// switch for stype / lg
+
+// 	// query the database for WNBA players
+// 	if lg == "wnba" {
+// 		js, err = db.NewSelect("select * from v_wnba_rs_totals", false)
+// 		if err != nil {
+// 			errs.HTTPErr(w, r, err)
+// 			return
+// 		} 
+// 	// return the cached json for nba players
+// 	} else {
+// 		js = jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
+// 	}
+// 	app.JSONWriter(w, js)
+// }
