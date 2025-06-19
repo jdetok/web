@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jdetok/web/internal/env"
@@ -58,29 +59,53 @@ func NewSelect(q string, indent_resp bool) ([]byte, error) {
 	return js, nil
 }
 
-func SelectLgPlayer(q string, lg string, pl string) ([]byte, error) {
+func SelectLgPlayer(w *http.ResponseWriter, q string, lg string, pl string) []byte {
 // query db - returns sql.Rows type
 	e := errs.ErrInfo{Prefix: "database query (arg)",}
 	db, err := Connect()
 	if err != nil {
 		e.Msg = "database connection failed"
-		return nil, e.Error(err)
+		errs.HTTPErrNew(*w, e.Error(err))
 	}
 	
 	rows, err := db.Query(q, lg, pl)
 	if err != nil {
 		e.Msg = "db.Query failed"
-		return nil, e.Error(err)
+		errs.HTTPErrNew(*w, e.Error(err))
 	}
 	
 // return the response as json
 	js, err := RowsToJSON(rows, false)
 	if err != nil {
 		e.Msg = "func RowsToJSON() failed"
-		return nil, e.Error(err)
+		errs.HTTPErrNew(*w, e.Error(err))
 	}
-	return js, nil
+	return js
 }
+
+// func SelectLgPlayer(q string, lg string, pl string) ([]byte, error) {
+// // query db - returns sql.Rows type
+// 	e := errs.ErrInfo{Prefix: "database query (arg)",}
+// 	db, err := Connect()
+// 	if err != nil {
+// 		e.Msg = "database connection failed"
+// 		return nil, e.Error(err)
+// 	}
+	
+// 	rows, err := db.Query(q, lg, pl)
+// 	if err != nil {
+// 		e.Msg = "db.Query failed"
+// 		return nil, e.Error(err)
+// 	}
+	
+// // return the response as json
+// 	js, err := RowsToJSON(rows, false)
+// 	if err != nil {
+// 		e.Msg = "func RowsToJSON() failed"
+// 		return nil, e.Error(err)
+// 	}
+// 	return js, nil
+// }
 
 // accept the player from query string, query db & return player id if player exists
 func SelectPlayers(player, lg string) ([]byte, error) {

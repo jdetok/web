@@ -1,16 +1,18 @@
 package db
 
 import (
+	"net/http"
+
 	"github.com/jdetok/web/internal/errs"
 )
 
-func ValiPlayer(player, lg string) ([]byte, error) {
+func ValiPlayer(w *http.ResponseWriter, player, lg string) []byte {
 	e := errs.ErrInfo{Prefix: "players select",}
 	player_id, err := SelectPlayers(player, lg)
 	if err != nil {
 		e.Msg = "player validation failed"
-		return nil, e.Error(err)
+		errs.HTTPErrNew(*w, e.Error(err))
 	}
 	
-	return player_id, nil
+	return player_id
 }

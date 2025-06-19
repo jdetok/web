@@ -30,6 +30,10 @@ func (e ErrInfo) Error(err error) error {
 	return errors.New("*" + e.Prefix + " error: " + e.Msg + "\n**" + err.Error())
 }
 
+func HTTPErrNew(w http.ResponseWriter, e error) {
+	http.Error(w, e.Error(), http.StatusInternalServerError)
+}
+
 func HTTPErr(w http.ResponseWriter, r *http.Request, e error) {
 	http.Error(w, e.Error(), http.StatusInternalServerError)
 }
