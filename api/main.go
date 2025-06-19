@@ -34,14 +34,3 @@ func main() {
     mux := app.mount()
     log.Fatal(app.run(mux))
 }
-
-    // TURN BACK ON ASAP
-    // // force a write to cache before server starts to ensure no stale data
-    // fmt.Println("refreshing json stores before starting server...")
-    // if update, err := store.UpdateCache(); err != nil {
-    //     fmt.Println(err)
-    // } else {
-    //     app.lastUpdate = *update
-    // }
-
-    // mount & start server (routers/handlers in api.go)
