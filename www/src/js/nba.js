@@ -6,20 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         // let url = "https://jdeko.me/select";
-        let url = "https://jdeko.me/bball/players/all";
-
+        let url = "https://jdeko.me/bball/players";
+        // change to send player always and if it's empty to player=all
         // get the values of input options
-        const player = document.getElementById('playerInput').value.trim();
+        let player = document.getElementById('playerInput').value.trim();
         const lg = document.getElementById('league').value.trim();
         const sType = document.getElementById('statType').value.trim();
         console.log(sType);
-        if (player.length > 1) {
-            url += `/player?lg=${encodeURIComponent(lg)}&player=${encodeURIComponent(player)}`
-            getData(url, 2, ' - ');
-        } else {
-            getData((url + `?lg=${encodeURIComponent(lg)}&stype=${encodeURIComponent(sType)}`), 2, ' - ');
+        if (player.length < 1) {
+            player = 'all';
+            // url += `/player?lg=${encodeURIComponent(lg)}&player=${encodeURIComponent(player)}`
+            // getData(url, 2, ' - ');
         }
-        
+        let qUrl = (url + 
+            `?lg=${encodeURIComponent(lg)}&stype=${encodeURIComponent(sType)}&player=${encodeURIComponent(player)}`)
+        //getData((url + `?lg=${encodeURIComponent(lg)}&stype=${encodeURIComponent(sType)}`), 2, ' - ');
+        getData(qUrl, 2, ' - ');
     });
 });
 

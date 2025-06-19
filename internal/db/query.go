@@ -21,6 +21,12 @@ var Players = Query{
 	`,
 }
 
+// var PlayerTotals = Query{
+// 	Args: []string{"lg", "player"},
+// 	Q:`
+// 	`
+// }
+
 var AllPlayerStats = Query{
 	Args: []string{},
 	Q: `
@@ -103,6 +109,38 @@ var LgPlayerStat = Query{
 	and e.season like "%RS"
 	group by a.player, b.team	
 	order by pts desc
+	`,
+}
+
+var LgPlayerAvg = Query {
+	Args: []string{"lg", "player"},
+	Q: `
+	select 
+	a.player,
+	b.team, 
+	round(avg(c.pts), 2) as pts,
+	round(avg(c.ast), 2) as ast,
+	round(avg(c.reb), 2) as reb,
+	round(avg(d.fgm), 2) as fgm,
+	round(avg(d.fg3m), 2) as fg3m,
+	round(avg(d.ftm), 2) as ftm,
+	round(avg(d.fg_pct), 2) as fg_pct,
+	round(avg(d.fg3_pct), 2) as fg3_pct,
+	round(avg(d.ft_pct), 2) as ft_pct
+	
+	from player a
+	inner join team b on b.team_id = a.team_id
+	inner join p_box c on c.player_id = a.player_id
+	inner join p_shtg d on d.player_id = a.player_id and d.game_id = c.game_id
+	inner join season e on e.season_id = c.season_id
+	
+	where a.active = 1
+	and e.season like "%RS"
+	and a.lg = ?
+	and a.player_id = ?
+	
+	group by a.player, b.team	
+	order by pts desc;
 	`,
 }
 

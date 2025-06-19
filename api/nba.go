@@ -11,32 +11,67 @@ import (
 
 func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
-	
+
 	lg := r.URL.Query().Get("lg")
 	sType := r.URL.Query().Get("stype")
+	player := r.URL.Query().Get("player")
+	
+	
+	
 
 	// TODO - switch statements to their own functions
+	// if player != "all" {
+	// 	player, err := db.ValiPlayer(player, lg)
+	// 	if err != nil {
+	// 	http.Error(w, "Player not found in database", 500)
+	// 	}
+
+	// }
+	
 	switch lg {
 	case "nba":
 		switch sType {
 		case "tot":
-			js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
-			if err != nil {
-				errs.HTTPErr(w, r, err)
+			switch player {
+			case "all":
+				js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
+				if err != nil {
+					errs.HTTPErr(w, r, err)
+				}
+				app.JSONWriter(w, js)
+
+			default:
+				playerId, err := db.ValiPlayer(player, lg)
+			 	if err != nil {
+					http.Error(w, "Player not found in database", 500)
+				}
+				js, err := db.SelectLgPlayer(db.LgPlayerStat.Q, lg, string(playerId))
+				if err != nil {
+					http.Error(w, "Error getting player stats", 500)
+				}
+				app.JSONWriter(w, js)
 			}
-			app.JSONWriter(w, js)
+			
 		case "avg":
-			js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_avgs.json")
-			if err != nil {
-				errs.HTTPErr(w, r, err)
+			switch player {
+			case "all":
+				js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_avgs.json")
+				if err != nil {
+					errs.HTTPErr(w, r, err)
+				}
+				app.JSONWriter(w, js)
+
+			default:
+				playerId, err := db.ValiPlayer(player, lg)
+			 	if err != nil {
+					http.Error(w, "Player not found in database", 500)
+				}
+				js, err := db.SelectLgPlayer(db.LgPlayerAvg.Q, lg, string(playerId))
+				if err != nil {
+					http.Error(w, "Error getting player stats", 500)
+				}
+				app.JSONWriter(w, js)
 			}
-			app.JSONWriter(w, js)
-		default: 
-			js, err := jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
-			if err != nil {
-				errs.HTTPErr(w, r, err)
-			}
-			app.JSONWriter(w, js)
 		}
 	case "wnba":
 		switch sType {
@@ -48,12 +83,6 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 			app.JSONWriter(w, js)
 		case "avg":
 			js, err := getResp("select * from v_wnba_rs_avgs")
-			if err != nil {
-				errs.HTTPErr(w, r, err)
-			}
-			app.JSONWriter(w, js)
-		default: 
-			js, err := getResp("select * from v_wnba_rs_totals")
 			if err != nil {
 				errs.HTTPErr(w, r, err)
 			}

@@ -51,7 +51,7 @@ func (app *application) mount() *http.ServeMux {
 
 // TESTING UPDATED ENDPOINTS 06/19
 	// for when a user doesn't specify a player -- ?lg=&stype=
-	mux.HandleFunc("GET /bball/players/all", app.getStats)
+	mux.HandleFunc("GET /bball/players", app.getStats)
 
 // testing kicking off the select via request
 	mux.HandleFunc("GET /select", app.selectPlayersH)
