@@ -21,12 +21,6 @@ var Players = Query{
 	`,
 }
 
-// var PlayerTotals = Query{
-// 	Args: []string{"lg", "player"},
-// 	Q:`
-// 	`
-// }
-
 var AllPlayerStats = Query{
 	Args: []string{},
 	Q: `

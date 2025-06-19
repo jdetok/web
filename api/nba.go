@@ -10,6 +10,7 @@ import (
 	"github.com/jdetok/web/internal/logs"
 )
 
+// RETURN CONTENTS OF JSON FILE AS []byte
 func respFromFile(f string) ([]byte, error) {
 	e := errs.ErrInfo{Prefix: "json file read"}
 	js, err := jsonops.ReadJSON(env.GetString("CACHE_PATH") + f)
@@ -20,6 +21,9 @@ func respFromFile(f string) ([]byte, error) {
 	return js, nil
 }
 
+// HANDLE /bball/players REQUESTS
+// EX. QUERY STRING - ALL PLAYERS: ?lg=nba&stype=tot&player=all
+// EX. QUERY STRING - SPECIFIC PLAYER: ?lg=nba&stype=avg&player=tyrese%20haliburton
 func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 
