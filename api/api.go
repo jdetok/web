@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -40,8 +40,8 @@ func (app *application) run(mux *http.ServeMux) error {
 	// set the time for caching
 	app.setStartTime()
 
-	log.Printf("Server has started at %s", app.config.addr)
-	
+	fmt.Printf("http server configured and starting at %v...\n", 
+		app.StartTime.Format("2006-01-02 15:04:05"))
 	return srv.ListenAndServe()
 }
 

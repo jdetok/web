@@ -4,16 +4,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/jdetok/web/internal/errs"
 )
 
 // save returned json to file (from HTTP response body)
-func SaveJSON(path string, body []byte) {
+func SaveJSON(path string, body []byte) error {
+	e := errs.ErrInfo{Prefix: "json write to file"}
 	err := os.WriteFile(path, body, 0644)
 	if err != nil {
-		fmt.Printf("Error writing JSON response to file at %s: %s\n", path, err)
-		return
+		e.Msg = "json write to file failed"
+		return e.Error(err)
 	}
-	//fmt.Printf("JSON response saved at %s\n", path)
+	return nil
 }
 
 func MapToJSON(path string, m map[string]any) []byte {

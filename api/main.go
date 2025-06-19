@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -10,10 +11,10 @@ import (
 ) 
 
 func main() {
-
+    // load environment variabels
     err := godotenv.Load()
 	if err != nil {
-		 log.Println("dotenv didn't work")
+		 log.Fatal("dotenv failed to get environment variables")
 	}
 
     // configs go here - 8080 for testing, will derive real vals from environment
@@ -27,12 +28,18 @@ func main() {
         config: cfg,
     }
 
-    app.lastUpdate = time.Now()
-
     // checks if cache needs refreshed every 30 seconds, refreshes if 300 sec since last
-    go store.CheckCache(&app.lastUpdate, 10*time.Second, 10*time.Second)
+    go store.CheckCache(&app.lastUpdate, 30*time.Second, 300*time.Second)
 
-    // mount initializes mux (serves/routes HTTP) & handlers
+    // force a write to cache before server starts to ensure no stale data
+    fmt.Println("refreshing json stores before starting server...")
+    if update, err := store.UpdateCache(); err != nil {
+        fmt.Println(err)
+    } else {
+        app.lastUpdate = *update
+    }
+
+    // mount & start server (routers/handlers in api.go)
     mux := app.mount()
     log.Fatal(app.run(mux))
 }

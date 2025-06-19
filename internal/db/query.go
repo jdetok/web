@@ -58,10 +58,10 @@ var LgPlayersStat = Query{
 		sum(c.reb) as reb,
 		sum(d.fgm) as fgm,
 		sum(d.fg3m) as fg3m,
-		sum(d.ftm) as ftm,
-		avg(d.fg_pct) as fg_pct,
-		avg(d.fg3_pct) as fg3_pct,
-		avg(d.ft_pct) as ft_pct
+		sum(d.ftm) as ftm--,
+		--avg(d.fg_pct) as fg_pct,
+		--avg(d.fg3_pct) as fg3_pct,
+		--avg(d.ft_pct) as ft_pct
 		
 	from player a
 	inner join team b on b.team_id = a.team_id
@@ -86,10 +86,10 @@ var LgPlayerStat = Query{
 		sum(c.reb) as reb,
 		sum(d.fgm) as fgm,
 		sum(d.fg3m) as fg3m,
-		sum(d.ftm) as ftm,
-		avg(d.fg_pct) as fg_pct,
-		avg(d.fg3_pct) as fg3_pct,
-		avg(d.ft_pct) as ft_pct
+		sum(d.ftm) as ftm-- ,
+		-- avg(d.fg_pct) as fg_pct,
+		-- avg(d.fg3_pct) as fg3_pct,
+		-- avg(d.ft_pct) as ft_pct
 		
 	from player a
 	inner join team b on b.team_id = a.team_id

@@ -32,7 +32,7 @@ func (app *application) selectPlayersH(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 	// read cached json for nba 
-		js = jsonops.ReadJSON(app.config.cachePath + "/players.json")
+		js = jsonops.ReadJSON(app.config.cachePath + "/nba_rs_totals.json")
 	}
 	app.JSONWriter(w, js)
 }
