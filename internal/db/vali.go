@@ -11,7 +11,7 @@ func ValiPlayer(w *http.ResponseWriter, player, lg string) []byte {
 	player_id, err := SelectPlayers(player, lg)
 	if err != nil {
 		e.Msg = "player validation failed"
-		errs.HTTPErrNew(*w, e.Error(err))
+		errs.HTTPErr(*w, e.Error(err))
 	}
 	
 	return player_id

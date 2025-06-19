@@ -16,7 +16,7 @@ func respFromFile(w *http.ResponseWriter, f string) []byte {
 	js, err := jsonops.ReadJSON(env.GetString("CACHE_PATH") + f)
 	if err != nil {
 		e.Msg = ("error reading json file: " + f)
-		errs.HTTPErrNew(*w, e.Error(err))
+		errs.HTTPErr(*w, e.Error(err))
 	}
 	return js
 }

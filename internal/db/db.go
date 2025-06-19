@@ -65,20 +65,20 @@ func SelectLgPlayer(w *http.ResponseWriter, q string, lg string, pl string) []by
 	db, err := Connect()
 	if err != nil {
 		e.Msg = "database connection failed"
-		errs.HTTPErrNew(*w, e.Error(err))
+		errs.HTTPErr(*w, e.Error(err))
 	}
 	
 	rows, err := db.Query(q, lg, pl)
 	if err != nil {
 		e.Msg = "db.Query failed"
-		errs.HTTPErrNew(*w, e.Error(err))
+		errs.HTTPErr(*w, e.Error(err))
 	}
 	
 // return the response as json
 	js, err := RowsToJSON(rows, false)
 	if err != nil {
 		e.Msg = "func RowsToJSON() failed"
-		errs.HTTPErrNew(*w, e.Error(err))
+		errs.HTTPErr(*w, e.Error(err))
 	}
 	return js
 }
