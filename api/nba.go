@@ -44,6 +44,10 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 			default: // NBA RS TOTALS SPECIFIC PLAYER
 				playerId := db.ValiPlayer(&w, player, lg)
 				js := db.SelectLgPlayer(&w, db.LgPlayerStat.Q, lg, string(playerId))
+
+				// w.Header().Set("Content-Type", "image/png")
+				// http.ServeFile(w, r, env.GetString("HS_PATH") + string(playerId) + ".png")
+				// fmt.Println(env.GetString("HS_PATH") + string(playerId) + ".png")
 				app.JSONWriter(w, js)
 			}
 
