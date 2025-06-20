@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -43,7 +44,7 @@ func NewSelect(q string, indent_resp bool) ([]byte, error) {
 		e.Msg = "database connection failed"
 		return nil, e.Error(err)
 	}
-	
+	defer db.Close()
 	rows, err := db.Query(q)
 	if err != nil {
 		e.Msg = "query failed"
@@ -142,6 +143,45 @@ func Select(db *sql.DB, q string, indent_resp bool) ([]byte, error) {
 // return the response as json
 	return js, nil
 }
+
+func SelectList(q string) ([]string, error) {
+// query db - returns sql.Rows type
+	e := errs.ErrInfo{Prefix: "database query - list of players",}
+
+	db, err := Connect()
+	if err != nil {
+		e.Msg = "database connection failed"
+		return nil, e.Error(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query(q)
+	if err != nil {
+		e.Msg = "query failed"
+		return nil, e.Error(err)
+	}
+	
+	var playerIds []string
+	for rows.Next() {
+		var pId string
+		if err := rows.Scan(&pId); err != nil {
+			fmt.Println("error scanning rows")
+		}
+		playerIds = append(playerIds, pId)
+	}
+
+	fmt.Println(playerIds)
+	
+// convert the response to json
+	// js, err := RowsToJSON(rows, indent_resp)
+	// if err != nil {
+	// 	e.Msg = "func RowsToJSON() failed"
+	// 	return nil, e.Error(err)
+	// }
+// return the response as json
+	return playerIds, nil
+}
+
 
 func SelectArg(db *sql.DB, q string, indent_resp bool, r string) ([]byte, error) {
 // query db - returns sql.Rows type
