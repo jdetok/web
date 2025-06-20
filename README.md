@@ -1,9 +1,8 @@
-https://jdeko.me
-full stack repo
-written/maintained by Justin DeKock (jdeko17@gmail.com)
-
-/api contains the main http server/router & all endpoints
-/internal contains several tools for backend/internal use
+https://jdeko.me\n
+full stack repo\n
+written/maintained by Justin DeKock (jdeko17@gmail.com)\n
+/api contains the main http server/router & all endpoints\n
+/internal contains several tools for backend/internal use\n
  - /db to interact with mariadb
  - /jsonops to read/write/format json files
  - /store contains cache logic
