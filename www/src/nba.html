@@ -7,6 +7,7 @@
     <title>jdeko nba!</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/nba.css">
+    <script src="/js/nba.js"></script>
   </head>
 
   <header class=".hdr">
@@ -14,25 +15,19 @@
       <a class="transpar" href="https://www.nba.com/stats" target="_blank">
         NO AFFILIATION WITH THE NBA</a></b>
     </div> 
+  </header><br>
 
-  </header>
-  <br>
-  <body>
-
-  <!--<img src="img/nba/nba-outline.png" alt="logo missing" style="float: left; max-width: 15%; background-color: transparent;";>-->
-    
+  <body>    
     <h1 class="nba">NBA/WNBA Statistics</h1>
-    <!--<div class="learnmore"><b><a href="nba-info.html">Learn More about this Site</a></b></div>-->
     <a href="nba-info.html">Learn More about this Site</a>
     <h4>all data owned by and sourced from the NBA (<i><a class="transpar" 
       href="https://www.nba.com/stats" target="_blank">
       National Basketball Association</a></i>)
     </h4>
-    
     <br>
     
-    <!--IDEA - CONVERT THIS DIV TO A TABLE-->
-    <!--TODO - ADD SEASON TYPE SELECTOR-->
+    <!--IDEA - CONVERT THIS DIV TO A TABLE
+    TODO - ADD SEASON TYPE SELECTOR-->
     <div class="pageForm">
     <form id="playerForm">
       <div class="searchForm">
@@ -44,7 +39,6 @@
             <option value="wnba">WNBA</option>
           </select>
           </div>
-
           <div class="opt">
           <label for="statType">Totals/Avgs:</label>
           <select name="statType" id="statType">
@@ -58,19 +52,15 @@
           <button id="fetchBtn">Search</button><br>
         </div>
       </div>
-    </form>
-    </div>
+    </form><br>
+    <i>click search or press enter to see all players</i>
+    </div><br>
 
-
-    <p>
-      <i>click See Career Stats to view all active players</i>
-    </p>
-
-    <div id="status"></div>
-    <div id="output"></div>
-
+    <!-- STATS SECTION (DYNAMIC FROM API)
+    STATUS IS THE LOADING TEXT
+    NBA IS THE TABLE CREATED IN THE JS 
+    -->
+    <div id="loadmsg"></div>
     <div id="nba"></div>
-
-    <script src="/js/nba.js"></script>
   </body>
 </html>

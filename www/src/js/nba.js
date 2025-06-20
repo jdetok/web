@@ -1,109 +1,175 @@
-// trying to dynamically create table from json
+//  JS FOR NBA SITES PAGE
+let url = "https://jdeko.me/bball";
 
-// pass no param, get all
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('playerForm');
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        // let url = "https://jdeko.me/select";
-        let url = "https://jdeko.me/bball/players";
-        // change to send player always and if it's empty to player=all
-        // get the values of input options
-        let player = document.getElementById('playerInput').value.trim();
-        const lg = document.getElementById('league').value.trim();
-        const sType = document.getElementById('statType').value.trim();
-        console.log(sType);
-        if (player.length < 1) {
+        
+        // PARAMETERS PASSED
+        let player = encodeURIComponent(
+            document.getElementById('playerInput').value.trim()
+        );
+        const lg = encodeURIComponent(
+            document.getElementById('league').value.trim()
+        );
+        const sType = encodeURIComponent(
+            document.getElementById('statType').value.trim()
+        );
+        
+        // CHECK IF USER SPECIFIED A PLAYER IN THE SEARCH BOX
+        if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
             player = 'all';
-            // url += `/player?lg=${encodeURIComponent(lg)}&player=${encodeURIComponent(player)}`
-            // getData(url, 2, ' - ');
         }
-        let qUrl = (url + 
-            `?lg=${encodeURIComponent(lg)}&stype=${encodeURIComponent(sType)}&player=${encodeURIComponent(player)}`)
-        //getData((url + `?lg=${encodeURIComponent(lg)}&stype=${encodeURIComponent(sType)}`), 2, ' - ');
+
+        // CONSTRUCT THE QUERY STRING
+        let qUrl = (url + `/players?lg=${lg}&stype=${sType}&player=${player}`)
+
+        // REQUEST JSON FROM API
         getData(qUrl, 2, ' - ');
-    });
+    }); 
 });
 
-async function getData(url, numH, hDelim) {
-    const statusEl = document.getElementById('status');
-    statusEl.textContent = 'Requesting data from API...';
 
-    const outputEl = document.getElementById('output');
-    outputEl.textContent = '';
-    // changed these from innerHTML to textContent
+//     // LOADING MESSAGE
+//     const loadMsg = document.getElementById('loadmsg');
+//     loadMsg.textContent = 'Requesting data from API...';
+
+//     // DIV TO CREATE STATS ELEMENTS
+//     const nbaEl = document.getElementById('nba');
+//     nbaEl.innerHTML = ''; 
+    
+//     try { // WAIT FOR API RESPONSE
+//         const response = await fetch(url);
+//         if (!response.ok) { 
+//             throw new Error(`HTTP Error: ${response.status}`)
+//         } // CONVERT SUCCESSFUL RESPONSE TO JSON & CLEAR LOADMSG
+//         const data = await response.json();
+//         loadMsg.textContent = ''; 
+        
+//         // CONVERT JSON RESPONSE TO HTML TABLE ELEMENTS
+//         tableFromJSON(data, numCapFlds, capDelim);
+//     }
+//     catch(error) {
+//         console.log(error);
+//         loadMsg.textContent = "Failed to load player data";
+//     };
+// };
+
+// REQUEST JSON FROM API
+async function getData(url, numCapFlds, capDelim) {
+    // LOADING MESSAGE
+    const loadMsg = document.getElementById('loadmsg');
+    loadMsg.textContent = 'Requesting data from API...';
+
+    // DIV TO CREATE STATS ELEMENTS
     const nbaEl = document.getElementById('nba');
     nbaEl.innerHTML = ''; 
     
-    // try to fetch JSON from API
-    try {
+    try { // WAIT FOR API RESPONSE
         const response = await fetch(url);
-        if (!response.ok) {
+        if (!response.ok) { 
             throw new Error(`HTTP Error: ${response.status}`)
-        }
-        // make data into json object and clear status message
+        } // CONVERT SUCCESSFUL RESPONSE TO JSON & CLEAR LOADMSG
         const data = await response.json();
-        statusEl.textContent = ''; 
+        loadMsg.textContent = ''; 
         
-        // pass data 
-        tableFromJSON(data, numH, hDelim);
+        // CONVERT JSON RESPONSE TO HTML TABLE ELEMENTS
+        tableFromJSON(data, numCapFlds, capDelim);
     }
     catch(error) {
         console.log(error);
-        statusEl.textContent = "Failed to load player data.";
+        loadMsg.textContent = "Failed to load player data";
     };
+};
+
+// LIST OF KEYS IN EACH OF THE JSON OBECTS
+function jsonKeys(data) { // all objects will be the same - just get keys from the first
+    return Object.keys(data[0]);
+};
+
+// // REQUEST IMG FROM API
+async function getImg(data, keys) {
+    const key = keys[0];
+    player = encodeURIComponent(data[0][key])
+    console.log(player);
+    // API CALL HERE
+    let pUrl = (url + `/players/headshot?player=${player}`)
+    console.log(pUrl);
+    const response = await fetch(pUrl);
+    if (!response.ok) { 
+        throw new Error(`HTTP Error: ${response.status}`)
+    } // CONVERT SUCCESSFUL RESPONSE TO JSON & CLEAR LOADMSG
+    
+    const imgSrc = await response.json();
+    
+    console.log(imgSrc.path)
+    return imgSrc
 };
 
 // dynamically create HTML table element with caption
-// elements for caption MUST BE at the beginning of the json response
-// numH is the number of json objects that will be used in the dynamic caption
-// hDelim is the delimiter that separates the objects
-// all objects after the first numH will go into the table
-function tableFromJSON(data, numH, hDelim) {
-    // clear the current nba container
-    const container = document.getElementById("nba");
-    container.innerHTML = "";
+// fields used for MUST be the first #numCapFlds fields of each json object
+// numCapFlds - number of fields in each json object to be used for the caption
+// capDelim - string delimiter used in caption
+async function tableFromJSON(data, numCapFlds, capDelim) {
+    const div = document.getElementById("nba");
 
+    div.innerHTML = ""; // clear the current nba container
+    // GET KEYS
     const keys = jsonKeys(data);
-    for (const r of data) {
-        const pTable = document.createElement('table');
 
-        // append keys together with delimiter based off numH and hDelim
-        let hdr = "";
-        let h = 0;
-        while (h < numH) {
-            hdr += r[keys[h]];
-            h++;
-            if (h < numH) {
-                hdr += hDelim;
+        // TODO - IF SINGLE PLAYER REQUEST, GET THE PLAYER'S PICTURE
+    if (data.length == 1 && keys[0] === 'player') {
+        const imgSrc = await getImg(data, keys)
+        console.log(imgSrc.path)
+        const img = document.createElement('img');
+        img.src = imgSrc.path;
+        img.alt = "image not found"
+        img.style.maxWidth = '40%';
+        img.style.height = 'auto';
+        img.style.marginLeft = 'auto';
+        div.append(img);
+    }
+
+    for (const obj of data) { 
+        const objTbl = document.createElement('table');
+
+        // FIRST numCapFlds OBJECTS WILL CONSTRUCT CAPTION STRING
+        let cap = "";
+        let capVal = 0;
+        while (capVal < numCapFlds) {
+            cap += obj[keys[capVal]];
+            capVal++; //  e.g LeBron James - LAL
+            if (capVal < numCapFlds) { // ignore last value so no delim at end
+                cap += capDelim; // concat capDelim between capVals
             }
         };
 
-        // create a caption element with the hdr string
+        // CREATE HTML CAPTION ELEMENT FROM cap 
         const caption = document.createElement('caption');
-        caption.textContent = hdr;
-        pTable.appendChild(caption);
+        caption.textContent = cap;
+        objTbl.appendChild(caption); // APPEND CAPTION TO HTML TABLE
         
-        // after creating header, create table with the data items 
-        for (let i = numH; i < keys.length; i++) {
+        // LOOP THROUGH FIELDS > numCapFlds, EACH LOOP APPENDS A ROW TO TABLE
+        for (let i = numCapFlds; i < keys.length; i++) {
             const row = document.createElement('tr');
-
             const label = document.createElement('th');
+            const val = document.createElement('td');
+
+            // FIELD NAME IN LEFT COLUMN OF TABLE (RIGHT ALIGNED)
             label.textContent = keys[i];
             label.style.textAlign = 'right';
-            row.appendChild(label);
 
-            const val = document.createElement('td');
-            val.textContent = r[keys[i]];
+            // VALUE IN RIGHT COLUMN OF TABLE (LEFT ALIGNED)
+            val.textContent = obj[keys[i]];
             val.style.textAlign = 'left';
-            row.appendChild(val);
-
-            pTable.appendChild(row);
+            
+            row.appendChild(label); // APPEND LABEL TO ROW
+            row.appendChild(val); // APPEND VALUE TO ROW
+            objTbl.appendChild(row); // APPEND ROW TO TABLE
         };
-        container.append(pTable);
+        
+        div.append(objTbl);
+        // div.append(objTbl); // APPEND TABLE TO DIV
     };
-};
-
-function jsonKeys(data) {
-    return Object.keys(data[0]);
 };

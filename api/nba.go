@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/jdetok/web/internal/db"
@@ -42,9 +44,8 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				js := respFromFile(&w, "/nba_rs_totals.json")
 				app.JSONWriter(w, js)
 			default: // NBA RS TOTALS SPECIFIC PLAYER
-				playerId := db.ValiPlayer(&w, player, lg)
-				js := db.SelectLgPlayer(&w, db.LgPlayerStat.Q, lg, string(playerId))
-
+				playerId := db.ValiPlayer(app.database, &w, player, lg)
+				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerStat.Q, lg, string(playerId))
 				// w.Header().Set("Content-Type", "image/png")
 				// http.ServeFile(w, r, env.GetString("HS_PATH") + string(playerId) + ".png")
 				// fmt.Println(env.GetString("HS_PATH") + string(playerId) + ".png")
@@ -59,8 +60,8 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 
 			default:  // NBA RS AVG SPECIFIC PLAYER
-				playerId := db.ValiPlayer(&w, player, lg)
-				js := db.SelectLgPlayer(&w, db.LgPlayerAvg.Q, lg, string(playerId))
+				playerId := db.ValiPlayer(app.database, &w, player, lg)
+				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		}
@@ -75,8 +76,8 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 
 			default: // SPECIFIC WNBA PLAYER TOTALS
-				playerId := db.ValiPlayer(&w, player, lg)
-				js := db.SelectLgPlayer(&w, db.LgPlayerAvg.Q, lg, string(playerId))
+				playerId := db.ValiPlayer(app.database, &w, player, lg)
+				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		// WNBA AVERAGES
@@ -87,10 +88,22 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 
 			default: // SPECIFIC WNBA PLAYER AVERAGES
-				playerId := db.ValiPlayer(&w, player, lg)
-				js := db.SelectLgPlayer(&w, db.LgPlayerAvg.Q, lg, string(playerId))
+				playerId := db.ValiPlayer(app.database, &w, player, lg)
+				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		}
 	}
 }
+
+func (app *application) getHeadShot(w http.ResponseWriter, r *http.Request) {
+	player := r.URL.Query().Get("player")
+	playerId := db.ValiPlayer(app.database, &w, player, "nba")
+	hsPath := env.GetString("NBA_HS") + string(playerId) + ".png"
+	fmt.Println(hsPath)
+
+	response := map[string]string{"path": hsPath}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+

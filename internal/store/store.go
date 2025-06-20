@@ -1,6 +1,7 @@
 package store
 
 import (
+	"database/sql"
 	"fmt"
 	"sync"
 	"time"
@@ -58,7 +59,7 @@ var paths = []fPath{
 }
 
 // runs every interval seconds, updates if time since last update is > threshold
-func CheckCache(lastUpdate *time.Time, inteval time.Duration, threshold time.Duration) {
+func CheckCache(db *sql.DB, lastUpdate *time.Time, inteval time.Duration, threshold time.Duration) {
 	e := errs.ErrInfo{Prefix: "cache check",}
 	ticker := time.NewTicker(inteval)
 	defer ticker.Stop()
@@ -67,7 +68,7 @@ func CheckCache(lastUpdate *time.Time, inteval time.Duration, threshold time.Dur
 		if time.Since(*lastUpdate) > threshold {
 			fmt.Printf("refreshing cache at %v: %v since last update\n", 
 				time.Now().Format("2006-01-02 15:04:05"), threshold)
-			updateTime, err := UpdateManyCache(paths)
+			updateTime, err := UpdateManyCache(db, paths)
 			if err != nil {
 				e.Msg = "cache update failed"
 				fmt.Println(e.Error(err))
@@ -77,8 +78,9 @@ func CheckCache(lastUpdate *time.Time, inteval time.Duration, threshold time.Dur
 		}
 	}
 } 
-
-func UpdateManyCache(paths []fPath) (*time.Time, error) {
+// TODO - connect once, pass connection
+func UpdateManyCache(db *sql.DB, paths []fPath) (*time.Time, error) {
+	
 	var wg sync.WaitGroup
 	for _, p := range paths {
 		wg.Add(1)
@@ -86,7 +88,7 @@ func UpdateManyCache(paths []fPath) (*time.Time, error) {
 		go func(p fPath){
 			defer wg.Done()
 			fmt.Printf("updating %s at %v\n", p.File, time.Now().Format("2006-01-02 15:04:05"))
-			if err := UpdateCache(p.Query, p.Construct()); err != nil {
+			if err := UpdateCache(db, p.Query, p.Construct()); err != nil {
 				fmt.Println(err)
 			}
 		}(p)
@@ -97,9 +99,9 @@ func UpdateManyCache(paths []fPath) (*time.Time, error) {
 	return &updateTime, nil
 }
 
-func UpdateCache(q string, path string) error{
+func UpdateCache(database *sql.DB, q string, path string) error{
 	e := errs.ErrInfo{Prefix: ("cache update for " + path),}
-	js, err := db.NewSelect(q, false)
+	js, err := db.SelectDB(database, q)
 	if err != nil {
 		e.Msg = "database query failed"
 		return e.Error(err)

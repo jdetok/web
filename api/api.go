@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 	"time"
@@ -8,6 +9,7 @@ import (
 
 type application struct {
 	config config
+	database *sql.DB
 	StartTime time.Time
 	lastUpdate time.Time
 }
@@ -39,9 +41,11 @@ func (app *application) run(mux *http.ServeMux) error {
 // returns type ServeMux for a router
 func (app *application) mount() *http.ServeMux {
 	mux := http.NewServeMux()
+	
 
 // ENDPOINTS 06/19
 	mux.HandleFunc("GET /bball/players", app.getStats)
+	mux.HandleFunc("GET /bball/players/headshot", app.getHeadShot)
 
 // SERVES STATIC SITE IN WEB DIRECTORY, DON'T CACHE JS & CSS
 	mux.Handle("/js/", http.HandlerFunc(app.jsNoCache))
