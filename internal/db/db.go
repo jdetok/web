@@ -169,8 +169,8 @@ func SelectList(q string) ([]string, error) {
 		}
 		playerIds = append(playerIds, pId)
 	}
-
-	fmt.Println(playerIds)
+	return playerIds, nil
+}
 	
 // convert the response to json
 	// js, err := RowsToJSON(rows, indent_resp)
@@ -179,8 +179,7 @@ func SelectList(q string) ([]string, error) {
 	// 	return nil, e.Error(err)
 	// }
 // return the response as json
-	return playerIds, nil
-}
+
 
 
 func SelectArg(db *sql.DB, q string, indent_resp bool, r string) ([]byte, error) {

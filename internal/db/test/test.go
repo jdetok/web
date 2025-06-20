@@ -2,25 +2,10 @@
 // // go run ./internal/db/test
 package main
 
-import (
-	"fmt"
+// func main() {
+// 	pics.GetHeadshots("nba")
 
-	"github.com/jdetok/web/external/pics"
-	"github.com/jdetok/web/internal/db"
-)
-
-func main() {
-	playerIds, err := db.SelectList(`select player_id from player where active = 1 and lg = "WNBA"`)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// fmt.Println(playerIds)
-
-	for _, pId := range playerIds {
-		url := pics.MakeUrl("wnba", pId)
-		fmt.Println(url)
-	}
-}
+// }
 
 // import (
 // 	"fmt"
