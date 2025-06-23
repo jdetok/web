@@ -42,7 +42,6 @@ func (app *application) run(mux *http.ServeMux) error {
 func (app *application) mount() *http.ServeMux {
 	mux := http.NewServeMux()
 	
-
 // ENDPOINTS 06/19
 	mux.HandleFunc("GET /bball/players", app.getStats)
 	mux.HandleFunc("GET /bball/players/headshot", app.getHeadShot)
@@ -64,4 +63,3 @@ func (app *application) JSONWriter(w http.ResponseWriter, js []byte) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
 }
-

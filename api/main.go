@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+	"log/slog"
+	"os"
 	"time"
 
 	"github.com/jdetok/web/internal/db"
@@ -11,10 +12,13 @@ import (
 ) 
 
 func main() {
+    logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+    slog.SetDefault(logger)
+    
     // load environment variabels
     err := godotenv.Load()
 	if err != nil {
-		 log.Fatal("dotenv failed to get environment variables")
+        slog.Error("failed to get environment variables")
 	}
 
     // configs go here - 8080 for testing, will derive real vals from environment
@@ -31,8 +35,13 @@ func main() {
     }
 
     // checks if cache needs refreshed every 30 seconds, refreshes if 60 sec since last
-    go store.CheckCache(app.database, &app.lastUpdate, 5*time.Second, 10*time.Second)
+    go store.CheckCache(app.database, &app.lastUpdate, 30*time.Second, 300*time.Second)
 
     mux := app.mount()
-    log.Fatal(app.run(mux))
-}
+    if err := app.run(mux); err != nil {
+        slog.Error("error running server")
+    }
+}    
+
+
+    // log.Fatal(app.run(mux))

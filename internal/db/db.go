@@ -11,8 +11,6 @@ import (
 )
 
 func InitDB() *sql.DB {
-	// e := errs.ErrInfo{Prefix: "database conenction",}
-
 // get conn. vars from .env & build connection string
 	dbUser := env.GetString("DB_USER")
 	dbHost := env.GetString("DB_HOST")

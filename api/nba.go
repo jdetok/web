@@ -98,12 +98,20 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) getHeadShot(w http.ResponseWriter, r *http.Request) {
 	player := r.URL.Query().Get("player")
+	// lg := r.URL.Query().Get("lg")
+	
 	playerId := db.ValiPlayer(app.database, &w, player, "nba")
 	hsPath := env.GetString("NBA_HS") + string(playerId) + ".png"
+	
 	fmt.Println(hsPath)
 
+	// response := map[string]string{"path": MakeUrl(lg)}
 	response := map[string]string{"path": hsPath}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
+func MakeUrl(lg, playerId string) string {
+	return ("https://cdn." + lg + ".com/headshots/" + lg + "/latest/1040x760/" + playerId + ".png")
+	// )s
+}

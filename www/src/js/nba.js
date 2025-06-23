@@ -30,32 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }); 
 });
 
-
-//     // LOADING MESSAGE
-//     const loadMsg = document.getElementById('loadmsg');
-//     loadMsg.textContent = 'Requesting data from API...';
-
-//     // DIV TO CREATE STATS ELEMENTS
-//     const nbaEl = document.getElementById('nba');
-//     nbaEl.innerHTML = ''; 
-    
-//     try { // WAIT FOR API RESPONSE
-//         const response = await fetch(url);
-//         if (!response.ok) { 
-//             throw new Error(`HTTP Error: ${response.status}`)
-//         } // CONVERT SUCCESSFUL RESPONSE TO JSON & CLEAR LOADMSG
-//         const data = await response.json();
-//         loadMsg.textContent = ''; 
-        
-//         // CONVERT JSON RESPONSE TO HTML TABLE ELEMENTS
-//         tableFromJSON(data, numCapFlds, capDelim);
-//     }
-//     catch(error) {
-//         console.log(error);
-//         loadMsg.textContent = "Failed to load player data";
-//     };
-// };
-
 // REQUEST JSON FROM API
 async function getData(url, numCapFlds, capDelim) {
     // LOADING MESSAGE
@@ -91,9 +65,11 @@ function jsonKeys(data) { // all objects will be the same - just get keys from t
 // // REQUEST IMG FROM API
 async function getImg(data, keys) {
     const key = keys[0];
+    
     player = encodeURIComponent(data[0][key])
     console.log(player);
     // API CALL HERE
+    // let pUrl = (url + `/players/headshot?lg=${lg}player=${player}`)
     let pUrl = (url + `/players/headshot?player=${player}`)
     console.log(pUrl);
     const response = await fetch(pUrl);
