@@ -6,14 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         let url = "https://jdeko.me/select";
-        const player = document.getElementById('playerInput').value.trim();
-        const lg = document.getElementById('league').value.trim();
+        const player = encodeURIComponent(document.getElementById('playerInput').value.trim());
+        const lg = encodeURIComponent(document.getElementById('league').value.trim());
         
         if (player.length > 1) {
-            url += `/player?lg=${encodeURIComponent(lg)}&player=${encodeURIComponent(player)}`
+            url += `/player?lg=${lg}&player=${player}`
+            let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${player}.png`
+            console.log(imgUrl)
             getData(url, 2, ' - ');
         } else {
-            getData((url + `?lg=${encodeURIComponent(lg)}`), 2, ' - ');
+            getData((url + `?lg=${lg}`), 2, ' - ');
         }
         
     });

@@ -44,6 +44,7 @@ func (app *application) mount() *http.ServeMux {
 	
 // ENDPOINTS 06/19
 	mux.HandleFunc("GET /bball/players", app.getStats)
+	mux.HandleFunc("GET /bball/players/id", app.getPlayerId)
 	mux.HandleFunc("GET /bball/players/headshot", app.getHeadShot)
 
 // SERVES STATIC SITE IN WEB DIRECTORY, DON'T CACHE JS & CSS

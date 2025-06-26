@@ -9,6 +9,11 @@ RUN go mod download
 COPY ./api ./api
 COPY ./internal ./internal
 COPY ./www ./www
+# COPY ./www/src/*.html ./www/src/*.html
+# COPY ./www/src/js ./www/src/js
+# COPY ./www/src/css ./www/src/css
+# COPY ./www/src/img/pets ./www/src/img/pets
+# COPY ./www/src/img/bronto ./www/src/img/bronto
 
 RUN go build -o bin ./api
 

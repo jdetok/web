@@ -3,7 +3,7 @@ let url = "https://jdeko.me/bball";
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('playerForm');
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
         
         // PARAMETERS PASSED
@@ -20,15 +20,43 @@ document.addEventListener('DOMContentLoaded', () => {
         // CHECK IF USER SPECIFIED A PLAYER IN THE SEARCH BOX
         if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
             player = 'all';
+        } else {
+            const playerId = await getPlayerId(url, player);
+            let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`
+            console.log(imgUrl)
+            const container = document.getElementById('hs');
+            container.innerHTML = '';
+            const img = document.createElement('img');
+        // img.src = imgSrc.path;
+            img.src = imgUrl;
+            img.alt = "image not found"
+            img.style.maxWidth = '40%';
+            img.style.height = 'auto';
+            img.style.marginLeft = 'auto';
+            container.append(img);
+            // div.append(img);
+
         }
-
         // CONSTRUCT THE QUERY STRING
-        let qUrl = (url + `/players?lg=${lg}&stype=${sType}&player=${player}`)
-
-        // REQUEST JSON FROM API
+        const qUrl = (url + `/players?lg=${lg}&stype=${sType}&player=${player}`)
         getData(qUrl, 2, ' - ');
+
     }); 
 });
+
+async function getPlayerId(url, player) {
+    const idUrl = url + `/players/id?player=${player}`;
+    const response = await fetch(idUrl);
+    if (!response.ok) {
+        throw new Error(`HTTP Error getting player id: ${response.status}`)
+    }
+    const jsonResp = await response.json();
+    // if (!jsonResp.ok) {
+    //     throw new Error(`HTTP Error getting player id json: ${jsonResp.status}`)
+    // }
+    const playerId = jsonResp.playerId;
+    return String(playerId);
+};
 
 // REQUEST JSON FROM API
 async function getData(url, numCapFlds, capDelim) {
@@ -95,17 +123,18 @@ async function tableFromJSON(data, numCapFlds, capDelim) {
     const keys = jsonKeys(data);
 
         // TODO - IF SINGLE PLAYER REQUEST, GET THE PLAYER'S PICTURE
-    if (data.length == 1 && keys[0] === 'player') {
-        const imgSrc = await getImg(data, keys)
-        console.log(imgSrc.path)
-        const img = document.createElement('img');
-        img.src = imgSrc.path;
-        img.alt = "image not found"
-        img.style.maxWidth = '40%';
-        img.style.height = 'auto';
-        img.style.marginLeft = 'auto';
-        div.append(img);
-    }
+    // if (data.length == 1 && keys[0] === 'player') {
+        // const imgSrc = await getImg(data, keys)
+        // console.log(imgSrc.path)
+    //     const img = document.createElement('img');
+    //     // img.src = imgSrc.path;
+    //     img.src = imgSrc.path;
+    //     img.alt = "image not found"
+    //     img.style.maxWidth = '40%';
+    //     img.style.height = 'auto';
+    //     img.style.marginLeft = 'auto';
+    //     div.append(img);
+    // }
 
     for (const obj of data) { 
         const objTbl = document.createElement('table');

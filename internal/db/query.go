@@ -17,10 +17,10 @@ var Players = Query{
 	select a.player_id
 	from player a
 	where a.player = ?
-	and a.lg = ?
+	limit 1
 	`,
 }
-
+// -- and a.lg = ?
 var LgPlayerStat = Query{
 	Args: []string{"lg", "player"},
 	Q:`

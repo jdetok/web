@@ -1,11 +1,19 @@
+.dyn {
+    display: flex;
+    flex-direction: row;  
+    justify-content: flex-end;  /* centers children horizontally */
+    align-items: center;      /* optional: center vertically */
+    margin: auto;
+    gap: 1rem;
+    width: fit-content;
+}
+
 @media (max-width: 600px) {
-    #nba img{
-        display: flex;
-        margin-left: auto;
-        /*flex-direction: column;*/
-        /*align-items: center;*/
+    .dyn {
+    flex-direction: column; 
     }
 }
+
 
 .hdr {
     font-size: 14px;

@@ -16,14 +16,14 @@
       <a href="nba.html" target="_blank">basketball stats site</a>
     </h2>
 
-    <div class="center" style="width: 60%;">
+    <div class="center" style="max-width: 80%;">
       <h3>disclaimer!</h3>
       <u><b>this project is for educational & personal uses only</b></u><br>
         all images & data are property of the 
         <a href="https://www.nba.com/stats" target="_blank">national basketball association</a><br>
     </div>
 
-    <div class="center" style="width: 80%;">
+    <div class="center" style="max-width: 80%;">
       <h3>containerization with docker</h3>
         a major goal of this project was for the "end" product to be as maintainable and 
         replicable as possible. this was achieved by running each component of the system in 
@@ -33,7 +33,7 @@
         independent and uncluttered, and allows for quick & easy startup/teardown
     </div>
 
-    <div class="center" style="width: 80%;">
+    <div class="center" style="max-width: 80%;">
       <h3>extract, transform, & load (etl)</h3>
         all data is sourced from nba.com via the 
         <a href="https://github.com/swar/nba_api" target="_blank">nba-api</a> 
@@ -42,7 +42,7 @@
         <a href="https://github.com/jdetok/py-nba-mdb">python etl code</a>
     </div>
 
-    <div class="center" style="width: 80%;">
+    <div class="center" style="max-width: 80%;">
       <h3>database design/administration</h3> 
         the database was designed & normalized to be as close to 
         <a href="https://www.geeksforgeeks.org/dbms/third-normal-form-3nf/" target="_blank">
@@ -50,7 +50,7 @@
         <a href="https://github.com/jdetok/docker-mdb-nba" target="_blank">mariadb docker repo</a> 
     </div>
 
-    <div class="center" style="width: 80%;">
+    <div class="center" style="max-width: 80%;">
       <h3>http server/api</h3> 
         every interaction with jdeko.me is handled via a handwritten 
         http server & api in go (formerly golang). this go application

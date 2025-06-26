@@ -8,6 +8,12 @@ services:
     networks:
       apinet:
         ipv4_address: 10.0.0.10
+    volumes:
+      - ./api:/app/api:ro
+      - ./internal:/app/internal:ro
+      - ./www:/app/www:ro
+      - ./www/src/img/headshots:/app/www/src/img/headshots:ro
+    # command: ["go build -o bin ./api"]
 
 networks:
   apinet:
