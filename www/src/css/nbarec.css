@@ -1,14 +1,8 @@
-.disclaimer {
-    /* padding-top: 5px; */
-    text-align: right;   
-    color: rgba(240, 111, 111, 0.822);   
-}
-
 .dyn {
     display: flex;
     flex-direction: row;  
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: flex-end;  /* centers children horizontally */
+    align-items: center;      /* optional: center vertically */
     margin: auto;
     gap: 1rem;
     width: fit-content;
@@ -18,29 +12,41 @@
     .dyn {
     flex-direction: column; 
     }
-
-    .disclaimer {
-        text-align: center;
-    }
 }
 
-#nba {
-    display: flex;
-    gap: 20px;           
-    flex-wrap: wrap;
-    justify-content: center;
+
+.hdr {
+    font-size: 14px;
+    padding-top: 5px;
 }
 
-/* tables display vertically on small screens */ 
-@media (max-width: 600px) {
-    #nba {
-        flex-direction: column;
-        align-items: center;
-    }
+div.disclaimer {
+    float: left;    
+    padding-left: 10px;
+    color: rgba(240, 111, 111, 0.822);   
+}
 
-    #nba table {
-        width: 90%;
-    }
+div.learnmore {
+    /* float: right;
+    padding-right: 10px; */
+    color:rgba(223, 206, 231, 0.822);
+}
+
+h1.nba {
+    margin: 0;
+}
+
+h4 {
+    color: rgb(214, 198, 175);
+    text-align: center;
+    font-size: 20px;
+    font-weight:normal;
+}
+
+h3.nbarefr {
+    float: center;
+    font-size: 14;
+    padding: 8px;
 }
 
 .pageForm {
@@ -50,6 +56,7 @@
 #playerForm {
   display: flex;
   justify-content: center;
+  /*margin-top: 50px;  optional vertical spacing */
 }
 
 .searchForm {
@@ -62,7 +69,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    align-items: flex-end;
+    align-items: flex-end; /*right aligns the select boxes*/  
     align-self: right;
 }
 
@@ -72,16 +79,6 @@
 
 .opts select {
     width: fit-content;
-}
-
-h1.nba {
-    margin: 0;
-}
-
-h3.nbarefr {
-    float: center;
-    font-size: 14;
-    padding: 8px;
 }
 
 table {
@@ -104,3 +101,4 @@ table tr td{
     font-size: 20px;
     padding: 4px;
 }
+
