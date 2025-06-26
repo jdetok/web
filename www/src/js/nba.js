@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // img.src = imgSrc.path;
             img.src = imgUrl;
             img.alt = "image not found"
-            img.style.maxWidth = '40%';
+            img.style.maxWidth = '50%';
             img.style.height = 'auto';
             img.style.marginLeft = 'auto';
             container.append(img);

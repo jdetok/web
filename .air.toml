@@ -1,0 +1,25 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -buildvcs=false -o ./tmp/main ./api"
+  bin = "tmp/main"
+  include_ext = ["go", "tpl", "html", "env", "css", "js"]
+  exclude_dir = ["tmp", "vendor", "testdata"]
+  delay = 1000
+
+[log]
+  time = true
+  color = "auto"
+
+[debug]
+  enable = true
+
+[watch]
+  dirs = [
+    "./api",
+    "./internal",
+    "./www/src"
+  ]
+
+  exclude = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.svg"]
