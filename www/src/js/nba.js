@@ -21,22 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
             player = 'all';
         } else {
-            console.log(player);
             let playerId = await getPlayerId(url, player);
-            console.log(playerId);
             let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
-            console.log(imgUrl);
+            
             const container = document.getElementById('hs');
             container.innerHTML = '';
             const img = document.createElement('img');
-        // img.src = imgSrc.path;
+        
             img.src = imgUrl;
             img.alt = "image not found"
             img.style.maxWidth = '50%';
             img.style.height = 'auto';
             img.style.marginLeft = 'auto';
             container.append(img);
-            // div.append(img);
 
         }
         // CONSTRUCT THE QUERY STRING
@@ -46,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }); 
 });
 
+// pass encoded player name to /players/id to get the player id
 async function getPlayerId(url, player) {
     const idUrl = url + `/players/id?player=${player}`;
     const response = await fetch(idUrl);
@@ -53,9 +51,6 @@ async function getPlayerId(url, player) {
         throw new Error(`HTTP Error getting player id: ${response.status}`)
     }
     const jsonResp = await response.json();
-    // if (!jsonResp.ok) {
-    //     throw new Error(`HTTP Error getting player id json: ${jsonResp.status}`)
-    // }
     const playerId = jsonResp.playerId;
     return String(playerId);
 };
