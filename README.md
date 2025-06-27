@@ -2,6 +2,8 @@ https://jdeko.me
 full stack repo
 written/maintained by Justin DeKock (jdeko17@gmail.com)
 
+# TODO: random player button -> use random number within len(players) to pick a random player
+
 /api contains the main http server/router & all endpoints
 /internal contains several tools for backend/internal use
  - /db to interact with mariadb
