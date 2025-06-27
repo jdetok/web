@@ -94,7 +94,6 @@ async function getImg(data, keys) {
     player = encodeURIComponent(data[0][key])
     console.log(player);
     // API CALL HERE
-    // let pUrl = (url + `/players/headshot?lg=${lg}player=${player}`)
     let pUrl = (url + `/players/headshot?player=${player}`)
     console.log(pUrl);
     const response = await fetch(pUrl);

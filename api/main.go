@@ -26,7 +26,6 @@ func main() {
     cfg := config{
         addr: env.GetString("SRV_IP"),
         cachePath: env.GetString("CACHE_PATH"),
-        // TODO - ADD IN DB CONNECTION POOl
     }
 
     // initialize the app with the configs
@@ -41,7 +40,6 @@ func main() {
     if err != nil {
         slog.Error("error getting players")
     }
-    // fmt.Println(app.players)
 
     // checks if cache needs refreshed every 30 seconds, refreshes if 60 sec since last
     go store.CheckCache(app.database, &app.lastUpdate, &app.players, 30*time.Second, 300*time.Second)
@@ -51,6 +49,3 @@ func main() {
         slog.Error("error running server")
     }
 }    
-
-
-    // log.Fatal(app.run(mux))
