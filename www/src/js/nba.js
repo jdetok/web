@@ -9,27 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     randomListener();
 });
 
-// listen for the search button
-function searchListener() {
-    const btn = document.getElementById('searchBtn');
-    btn.addEventListener('click', async (event) => {
-        event.preventDefault();
-        await search();
-    });
-};
-
-// listen fro the random player button
-function randomListener() {
-    const btn = document.getElementById('randBtn');
-    btn.addEventListener('click', async (event) => {
-        event.preventDefault();
-        json = await getRandomPlayer();
-        document.getElementById('playerInput').value = json.player;
-        document.getElementById('league').value = json.league;
-        await search();
-    });
-}
-
 // get headshot & stats based on element values
 async function search() {
     // PARAMETERS PASSED
@@ -55,6 +34,30 @@ async function search() {
     document.getElementById('playerInput').value = '';
 }
 
+// listen for the search button
+function searchListener() {
+    const btn = document.getElementById('searchBtn');
+    btn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        await search();
+    });
+};
+
+// listen fro the random player button
+function randomListener() {
+    const btn = document.getElementById('randBtn');
+    btn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        // get random player json from api
+        json = await getRandomPlayer();
+
+        // search with input & league selector as random player vals
+        document.getElementById('playerInput').value = json.player;
+        document.getElementById('league').value = json.league;
+        await search();
+    });
+}
+ 
 // returns random player json from api
 async function getRandomPlayer() {
     const url = base + `/players/random`;
@@ -64,31 +67,6 @@ async function getRandomPlayer() {
     }
     const json = await response.json();
     return json;
-}
-
-// build headshot url 
-function makeHeadshotUrl(lg, playerId) {
-    return `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
-};
-
-async function getHeadshot(lg, player) {
-    let playerId = await getPlayerId(base, player);
-    let url = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`
-    appendImg(url, 'hs')
-    // appendImg(makeHeadshotUrl(lg, playerId), 'hs')
-}
-
-async function appendImg(url, el) {
-    const container = document.getElementById(el);
-    container.innerHTML = '';
-    const img = document.createElement('img');
-
-    img.src = url;
-    img.alt = "image not found"
-    img.style.maxWidth = '50%';
-    img.style.height = 'auto';
-    img.style.marginLeft = 'auto';
-    container.append(img);
 }
 
 // pass encoded player name to /players/id to get the player id
@@ -102,6 +80,28 @@ async function getPlayerId(url, player) {
     const playerId = jsonResp.playerId;
     return String(playerId);
 };
+
+// get player's headshot
+async function getHeadshot(lg, player) {
+    let playerId = await getPlayerId(base, player);
+    let url = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`
+    appendImg(url, 'hs')
+    // appendImg(makeHeadshotUrl(lg, playerId), 'hs')
+}
+
+// append image to document with src url
+async function appendImg(url, el) {
+    const container = document.getElementById(el);
+    container.innerHTML = '';
+    const img = document.createElement('img');
+
+    img.src = url;
+    img.alt = "image not found"
+    img.style.maxWidth = '50%';
+    img.style.height = 'auto';
+    img.style.marginLeft = 'auto';
+    container.append(img);
+}
 
 // REQUEST STATS JSON FROM API
 async function getStats(url, numCapFlds, capDelim) {
