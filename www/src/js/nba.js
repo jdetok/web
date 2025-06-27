@@ -1,74 +1,89 @@
-//  JS FOR NBA SITES PAGE
-const url = "https://jdeko.me/bball";
+// BASE URLS
+const base = "https://jdeko.me/bball";
+const nbaHsBase = "https://cdn.nba.com/headshots/nba/latest/1040x760";
+const wnbaHsBase = "https://cdn.wnba.com/headshots/wnba/latest/1040x760";
 
 // CALL ANY LISTENERS HERE
 document.addEventListener('DOMContentLoaded', () => {
-     formListener();
-     randomListener();
+    searchListener();
+    randomListener();
 });
 
-function formListener() {
-    const btn = document.getElementById('fetchBtn');
+// listen for the search button
+function searchListener() {
+    const btn = document.getElementById('searchBtn');
     btn.addEventListener('click', async (event) => {
         event.preventDefault();
-        
-        // PARAMETERS PASSED
-        let player = encodeURIComponent(
-            document.getElementById('playerInput').value.trim()
-        ).toLowerCase();
-        let lg = encodeURIComponent(
-            document.getElementById('league').value.trim()
-        );
-        let sType = encodeURIComponent(
-            document.getElementById('statType').value.trim()
-        );
-        
-        // CHECK IF USER SPECIFIED A PLAYER IN THE SEARCH BOX
-        if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
-            player = 'all';
-        } else {
-            getHeadshot(lg, player);
-        }
-        // CONSTRUCT THE QUERY STRING
-        const qUrl = (url + `/players?lg=${lg}&stype=${sType}&player=${player}`)
-        getStats(qUrl, 2, ' - ');
-
+        await search();
     });
 };
 
+// listen fro the random player button
 function randomListener() {
     const btn = document.getElementById('randBtn');
     btn.addEventListener('click', async (event) => {
-        // ON CLICK, HIT ENDPOINT THAT PROVIDES RANDOM PLAYER
-        // FILL THE SEARCH BOX WITH THAT PLAYER AND SUBMIT FORM
-        // event.preventDefault();
-        num = await getRandomPlayer();
-        console.log(num);
-        // const jsResp = response.json()
-
-    })
+        event.preventDefault();
+        json = await getRandomPlayer();
+        document.getElementById('playerInput').value = json.player;
+        document.getElementById('league').value = json.league;
+        await search();
+    });
 }
 
+// get headshot & stats based on element values
+async function search() {
+    // PARAMETERS PASSED
+    let player = encodeURIComponent(
+        document.getElementById('playerInput').value.trim()
+    ).toLowerCase();
+    let lg = encodeURIComponent(
+        document.getElementById('league').value.trim()
+    );
+    let sType = encodeURIComponent(
+        document.getElementById('statType').value.trim()
+    );
+    
+    // CHECK IF USER SPECIFIED A PLAYER IN THE SEARCH BOX
+    if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
+        player = 'all';
+    } else {
+        getHeadshot(lg, player);
+    }
+    // CONSTRUCT THE QUERY STRING
+    const url = (base + `/players?lg=${lg}&stype=${sType}&player=${player}`)
+    getStats(url, 2, ' - ');
+    document.getElementById('playerInput').value = '';
+}
+
+// returns random player json from api
 async function getRandomPlayer() {
-    console.log('random button pressed');
-    const rUrl = url + `/players/random`;
-    const response = await fetch(rUrl);
+    const url = base + `/players/random`;
+    const response = await fetch(url)
     if (!response.ok) {
         throw new Error(`HTTP Error getting player id: ${response.status}`);
     }
     const json = await response.json();
-    return json.num;
+    return json;
 }
 
+// build headshot url 
+function makeHeadshotUrl(lg, playerId) {
+    return `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
+};
+
 async function getHeadshot(lg, player) {
-    let playerId = await getPlayerId(url, player);
-    let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
-    
-    const container = document.getElementById('hs');
+    let playerId = await getPlayerId(base, player);
+    let url = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`
+    appendImg(url, 'hs')
+    // appendImg(makeHeadshotUrl(lg, playerId), 'hs')
+}
+
+async function appendImg(url, el) {
+    const container = document.getElementById(el);
     container.innerHTML = '';
     const img = document.createElement('img');
 
-    img.src = imgUrl;
+    img.src = url;
     img.alt = "image not found"
     img.style.maxWidth = '50%';
     img.style.height = 'auto';

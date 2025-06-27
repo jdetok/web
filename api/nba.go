@@ -21,9 +21,9 @@ func (app *application) getRandomPlayer(w http.ResponseWriter, r *http.Request) 
 
 	w.Header().Set("Content-Type", "application/json") 
 	json.NewEncoder(w).Encode(map[string]string{
-		"len": strconv.Itoa(numPlayers),
-		"rand": strconv.Itoa(randNum),
+		"playerId": strconv.FormatUint(app.players[randNum].PlayerId, 10),
 		"player": app.players[randNum].Name,
+		"league": app.players[randNum].League,
 	})
 	// random number in range of len(players) to return random player
 }
