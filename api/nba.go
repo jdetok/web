@@ -2,8 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"math/rand/v2"
 	"net/http"
+	"strconv"
 
 	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/env"
@@ -12,6 +13,20 @@ import (
 	"github.com/jdetok/web/internal/logs"
 	"github.com/jdetok/web/internal/store"
 )
+
+func (app *application) getRandomPlayer(w http.ResponseWriter, r *http.Request) {
+	logs.LogHTTP(r)
+	numPlayers := len(app.players)
+	randNum := rand.IntN(numPlayers)
+
+	w.Header().Set("Content-Type", "application/json") 
+	json.NewEncoder(w).Encode(map[string]string{
+		"len": strconv.Itoa(numPlayers),
+		"rand": strconv.Itoa(randNum),
+		"player": app.players[randNum].Name,
+	})
+	// random number in range of len(players) to return random player
+}
 
 func (app *application) getPlayerId(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
@@ -25,7 +40,6 @@ func (app *application) getPlayerId(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{
 		"playerId": playerId,
 	})
-	// json.NewEncoder(w).Encode(playerId)
 }
 
 // RETURN CONTENTS OF JSON FILE AS []byte
@@ -99,22 +113,25 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) getHeadShot(w http.ResponseWriter, r *http.Request) {
-	player := r.URL.Query().Get("player")
-	// lg := r.URL.Query().Get("lg")
-	
-	playerId := db.ValiPlayer(app.database, &w, player)
-	hsPath := env.GetString("NBA_HS") + string(playerId) + ".png"
-	
-	fmt.Println(hsPath)
 
-	// response := map[string]string{"path": MakeUrl(lg)}
-	response := map[string]string{"path": hsPath}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
-}
 
-func MakeUrl(lg, playerId string) string {
-	return ("https://cdn." + lg + ".com/headshots/" + lg + "/latest/1040x760/" + playerId + ".png")
-	// )s
-}
+
+// func (app *application) getHeadShot(w http.ResponseWriter, r *http.Request) {
+// 	player := r.URL.Query().Get("player")
+// 	// lg := r.URL.Query().Get("lg")
+	
+// 	playerId := db.ValiPlayer(app.database, &w, player)
+// 	hsPath := env.GetString("NBA_HS") + string(playerId) + ".png"
+	
+// 	fmt.Println(hsPath)
+
+// 	// response := map[string]string{"path": MakeUrl(lg)}
+// 	response := map[string]string{"path": hsPath}
+// 	w.Header().Set("Content-Type", "application/json")
+// 	json.NewEncoder(w).Encode(response)
+// }
+
+// func MakeUrl(lg, playerId string) string {
+// 	return ("https://cdn." + lg + ".com/headshots/" + lg + "/latest/1040x760/" + playerId + ".png")
+// 	// )s
+// }

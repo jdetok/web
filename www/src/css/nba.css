@@ -4,74 +4,44 @@
     color: rgba(240, 111, 111, 0.822);   
 }
 
-.dyn {
-    display: flex;
-    flex-direction: row;  
-    justify-content: flex-end;
-    align-items: center;
-    margin: auto;
-    gap: 1rem;
-    width: fit-content;
-}
-
-@media (max-width: 600px) {
-    .dyn {
-    flex-direction: column; 
-    }
-
-    .disclaimer {
-        text-align: center;
-    }
-}
-
-#nba {
-    display: flex;
-    gap: 20px;           
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-/* tables display vertically on small screens */ 
-@media (max-width: 600px) {
-    #nba {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #nba table {
-        width: 90%;
-    }
-}
-
 .pageForm {
     align-items: center;
-}
-
-#playerForm {
-  display: flex;
-  justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .searchForm {
     display: flex;
     align-items: flex-start; 
+    justify-content: center;
     gap: 5px;
 }
 
-.opts {
+.info {
+    width: 40%;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    text-align: center;
+    
+}
+
+.rcol {
     display: flex;
     flex-direction: column;
-    gap: 5px;
     align-items: flex-end;
-    align-self: right;
 }
 
-.opt {
-    display: inline;
+.lcol {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.opts select {
-    width: fit-content;
+.rcol *, .lcol * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 h1.nba {
@@ -82,6 +52,21 @@ h3.nbarefr {
     float: center;
     font-size: 14;
     padding: 8px;
+}
+
+.dyn {
+    display: flex;
+    flex-direction: row;  
+    justify-content: flex-end;
+    align-items: center;
+    margin: auto;
+    width: fit-content;
+}
+
+#stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 table {
@@ -103,4 +88,28 @@ table tr td{
     border: 1px solid black;
     font-size: 20px;
     padding: 4px;
+}
+
+/* tables display vertically on small screens */ 
+@media (max-width: 600px) {
+    #stats {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    table {
+        width: 90%;
+    }
+
+    .info {
+        width: 90%;
+    }
+
+    .dyn {
+        flex-direction: column; 
+    }
+
+    .disclaimer {
+        text-align: center;
+    }
 }

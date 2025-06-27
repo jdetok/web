@@ -34,17 +34,22 @@
     <!--IDEA - CONVERT THIS DIV TO A TABLE
     TODO - ADD SEASON TYPE SELECTOR-->
     <div class="pageForm">
-    <form id="playerForm">
-      <div class="searchForm">
-        <div class="opts">
-          <div class="opt">
-          <label for="league">League:</label>
-          <select name="league" id="league">
-            <option value="nba">NBA</option>
-            <option value="wnba">WNBA</option>
-          </select>
+      <div class="info">
+        <i>type in a player's name to see their stats, click "Random Player" to see a 
+          random player's stats, or click search to see all players' stats for the selected league
+        </i>
+      </div>
+      <form id="playerForm" class="searchForm">
+        <!-- SELECTORS -->
+        <div class="rcol">
+          <div> <!-- LEAGUE SELECTOR -->
+            <label for="league">League:</label>
+            <select name="league" id="league">
+              <option value="nba">NBA</option>
+              <option value="wnba">WNBA</option>
+            </select>
           </div>
-          <div class="opt">
+          <div> <!-- STAT TYPE SELECTOR -->
           <label for="statType">Totals/Avgs:</label>
           <select name="statType" id="statType">
             <option value="tot">Totals</option>
@@ -52,16 +57,18 @@
           </select>
           </div>
         </div>
-        <div>
+
+        <!-- SEARCH BOX -->
+        <div class="rcol">
           <input type="text" id="playerInput" placeholder="Search for a specific player"/>
-          <button id="fetchBtn">Search</button><br>
         </div>
-      </div>
-    </form>
-    <div class="center">
-      <i>click search or press enter to see all players</i>
-    </div>
-    
+
+        <!-- SEARCH BUTTONS -->
+        <div class="lcol">
+          <button id="fetchBtn">Search</button><br>
+          <button id="randBtn">Random Player</button>
+        </div>
+      </form>
     </div>
 
     <!-- STATS SECTION (DYNAMIC FROM API)
@@ -71,7 +78,7 @@
     <div class="dyn">
       <div id="loadmsg"></div>
       <div id="hs"></div>
-      <div id="nba"></div>
+      <div id="stats"></div>
     </div>
   </body>
 </html>

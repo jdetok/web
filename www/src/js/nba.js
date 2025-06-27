@@ -1,19 +1,25 @@
 //  JS FOR NBA SITES PAGE
-let url = "https://jdeko.me/bball";
+const url = "https://jdeko.me/bball";
 
+// CALL ANY LISTENERS HERE
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('playerForm');
-    form.addEventListener('submit', async (event) => {
+     formListener();
+     randomListener();
+});
+
+function formListener() {
+    const btn = document.getElementById('fetchBtn');
+    btn.addEventListener('click', async (event) => {
         event.preventDefault();
         
         // PARAMETERS PASSED
         let player = encodeURIComponent(
             document.getElementById('playerInput').value.trim()
         ).toLowerCase();
-        const lg = encodeURIComponent(
+        let lg = encodeURIComponent(
             document.getElementById('league').value.trim()
         );
-        const sType = encodeURIComponent(
+        let sType = encodeURIComponent(
             document.getElementById('statType').value.trim()
         );
         
@@ -21,27 +27,54 @@ document.addEventListener('DOMContentLoaded', () => {
         if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
             player = 'all';
         } else {
-            let playerId = await getPlayerId(url, player);
-            let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
-            
-            const container = document.getElementById('hs');
-            container.innerHTML = '';
-            const img = document.createElement('img');
-        
-            img.src = imgUrl;
-            img.alt = "image not found"
-            img.style.maxWidth = '50%';
-            img.style.height = 'auto';
-            img.style.marginLeft = 'auto';
-            container.append(img);
-
+            getHeadshot(lg, player);
         }
         // CONSTRUCT THE QUERY STRING
         const qUrl = (url + `/players?lg=${lg}&stype=${sType}&player=${player}`)
-        getData(qUrl, 2, ' - ');
+        getStats(qUrl, 2, ' - ');
 
-    }); 
-});
+    });
+};
+
+function randomListener() {
+    const btn = document.getElementById('randBtn');
+    btn.addEventListener('click', async (event) => {
+        // ON CLICK, HIT ENDPOINT THAT PROVIDES RANDOM PLAYER
+        // FILL THE SEARCH BOX WITH THAT PLAYER AND SUBMIT FORM
+        // event.preventDefault();
+        num = await getRandomPlayer();
+        console.log(num);
+        // const jsResp = response.json()
+
+    })
+}
+
+async function getRandomPlayer() {
+    console.log('random button pressed');
+    const rUrl = url + `/players/random`;
+    const response = await fetch(rUrl);
+    if (!response.ok) {
+        throw new Error(`HTTP Error getting player id: ${response.status}`);
+    }
+    const json = await response.json();
+    return json.num;
+}
+
+async function getHeadshot(lg, player) {
+    let playerId = await getPlayerId(url, player);
+    let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
+    
+    const container = document.getElementById('hs');
+    container.innerHTML = '';
+    const img = document.createElement('img');
+
+    img.src = imgUrl;
+    img.alt = "image not found"
+    img.style.maxWidth = '50%';
+    img.style.height = 'auto';
+    img.style.marginLeft = 'auto';
+    container.append(img);
+}
 
 // pass encoded player name to /players/id to get the player id
 async function getPlayerId(url, player) {
@@ -55,15 +88,15 @@ async function getPlayerId(url, player) {
     return String(playerId);
 };
 
-// REQUEST JSON FROM API
-async function getData(url, numCapFlds, capDelim) {
+// REQUEST STATS JSON FROM API
+async function getStats(url, numCapFlds, capDelim) {
     // LOADING MESSAGE
     const loadMsg = document.getElementById('loadmsg');
     loadMsg.textContent = 'Requesting data from API...';
 
     // DIV TO CREATE STATS ELEMENTS
-    const nbaEl = document.getElementById('nba');
-    nbaEl.innerHTML = ''; 
+    const statsEl = document.getElementById('stats');
+    statsEl.innerHTML = ''; 
     
     try { // WAIT FOR API RESPONSE
         const response = await fetch(url);
@@ -82,55 +115,17 @@ async function getData(url, numCapFlds, capDelim) {
     };
 };
 
-// LIST OF KEYS IN EACH OF THE JSON OBECTS
-function jsonKeys(data) { // all objects will be the same - just get keys from the first
-    return Object.keys(data[0]);
-};
-
-// // REQUEST IMG FROM API
-async function getImg(data, keys) {
-    const key = keys[0];
-    
-    player = encodeURIComponent(data[0][key])
-    console.log(player);
-    // API CALL HERE
-    let pUrl = (url + `/players/headshot?player=${player}`)
-    console.log(pUrl);
-    const response = await fetch(pUrl);
-    if (!response.ok) { 
-        throw new Error(`HTTP Error: ${response.status}`)
-    } // CONVERT SUCCESSFUL RESPONSE TO JSON & CLEAR LOADMSG
-    
-    const imgSrc = await response.json();
-    
-    console.log(imgSrc.path)
-    return imgSrc
-};
-
 // dynamically create HTML table element with caption
 // fields used for MUST be the first #numCapFlds fields of each json object
 // numCapFlds - number of fields in each json object to be used for the caption
 // capDelim - string delimiter used in caption
 async function tableFromJSON(data, numCapFlds, capDelim) {
-    const div = document.getElementById("nba");
+    const div = document.getElementById("stats");
 
     div.innerHTML = ""; // clear the current nba container
     // GET KEYS
-    const keys = jsonKeys(data);
-
-        // TODO - IF SINGLE PLAYER REQUEST, GET THE PLAYER'S PICTURE
-    // if (data.length == 1 && keys[0] === 'player') {
-        // const imgSrc = await getImg(data, keys)
-        // console.log(imgSrc.path)
-    //     const img = document.createElement('img');
-    //     // img.src = imgSrc.path;
-    //     img.src = imgSrc.path;
-    //     img.alt = "image not found"
-    //     img.style.maxWidth = '40%';
-    //     img.style.height = 'auto';
-    //     img.style.marginLeft = 'auto';
-    //     div.append(img);
-    // }
+    // const keys = jsonKeys(data);
+    const keys = Object.keys(data[0]);
 
     for (const obj of data) { 
         const objTbl = document.createElement('table');
