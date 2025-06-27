@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // PARAMETERS PASSED
         let player = encodeURIComponent(
             document.getElementById('playerInput').value.trim()
-        );
+        ).toLowerCase();
         const lg = encodeURIComponent(
             document.getElementById('league').value.trim()
         );
@@ -21,9 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (player.length < 1) { // EMPTY SEARCH BOX -> player=all
             player = 'all';
         } else {
-            const playerId = await getPlayerId(url, player);
-            let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`
-            console.log(imgUrl)
+            console.log(player);
+            let playerId = await getPlayerId(url, player);
+            console.log(playerId);
+            let imgUrl = `https://cdn.${lg}.com/headshots/${lg}/latest/1040x760/${playerId}.png`;
+            console.log(imgUrl);
             const container = document.getElementById('hs');
             container.innerHTML = '';
             const img = document.createElement('img');

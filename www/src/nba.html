@@ -10,21 +10,26 @@
     <script src="/js/nba.js"></script>
   </head>
 
-  <header class=".hdr">
-    <div class="disclaimer"><b>
+
+  <header>
+    <div class="goback">
+      <a href="index.html">go back</a>
+    </div>
+    <div class="disclaimer">
       <a class="transpar" href="https://www.nba.com/stats" target="_blank">
-        NO AFFILIATION WITH THE NBA</a></b>
+        NO AFFILIATION WITH THE NBA</a>
     </div> 
-  </header><br>
+  </header>
 
   <body>    
-    <h1 class="nba">NBA/WNBA Statistics</h1>
-    <a href="nba-info.html">Learn More about this Site</a>
-    <h4>all data owned by and sourced from the NBA (<i><a class="transpar" 
-      href="https://www.nba.com/stats" target="_blank">
-      National Basketball Association</a></i>)
-    </h4>
-    <br>
+    <div class="intro">
+      <h1>NBA/WNBA Statistics</h1>
+      <a href="nba-info.html">Learn More about this Site</a>
+      <h4>all data owned by and sourced from the NBA (<i>
+        <a class="transpar" href="https://www.nba.com/stats" target="_blank">
+        National Basketball Association</a></i>)
+      </h4>
+    </div>
     
     <!--IDEA - CONVERT THIS DIV TO A TABLE
     TODO - ADD SEASON TYPE SELECTOR-->
@@ -52,9 +57,12 @@
           <button id="fetchBtn">Search</button><br>
         </div>
       </div>
-    </form><br>
-    <i>click search or press enter to see all players</i>
-    </div><br>
+    </form>
+    <div class="center">
+      <i>click search or press enter to see all players</i>
+    </div>
+    
+    </div>
 
     <!-- STATS SECTION (DYNAMIC FROM API)
     STATUS IS THE LOADING TEXT

@@ -10,16 +10,20 @@ import (
 	"github.com/jdetok/web/internal/errs"
 	"github.com/jdetok/web/internal/jsonops"
 	"github.com/jdetok/web/internal/logs"
+	"github.com/jdetok/web/internal/store"
 )
 
 func (app *application) getPlayerId(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 	player := r.URL.Query().Get("player")
-	playerId := db.ValiPlayer(app.database, &w, player)
+	logs.LogDebug("Player Requested: " + player)
+	// playerId := db.ValiPlayer(app.database, &w, player)
 	
-	w.Header().Set("Content-Type", "application/json")
+	playerId := store.SearchPlayers(app.players, player)
+	logs.LogDebug("PlayerId Return: " + playerId)
+	w.Header().Set("Content-Type", "application/json") 
 	json.NewEncoder(w).Encode(map[string]string{
-		"playerId": string(playerId),
+		"playerId": playerId,
 	})
 	// json.NewEncoder(w).Encode(playerId)
 }
@@ -44,63 +48,50 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 	lg := r.URL.Query().Get("lg")
 	sType := r.URL.Query().Get("stype")
 	player := r.URL.Query().Get("player")
-	// OUTER SWTICH: NBA/WNBA	
-	switch lg {
-	case "nba":
-		// NBA SWITCH TOTALS/AVERAGES
+	
+	switch lg { // OUTER SWTICH: NBA/WNBA	
+	case "nba": // NBA SWITCH TOTALS/AVERAGES
 		switch sType {
-		case "tot":
-			// NBA TOTALS
+		case "tot": // NBA TOTALS
 			switch player {
 			case "all": // NBA RS TOTALS ALL PLAYERS
 				js := respFromFile(&w, "/nba_rs_totals.json")
 				app.JSONWriter(w, js)
 			default: // NBA RS TOTALS SPECIFIC PLAYER
-				playerId := db.ValiPlayer(app.database, &w, player)
+				playerId := store.SearchPlayers(app.players, player)
 				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerStat.Q, lg, string(playerId))
-				// w.Header().Set("Content-Type", "image/png")
-				// http.ServeFile(w, r, env.GetString("HS_PATH") + string(playerId) + ".png")
-				// fmt.Println(env.GetString("HS_PATH") + string(playerId) + ".png")
 				app.JSONWriter(w, js)
 			}
-
-		// NBA AVERAGES
-		case "avg":
+		case "avg": // NBA AVERAGES
 			switch player {
 			case "all": // NBA RS AVG ALL PLAYERS
 				js := respFromFile(&w, "/nba_rs_avgs.json")
 				app.JSONWriter(w, js)
-
 			default:  // NBA RS AVG SPECIFIC PLAYER
-				playerId := db.ValiPlayer(app.database, &w, player)
+				playerId := store.SearchPlayers(app.players, player)
 				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		}
 	case "wnba":
-		// WNBA SWITCH TOTALS/AVERAGES
-		switch sType {
-		case "tot":
-			// WNBA TOTALS
-			switch player {
-			case "all": // ALL WNBA TOTALS
+		switch sType { // WNBA SWITCH TOTALS/AVERAGES
+		case "tot": // WNBA TOTALS
+			switch player {  // ALL WNBA TOTALS
+			case "all":
 				js := respFromFile(&w, "/wnba_rs_totals.json")
 				app.JSONWriter(w, js)
-
 			default: // SPECIFIC WNBA PLAYER TOTALS
-				playerId := db.ValiPlayer(app.database, &w, player)
-				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
+				playerId := store.SearchPlayers(app.players, player)
+				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerStat.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
-		// WNBA AVERAGES
-		case "avg":
+		case "avg": // WNBA AVERAGES
 			switch player {
 			case "all": // ALL WNBA AVERAGES
 				js := respFromFile(&w, "/wnba_rs_avgs.json")
 				app.JSONWriter(w, js)
-
 			default: // SPECIFIC WNBA PLAYER AVERAGES
-				playerId := db.ValiPlayer(app.database, &w, player)
+				playerId := store.SearchPlayers(app.players, player)
 				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}

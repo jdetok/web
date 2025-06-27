@@ -59,7 +59,7 @@ var paths = []fPath{
 }
 
 // runs every interval seconds, updates if time since last update is > threshold
-func CheckCache(db *sql.DB, lastUpdate *time.Time, inteval time.Duration, threshold time.Duration) {
+func CheckCache(db *sql.DB, lastUpdate *time.Time, players *[]Player, inteval time.Duration, threshold time.Duration) {
 	e := errs.ErrInfo{Prefix: "cache check",}
 	ticker := time.NewTicker(inteval)
 	defer ticker.Stop()
@@ -68,6 +68,12 @@ func CheckCache(db *sql.DB, lastUpdate *time.Time, inteval time.Duration, thresh
 		if time.Since(*lastUpdate) > threshold {
 			fmt.Printf("refreshing cache at %v: %v since last update\n", 
 				time.Now().Format("2006-01-02 15:04:05"), threshold)
+			newPlayers, err := GetPlayers(db)
+			if err != nil {
+				e.Msg = "failed to get players"
+			}
+			*players = newPlayers
+			// fmt.Println(players)
 			updateTime, err := UpdateManyCache(db, paths)
 			if err != nil {
 				e.Msg = "cache update failed"

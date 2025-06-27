@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/jdetok/web/internal/store"
 )
 
 type application struct {
@@ -12,6 +14,7 @@ type application struct {
 	database *sql.DB
 	StartTime time.Time
 	lastUpdate time.Time
+	players []store.Player
 }
 
 type config struct {

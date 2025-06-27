@@ -13,3 +13,7 @@ func LogHTTP(r *http.Request) {
 	fmt.Printf("- User Agent: %v\n", r.UserAgent())
 	fmt.Printf("- %v %v\n\n", r.Method, r.RequestURI)
 }
+
+func LogDebug(msg string) {
+	fmt.Println(msg)
+}

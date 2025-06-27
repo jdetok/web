@@ -2,15 +2,15 @@ FROM golang:1.24
 
 WORKDIR /app
 
-# RUN go install github.com/cosmtrek/air@latest
 RUN go install github.com/air-verse/air@latest
-
-COPY go.mod go.sum .env ./
-
+#vCOPY go.mod go.sum .env ./
+COPY . .
 RUN go mod download
 
-COPY . .
+# COPY . .
 ENTRYPOINT [ "air" ]
+
+
 # COPY ./api ./api
 # COPY ./internal ./internal
 # COPY ./www ./www

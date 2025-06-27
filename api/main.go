@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -34,8 +35,16 @@ func main() {
         database: db.InitDB(),
     }
 
+    app.players, err = store.GetPlayers(app.database)
+    fmt.Println(app.players)
+
+    if err != nil {
+        slog.Error("error getting players")
+    }
+    // fmt.Println(app.players)
+
     // checks if cache needs refreshed every 30 seconds, refreshes if 60 sec since last
-    go store.CheckCache(app.database, &app.lastUpdate, 30*time.Second, 300*time.Second)
+    go store.CheckCache(app.database, &app.lastUpdate, &app.players, 30*time.Second, 300*time.Second)
 
     mux := app.mount()
     if err := app.run(mux); err != nil {
