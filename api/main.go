@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -35,7 +34,7 @@ func main() {
     }
 
     app.players, err = store.GetPlayers(app.database)
-    fmt.Println(app.players)
+    // fmt.Println(app.players)
 
     if err != nil {
         slog.Error("error getting players")

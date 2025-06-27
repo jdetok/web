@@ -35,6 +35,7 @@ function randomListener() {
 
 // get headshot & stats based on element values
 async function search() {
+
     // PARAMETERS PASSED
     let player = encodeURIComponent(
         document.getElementById('playerInput').value.trim()
@@ -46,20 +47,50 @@ async function search() {
         document.getElementById('statType').value.trim()
     );
     
+    const hdrEl = document.getElementById('playerteam');
+    const hsEl = document.getElementById('hs');
+    
+    // hsEl.innerHTML = '';
+    hdrEl.innerHTML = '';
     // CHECK IF USER SPECIFIED A PLAYER IN THE SEARCH BOX
     data = await getData(lg, sType, player)
+    let capEnable; // determine whether table has a caption
     if (data[1] != '') {
-        const hdrEl = document.getElementById('playerteam');
-        hdr = await getHeader(data[0], 2);
-        console.log(hdr);
+        capEnable = false;
+        // const hdrEl = document.getElementById('playerteam');
+        let hdr = await getHeader(data[0], 2, sType);
         await appendHdr(hdr, hdrEl);
-        // hdrEl.textContent = hdr
+
+        hsEl.style.display = 'flex';
         await appendImg(data[1], 'hs');
+    } else {
+        // hide the image div to not case layout shifting when player=all
+        // let hdr =`Career ${sType} - All ${lg} Players`;
+        capEnable=true;
+        let hdr = await getAllHdr(sType, lg)
+        await appendHdr(hdr, hdrEl);
+        
+        // hdrEl.innerHTML = 
+        hsEl.style.display = 'none';
+
     }
-    await tableFromJSON(data[0], 2, ' - ');
+    await tableFromJSON(data[0], 2, ' - ', capEnable);
     // doing this to get player name and team as header
 
     document.getElementById('playerInput').value = '';
+}
+
+function sTypeLong(sType) {
+    if (sType === 'tot') {
+        return 'Totals';
+    } else {
+        return 'Averages';
+    }
+}
+
+async function getAllHdr(sType, lg) {
+    let s = sTypeLong(sType);
+    return `Career ${s} - All ${lg.toUpperCase()} Players`;
 }
 
 async function appendHdr(playerTeam, el) {
@@ -78,9 +109,6 @@ async function getData(lg, sType, player) {
     const url = (base + `/players?lg=${lg}&stype=${sType}&player=${player}`)
     stats = await getStats(url);
 
-    // // derive player/team header from data
-    // hdr = await getHeader(stats, 2); 
-    // console.log(hdr);
     if (player != 'all') {
         hs = await getHeadshot(lg, player);
     } else {
@@ -110,9 +138,9 @@ async function getStats(url) {
     };
 };
 
-async function getHeader(data, numF) {
+async function getHeader(data, numF, sType) {
     const keys = Object.keys(data[0]);
-    let hdr = "";
+    let hdr = `Career ${sTypeLong(sType)}<br>`;
     console.log(data[0]);
     console.log(keys);
     
@@ -134,23 +162,23 @@ async function getHeadshot(lg, player) {
     return makeImg(url);
 }
 
-
-
- 
-
 // make html image with built url
 async function makeImg(url) {
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = "image not found"
-    img.style.maxWidth = '50%';
-    img.style.height = 'auto';
-    img.style.marginLeft = 'auto';
-    return img
+    return new Promise((resolve, reject) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = "image not found"
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+    });
 }
 
 // append image to document with src url
 async function appendImg(img, el) {
+    // if (!el) {
+    //     let el = document.createElement('div');
+    //     el.id = 'hs';
+    // }
     const container = document.getElementById(el);
     container.innerHTML = '';
     container.appendChild(img);
@@ -180,13 +208,27 @@ async function getPlayerId(url, player) {
     return String(playerId);
 };
 
-
+async function makeCaption(obj, keys, numCapFlds, capDelim) {
+    let cap = "";
+    let capVal = 0;
+    while (capVal < numCapFlds) {
+        cap += obj[keys[capVal]];
+        capVal++; //  e.g LeBron James - LAL
+        if (capVal < numCapFlds) { // ignore last value so no delim at end
+            cap += capDelim; // concat capDelim between capVals
+        }
+    };
+    // CREATE HTML CAPTION ELEMENT FROM cap 
+    const caption = document.createElement('caption');
+    caption.textContent = cap;
+    return caption
+}
 
 // dynamically create HTML table element with caption
 // fields used for MUST be the first #numCapFlds fields of each json object
 // numCapFlds - number of fields in each json object to be used for the caption
 // capDelim - string delimiter used in caption
-async function tableFromJSON(data, numCapFlds, capDelim) {
+async function tableFromJSON(data, numCapFlds, capDelim, capEnable) {
     // DIV TO CREATE STATS ELEMENTS
     const statsEl = document.getElementById('stats');
     statsEl.innerHTML = ''; 
@@ -194,22 +236,10 @@ async function tableFromJSON(data, numCapFlds, capDelim) {
     const keys = Object.keys(data[0]);
     for (const obj of data) { 
         const objTbl = document.createElement('table');
-
-        // FIRST numCapFlds OBJECTS WILL CONSTRUCT CAPTION STRING
-        let cap = "";
-        let capVal = 0;
-        while (capVal < numCapFlds) {
-            cap += obj[keys[capVal]];
-            capVal++; //  e.g LeBron James - LAL
-            if (capVal < numCapFlds) { // ignore last value so no delim at end
-                cap += capDelim; // concat capDelim between capVals
-            }
-        };
-
-        // CREATE HTML CAPTION ELEMENT FROM cap 
-        const caption = document.createElement('caption');
-        caption.textContent = cap;
-        objTbl.appendChild(caption); // APPEND CAPTION TO HTML TABLE
+        if (capEnable) {
+            const caption = await makeCaption(obj, keys, numCapFlds, capDelim);
+            objTbl.appendChild(caption); // APPEND CAPTION TO HTML TABLE
+        }
         
         // LOOP THROUGH FIELDS > numCapFlds, EACH LOOP APPENDS A ROW TO TABLE
         for (let i = numCapFlds; i < keys.length; i++) {

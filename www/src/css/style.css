@@ -86,17 +86,26 @@ a.med {
     text-align: center;
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
     .intro {
         width: 90%
     }
-}
+} */
 
 /* MAIN CENTER ALIGN CLASS */
 .center {
     margin: auto;
     padding: 5px;
     text-align: center;
+}
+
+.centert {
+    margin-bottom: 0;
+    margin-top: 5px;
+    padding: 2px;
+    /* padding: 5px; */
+    text-align: center;
+    align-items: center;
 }
 
 /* DIV CLASS FOR PROJECT SECTIONS */
@@ -116,6 +125,13 @@ a.med {
 	align-items: center;
 }
 
+ul.pics {
+  padding: 0;
+  margin: 0 auto; /* centers the <ul> itself */
+  text-align: center;
+  list-style: none; /* optional, if you want to remove bullets */
+}
+
 ul.pics li {    
     color:rgb(198, 226, 180);
     font-size:20px;
@@ -125,7 +141,8 @@ ul.pics li {
 }
 
 ul.pics li figure img {
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
     height: auto;
     margin-top: 10px;
 }
@@ -168,6 +185,10 @@ footer {
 }
 
 @media (max-width: 600px) {
+    .intro {
+        width: 90%
+    }
+    
     .flexels {
     flex-direction: column; 
     align-items: center;
@@ -180,4 +201,15 @@ footer {
         width: 90%;
         max-width: 100%;
     }
+
+    ul.pics li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    ul.pics li figure img {
+        width: fit-content;
+    }
+
 }

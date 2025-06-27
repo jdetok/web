@@ -53,7 +53,7 @@ h3.nbarefr {
     font-size: 14;
     padding: 8px;
 }
-
+/* 
 .dyn {
     display: flex;
     flex-direction: row;  
@@ -61,6 +61,40 @@ h3.nbarefr {
     align-items: center;
     margin: auto;
     width: fit-content;
+}
+
+#hs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+}
+
+#hs img{
+    width: 40%;
+    height: auto;
+} */
+.dyn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 2rem auto;
+    width: fit-content;
+}
+
+#hs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 40%;
+}
+
+#hs img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 #stats {
@@ -107,6 +141,7 @@ table tr td{
 
     .dyn {
         flex-direction: column; 
+        align-items: center;
     }
 
     .disclaimer {
