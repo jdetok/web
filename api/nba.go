@@ -14,6 +14,18 @@ import (
 	"github.com/jdetok/web/internal/store"
 )
 
+func (app *application) getSeasons(w http.ResponseWriter, r *http.Request) {
+	logs.LogHTTP(r)
+	w.Header().Set("Content-Type", "application/json") 
+	json.NewEncoder(w).Encode(app.seasons)
+}
+
+func (app *application) getTeams(w http.ResponseWriter, r *http.Request) {
+	logs.LogHTTP(r)
+	w.Header().Set("Content-Type", "application/json") 
+	json.NewEncoder(w).Encode(app.teams)
+}
+
 func (app *application) getRandomPlayer(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 	numPlayers := len(app.players)
