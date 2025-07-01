@@ -67,7 +67,16 @@ var paths = []fPath{
 }
 
 // runs every interval seconds, updates if time since last update is > threshold
-func CheckCache(db *sql.DB, lastUpdate *time.Time, players *[]Player, inteval time.Duration, threshold time.Duration) {
+func CheckCache(
+	db *sql.DB, 
+	lastUpdate *time.Time, 
+	players *[]Player, 
+	seasons *[]Season,
+	teams *[]Team,
+	inteval time.Duration, 
+	threshold time.Duration) {
+
+	// func starts here
 	e := errs.ErrInfo{Prefix: "cache check",}
 	ticker := time.NewTicker(inteval)
 	defer ticker.Stop()
@@ -76,12 +85,29 @@ func CheckCache(db *sql.DB, lastUpdate *time.Time, players *[]Player, inteval ti
 		if time.Since(*lastUpdate) > threshold {
 			fmt.Printf("refreshing cache at %v: %v since last update\n", 
 				time.Now().Format("2006-01-02 15:04:05"), threshold)
+			
+		// REFRESH THE SEASONS ARRAY	
+			newSeasons, err := GetSeasons(db)
+			if err != nil {
+				e.Msg = "failed to get seasons"
+			}
+			*seasons = newSeasons
+
+		// REFRESH THE PLAYERS ARRAY
 			newPlayers, err := GetPlayers(db)
 			if err != nil {
 				e.Msg = "failed to get players"
 			}
 			*players = newPlayers
-			// fmt.Println(players)
+
+		// REFRESH THE SEASONS ARRAY	
+			newTeams, err := GetTeams(db)
+			if err != nil {
+				e.Msg = "failed to get teams"
+			}
+			*teams = newTeams
+
+		// UPDATE THE STATS JSON FILES
 			updateTime, err := UpdateManyCache(db, paths)
 			if err != nil {
 				e.Msg = "cache update failed"

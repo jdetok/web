@@ -33,15 +33,25 @@ func main() {
         database: mariadb.InitDB(),
     }
 
-    app.players, err = store.GetPlayers(app.database)
-    // fmt.Println(app.players)
+    // create array of player structs
+    if app.players, err = store.GetPlayers(app.database); err != nil {
+        slog.Error("failed creating players array")
+    }
 
-    if err != nil {
-        slog.Error("error getting players")
+    // create array of season structs
+    if app.seasons, err = store.GetSeasons(app.database); err != nil {
+        slog.Error("failed creating seasons array")
+    }
+
+    // create array of season structs
+    if app.teams, err = store.GetTeams(app.database); err != nil {
+        slog.Error("failed creating teams array")
     }
 
     // checks if cache needs refreshed every 30 seconds, refreshes if 60 sec since last
-    go store.CheckCache(app.database, &app.lastUpdate, &app.players, 30*time.Second, 300*time.Second)
+    go store.CheckCache(app.database, &app.lastUpdate, 
+        &app.players, &app.seasons, &app.teams,
+        30*time.Second, 300*time.Second)
 
     mux := app.mount()
     if err := app.run(mux); err != nil {

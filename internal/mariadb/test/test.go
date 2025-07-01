@@ -3,13 +3,18 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-
-	"github.com/jdetok/web/internal/errs"
 	"github.com/jdetok/web/internal/mariadb"
+	"github.com/jdetok/web/internal/store"
 )
 
+
+func main() {
+	db := mariadb.InitDB()
+	// store.GetSeasons(db)
+	store.GetTeams(db)
+}
+
+/*
 type Player struct {
 	PlayerId uint32
 	Name string
@@ -47,14 +52,7 @@ func SearchPlayers(players []Player, pSearch string) bool {
 	return false
 }
 
-func main() {
-	database := mariadb.InitDB()
-	players := GetPlayers(database)
 
-	if SearchPlayers(players, "Caitlin Clark") {
-		fmt.Println("Player exists")
-	}
-	
 	// fmt.Println(players)
 	// fmt.Println(len(players))
 
@@ -63,5 +61,6 @@ func main() {
 	// fmt.Println(string(js))
 	// fmt.Println(len(js))
 	// db.SelectDB(database, `select team_name from team where lg = "NBA"`)
-}
 
+
+*/

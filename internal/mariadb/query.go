@@ -11,7 +11,18 @@ type Queries struct {
 	DbQueries []Query
 }
 
-var Players = Query{
+
+var Players = Query {
+	Args: []string{},
+	Q: `
+	select player_id, player, lg 
+	from player 
+	where lg in ("NBA", "WNBA") 
+	group by player_id, player, lg
+	`,
+}
+
+var PlayersOld = Query{
 	Args: []string{},
 	Q: `
 	select a.player_id
@@ -30,6 +41,23 @@ var Seasons = Query{
 	and right(season_id, 4) >= 2000
 	-- and right(season_id, 4) >= year(sysdate()) - 15
 	order by right(season_id, 4) desc, left(season_id, 1)
+	`,
+}
+
+var Teams = Query{
+	Args: []string{},
+	Q: `
+	SELECT a.lg, a.team_id, a.team, a.team_name
+	FROM team a
+	INNER JOIN ( 
+		SELECT season_id, team_id
+		FROM t_box
+		WHERE LEFT(season_id, 1) = '2'
+		AND RIGHT(season_id, 4) >= '2000'
+		GROUP BY season_id, team_id
+		) b ON b.team_id = a.team_id
+	WHERE a.lg in ('NBA', 'WNBA')
+	GROUP BY a.lg, a.team_id, a.team, a.team_name
 	`,
 }
 

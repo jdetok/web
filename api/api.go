@@ -15,6 +15,8 @@ type application struct {
 	StartTime time.Time
 	lastUpdate time.Time
 	players []store.Player
+	seasons []store.Season
+	teams []store.Team
 }
 
 type config struct {
