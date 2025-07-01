@@ -1,3 +1,9 @@
+/*
+TODO: NBA TEAM LOGOS
+https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg
+https://cdn.wnba.com/logos/wnba/1611661319/primary/L/logo.svg
+*/
+
 // BASE URLS
 const base = "https://jdeko.me/bball";
 const nbaHsBase = "https://cdn.nba.com/headshots/nba/latest/1040x760";
@@ -85,7 +91,7 @@ async function loadTeamOpts() {
                     document.getElementById('league').value.trim()) {
                 let opt = document.createElement('option');
                 opt.textContent = data[i].CityTeam;
-                opt.value = data[i].TeamId
+                opt.value = data[i].TeamAbbr;
                 slct.appendChild(opt);
             } else {
                 console.log('team not in league');

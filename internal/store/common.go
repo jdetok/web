@@ -26,9 +26,15 @@ type Team struct {
 	League string
 	TeamId string
 	TeamAbbr string
-	CityTeam string 
+	CityTeam string
+	LogoUrl string 
 }
 
+func (t Team) MakeLogoUrl() string {
+	lg := strings.ToLower(t.League)
+	return ("https://cdn." + lg + ".com/logos/" + 
+		lg + "/" + t.TeamId + "/primary/L/logo.svg")
+}
 
 // QUERY FOR PLAYER ID, PLAYER AND SAVE TO A LIST OF PLAYER STRUCTS
 func GetPlayers(db *sql.DB) ([]Player, error) {

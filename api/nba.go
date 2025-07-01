@@ -31,6 +31,7 @@ func (app *application) getSeasons(w http.ResponseWriter, r *http.Request) {
 	}	
 }
 
+// /teams for all or /teams?team=LAL for specifc team
 func (app *application) getTeams(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 	team := r.URL.Query().Get("team")
@@ -40,11 +41,8 @@ func (app *application) getTeams(w http.ResponseWriter, r *http.Request) {
 	} else {
 		for _, tm := range app.teams {
 			if team == tm.TeamAbbr {
+				tm.LogoUrl = tm.MakeLogoUrl()
 				json.NewEncoder(w).Encode(tm)
-				// json.NewEncoder(w).Encode(map[string]string{
-				// "team": tm.TeamId,
-				// "teamLong": tm.CityTeam,
-				// })
 			}
 		}
 	}
