@@ -39,8 +39,9 @@
       </div>
       <form id="playerForm" class="searchForm">
         <!-- SELECTORS -->
-        <div class="rcol">
-          <div> <!-- LEAGUE SELECTOR -->
+         <div class="rcol">
+          
+          <div> <!-- SEASON SELECTOR -->
             <label for="season">Season:</label>
             <select name="Season" id="season">
               <option value="all">All Seasons</option>
@@ -55,6 +56,15 @@
               <option value="wnba">WNBA</option>
             </select>
           </div>
+
+          <div> <!-- TEAM SELECTOR -->
+            <label for="team">Team:</label>
+            <select name="Team" id="team">
+              <option value="all">All Teams</option>
+              <!-- TODO: DYNAMIC OPTIONS ON LOAD -->
+            </select>
+          </div>
+
           <div> <!-- STAT TYPE SELECTOR -->
           <label for="statType">Totals/Avgs:</label>
           <select name="statType" id="statType">
@@ -73,6 +83,7 @@
         <div class="lcol">
           <button id="searchBtn">Search</button><br>
           <button id="randBtn">Random Player</button>
+          <button id="rstBtn">Reset Form</button>
         </div>
       </form>
     </div>

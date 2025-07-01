@@ -52,7 +52,9 @@ func (app *application) mount() *http.ServeMux {
 	mux.HandleFunc("GET /bball/players/id", app.getPlayerId)
 	mux.HandleFunc("GET /bball/players/random", app.getRandomPlayer)
 	mux.HandleFunc("GET /bball/seasons", app.getSeasons)
+	// mux.HandleFunc("GET /bball/seasons/szn", app.getSeason)
 	mux.HandleFunc("GET /bball/teams", app.getTeams)
+	// mux.HandleFunc("GET /bball/teams/team", app.getTeam)
 	// mux.HandleFunc("GET /bball/players/headshot", app.getHeadShot)
 
 // SERVES STATIC SITE IN WEB DIRECTORY, DON'T CACHE JS & CSS

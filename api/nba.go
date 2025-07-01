@@ -16,16 +16,50 @@ import (
 
 func (app *application) getSeasons(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
+	season := r.URL.Query().Get("szn")
 	w.Header().Set("Content-Type", "application/json") 
-	json.NewEncoder(w).Encode(app.seasons)
+	if season == "" {
+		json.NewEncoder(w).Encode(app.seasons)	
+	} else {
+		for _, szn := range app.seasons {
+			if season == szn.SeasonId {
+				json.NewEncoder(w).Encode(map[string]string{
+				"szn": season,
+				})
+			}
+		}
+	}	
 }
 
 func (app *application) getTeams(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
+	team := r.URL.Query().Get("team")
 	w.Header().Set("Content-Type", "application/json") 
-	json.NewEncoder(w).Encode(app.teams)
-}
+	if team == "" {
+		json.NewEncoder(w).Encode(app.teams)	
+	} else {
+		for _, tm := range app.teams {
+			if team == tm.TeamAbbr {
+				json.NewEncoder(w).Encode(tm)
+				// json.NewEncoder(w).Encode(map[string]string{
+				// "team": tm.TeamId,
+				// "teamLong": tm.CityTeam,
+				// })
+			}
+		}
+	}
 
+	// w.Header().Set("Content-Type", "application/json") 
+	// json.NewEncoder(w).Encode(app.teams)
+}
+// func (app *application) getTeam(w http.ResponseWriter, r *http.Request) {
+// 	logs.LogHTTP(r)
+// 	team := r.URL.Query().Get("team")
+// 	// logs.LogDebug("Team Requested: " + team)
+
+// 	w.Header().Set("Content-Type", "application/json") 
+// 	json.NewEncoder(w).Encode(`team: ${team}`)
+// }
 func (app *application) getRandomPlayer(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 	numPlayers := len(app.players)
