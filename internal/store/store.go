@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/env"
 	"github.com/jdetok/web/internal/errs"
 	"github.com/jdetok/web/internal/jsonops"
+	"github.com/jdetok/web/internal/mariadb"
 )
 
 var cachePath string = env.GetString("CACHE_PATH")
@@ -115,7 +115,7 @@ func UpdateManyCache(db *sql.DB, paths []fPath) (*time.Time, error) {
 
 func UpdateCache(database *sql.DB, q string, path string) error{
 	e := errs.ErrInfo{Prefix: ("cache update for " + path),}
-	js, err := db.SelectDB(database, q)
+	js, err := mariadb.SelectDB(database, q)
 	if err != nil {
 		e.Msg = "database query failed"
 		return e.Error(err)
