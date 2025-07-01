@@ -6,8 +6,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/errs"
+	"github.com/jdetok/web/internal/mariadb"
 )
 
 type Player struct {
@@ -48,7 +48,7 @@ func SearchPlayers(players []Player, pSearch string) bool {
 }
 
 func main() {
-	database := db.InitDB()
+	database := mariadb.InitDB()
 	players := GetPlayers(database)
 
 	if SearchPlayers(players, "Caitlin Clark") {

@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/env"
+	"github.com/jdetok/web/internal/mariadb"
 	"github.com/jdetok/web/internal/store"
 	"github.com/joho/godotenv"
 ) 
@@ -30,7 +30,7 @@ func main() {
     // initialize the app with the configs
     app := &application{
         config: cfg,
-        database: db.InitDB(),
+        database: mariadb.InitDB(),
     }
 
     app.players, err = store.GetPlayers(app.database)

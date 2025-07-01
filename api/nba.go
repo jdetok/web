@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/env"
 	"github.com/jdetok/web/internal/errs"
 	"github.com/jdetok/web/internal/jsonops"
 	"github.com/jdetok/web/internal/logs"
+	"github.com/jdetok/web/internal/mariadb"
 	"github.com/jdetok/web/internal/store"
 )
 
@@ -73,7 +73,8 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 			default: // NBA RS TOTALS SPECIFIC PLAYER
 				playerId := store.SearchPlayers(app.players, player)
-				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerStat.Q, lg, string(playerId))
+				js := mariadb.SelectLgPlayer(app.database, &w, 
+					mariadb.LgPlayerStat.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		case "avg": // NBA AVERAGES
@@ -83,7 +84,8 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 			default:  // NBA RS AVG SPECIFIC PLAYER
 				playerId := store.SearchPlayers(app.players, player)
-				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
+				js := mariadb.SelectLgPlayer(app.database, &w, 
+					mariadb.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		}
@@ -96,7 +98,8 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 			default: // SPECIFIC WNBA PLAYER TOTALS
 				playerId := store.SearchPlayers(app.players, player)
-				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerStat.Q, lg, string(playerId))
+				js := mariadb.SelectLgPlayer(app.database, &w, 
+					mariadb.LgPlayerStat.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		case "avg": // WNBA AVERAGES
@@ -106,7 +109,7 @@ func (app *application) getStats(w http.ResponseWriter, r *http.Request) {
 				app.JSONWriter(w, js)
 			default: // SPECIFIC WNBA PLAYER AVERAGES
 				playerId := store.SearchPlayers(app.players, player)
-				js := db.SelectLgPlayer(app.database, &w, db.LgPlayerAvg.Q, lg, string(playerId))
+				js := mariadb.SelectLgPlayer(app.database, &w, mariadb.LgPlayerAvg.Q, lg, string(playerId))
 				app.JSONWriter(w, js)
 			}
 		}

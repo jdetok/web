@@ -1,4 +1,4 @@
-package db
+package mariadb
 
 // this file should just be string literals of queries to pass to the Select function
 

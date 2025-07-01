@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jdetok/web/internal/db"
 	"github.com/jdetok/web/internal/env"
+	"github.com/jdetok/web/internal/mariadb"
 )
 
 // https://cdn.nba.com/headshots/nba/latest/1040x760/1630173.png
@@ -21,10 +21,10 @@ func MakeUrl(lg, playerId string) string {
 }
 
 func GetHeadshots(lg string) {
-	database := db.InitDB()
+	database := mariadb.InitDB()
 	hShotPath := env.GetString("HS_PATH")
 	q := `select player_id from player where active = 1 and lg = "` + strings.ToUpper(lg) + `"`
-	playerIds, err := db.SelectList(database, q)
+	playerIds, err := mariadb.SelectList(database, q)
 	if err != nil {
 		fmt.Println(err)
 	}
