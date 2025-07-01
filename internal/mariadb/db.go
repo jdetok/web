@@ -86,7 +86,7 @@ func SelectLgPlayer(db *sql.DB, w *http.ResponseWriter, q string, lg string, pl 
 func SelectPlayers(db *sql.DB, player string) ([]byte, error) {
 	e := errs.ErrInfo{Prefix: "players select",}
 	var playerId []byte
-	err := db.QueryRow(Players.Q, player).Scan(&playerId)
+	err := db.QueryRow(PlayersOld.Q, player).Scan(&playerId)
 	if err != nil {
 		e.Msg = "query failed"
 		return nil, e.Error(err)

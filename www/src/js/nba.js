@@ -7,7 +7,44 @@ const wnbaHsBase = "https://cdn.wnba.com/headshots/wnba/latest/1040x760";
 document.addEventListener('DOMContentLoaded', () => {
     searchListener();
     randomListener();
+    loadSeasonOpts();
 });
+
+async function loadSeasonOpts() {
+    try {
+        const response = await fetch(base + '/seasons');
+        if (!response.ok) { 
+                throw new Error(`HTTP Error: ${response.status}`);
+            } // CONVERT SUCCESSFUL RESPONSE TO JSON
+        const data = await response.json();
+        if (data[0] == '') {
+            console.log('empty json');
+        }
+
+        const slct = document.getElementById('season');
+        // each player
+        let i;
+        for (i=0; i<data.length; i++){
+            let opt = document.createElement('option');
+            opt.textContent = data[i].Season;
+            slct.appendChild(opt);
+            // console.log(data[i].Season);
+        }
+
+        
+        
+    } catch (error) {
+        console.error("failed to load seasons")
+    }
+    // });
+    
+};
+
+// async function addSeasonsOpts(opts) {
+//     const slct = document.getElementById('season');
+
+//     for 
+// };
 
 // listen for the search button
 function searchListener() {
@@ -31,7 +68,9 @@ function randomListener() {
         document.getElementById('league').value = json.league;
         await search();
     });
-}
+};
+
+
 
 // get headshot & stats based on element values
 async function search() {
