@@ -166,7 +166,7 @@ footer {
     flex-wrap: wrap;
     justify-content: center;
     flex-direction: row;
-    gap: 5%;
+    gap: 3%;
 }
 
 /* for items to place vertically outside of flexels */
