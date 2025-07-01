@@ -7,6 +7,7 @@
     <title>about jdeko!</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/abt.css">
+    <link rel="stylesheet" href="/css/pic.css">
   </head>
 
   <header>
@@ -21,12 +22,68 @@
       <b>created & maintained by Justin DeKock</b><br>
     </div>
     <div class="decorator">/-|-\</div>
-
-
+    
+    
+    <div class="mainel">
+      <img src="img/abt/piv.png">
+      <div class="abtmain">
+        <h3>hardware --</h3>    
+        <h2>
+          every aspect of this website (with the exception of SSL) 
+          is being served to your browser from this 
+          <a href="https://en.wikipedia.org/wiki/Raspberry_Pi" class="transpar" target="_blank">
+            raspberry pi</a> in my home office!
+        </h2>
+        <div class="abtp">
+          jdeko.me is entirely self-hosted - the single exception being 
+          SSL encryption/certification, which is provided via Cloudflare. i value my network security
+          enough to not delve into that until i have taken more time to learn the process
+        </div>
+        <div class="decorator">/-|-\</div>
+        <div class="abtp">
+          this raspberry pi 5 single-board-computer has a 4-core CPU & 16GB of RAM - more than enough
+          to handle far more traffic than this site will receive 
+          Go API, Apache web-server, & mariadb database server without issue
+        </div>
+      </div>
+    </div>
     <!-- <div id="about"> -->
+    <div class="center"><h3>-- software --</h3></div>
+    <div class="flexels">
 
+      <div class="flexel"><h2>docker</h2>
+        <div class="abtp">
+          each software element that supports this website has been containerized via Docker,
+          allowing them to all run independently on the same host machine. docker networks provide
+          an additional level of isolation, enabling me to host apache web-server & mariadb database
+          on separate networks
+        </div>
+      </div>
+      <div class="flexel"><h2>go programming langauge</h2>
+        <div class="abtp">
+          every HTTPS request to jdeko.me is routed and handled through an API that i wrote in Go. 
+          this API is connected to the same backend docker network as my mariadb database, and serves
+          all interaction with my <a href="nba.html">basketball stats site</a>
+        </div>
+      </div>
+      <div class="flexel"><h2>mariadb database</h2>
+      <div class="abtp">
+          mariadb is the database server that powers my <a href="nba.html">basketball stats site</a>.
+          mariadb is a fork of mysql, with nearly identical syntax. new stats are inserted into this database
+          nightly with the execution of a <a href="https://github.com/jdetok/py-nba-mdb">python script</a>.
+          a daily cronjob runs a shell script that runs my docker compose file, which then runs the python
+          script in an isolated environment. <a href="nba-info.html">learn more about this process</a>  
+        </div>
+      </div>
+      <div class="flexel"><h2>javascript</h2></div>
+      <div class="flexel"><h2>html/css</h2></div>
+      <div class="flexel"><h2>apache web server</h2></div>
+    </div>
+
+  </body>
+</html>
     <!-- <div class="abtel"> -->
-    <div class="emphitem">
+    <!-- <div class="emphitem">
       <h2>technologies</h2>
       <ul class="nobullet">
         <li>go programming language</li>
@@ -36,19 +93,19 @@
         <li>apache web-server</li>
         <li>docker</li>
       </ul>
-    </div>
+    </div> -->
 
-    <div class="flexels">
+    <!-- <div class="flexels"> -->
       
-    <!-- <div class="abtel">   -->
+    <!-- <div class="abtel">   
       <div class="flexel">
         <h2>networking/hosting</h2>
         <p>jdeko.me is hosted on a Raspberry Pi 5 on my local network and securely accessible over the internet via 
           <a href="https://www.cloudflare.com/">Cloudflare</a>.
         </p>
       </div>
-
-      <!-- <div class="abtel">   -->
+-->
+      <!-- <div class="abtel">
         <div class="flexel">
         <h2>http server/api</h2>
         <p>http requests to this website are handled by an http server/api I wrote in 
@@ -58,8 +115,8 @@
           see the http server/api source code
         </a>
       </div>
-
-      <!-- <div class="abtel"> -->
+   -->
+      <!-- <div class="abtel"> 
         <div class="flexel">
         <h2>website design</h2>
         <p>the visual design of this site embraces web-design trends of the late 1990s-2000s</p>
@@ -67,8 +124,6 @@
           large blocks of color & text, no animation, nothing fancy
         </p>
       </div>
-    
-    </div>
+      -->
+    <!-- </div> -->
 
-  </body>
-</html>

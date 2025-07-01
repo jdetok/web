@@ -56,6 +56,14 @@ var paths = []fPath{
 		Query: "select * from v_wnba_po_totals", 
 		File: "/wnba_po_totals.json",
 	},
+	{
+		Query: "select * from v_nba_rs25_totals",
+		File: "/nba_rs25_totals.json",
+	},
+	{
+		Query: "select * from v_nba_rs25_avgs",
+		File: "/nba_rs25_avgs.json",
+	},
 }
 
 // runs every interval seconds, updates if time since last update is > threshold

@@ -46,6 +46,24 @@ func SelectDB(database *sql.DB, q string) ([]byte, error) {
 	return js, nil
 }
 
+// func PlayerLgSzn(db *sql.DB, w *http.ResponseWriter, q string, lg string, pl string) []byte {
+// 	e := errs.ErrInfo{Prefix: "database query (arg)",}
+	
+// 	rows, err := db.Query(q, lg, pl)
+// 	if err != nil {
+// 		e.Msg = "db.Query failed"
+// 		errs.HTTPErr(*w, e.Error(err))
+// 	}
+	
+// // return the response as json
+// 	js, err := RowsToJSON(rows, false)
+// 	if err != nil {
+// 		e.Msg = "func RowsToJSON() failed"
+// 		errs.HTTPErr(*w, e.Error(err))
+// 	}
+// 	return js
+// }
+
 func SelectLgPlayer(db *sql.DB, w *http.ResponseWriter, q string, lg string, pl string) []byte {
 	e := errs.ErrInfo{Prefix: "database query (arg)",}
 	
