@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// func LogNew()
+
 func LogHTTP(r *http.Request) {
 	fmt.Printf("===REQUEST RECEIVED - %v===\n", time.Now().Format("2006-01-02 15:04:05"))
 	fmt.Printf("- Remote Addr: %v\n", r.RemoteAddr)

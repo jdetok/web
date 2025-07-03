@@ -31,8 +31,9 @@ func main() {
     app := &application{
         config: cfg,
         database: mariadb.InitDB(),
+        // logFile := (env.GetString("LOG_PATH") + "/test.log"),
     }
-
+    
     // create array of player structs
     if app.players, err = store.GetPlayers(app.database); err != nil {
         slog.Error("failed creating players array")

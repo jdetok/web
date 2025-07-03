@@ -14,6 +14,7 @@ type application struct {
 	database *sql.DB
 	StartTime time.Time
 	lastUpdate time.Time
+	logFile string
 	players []store.Player
 	seasons []store.Season
 	teams []store.Team

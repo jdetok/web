@@ -30,6 +30,7 @@ type Team struct {
 	LogoUrl string 
 }
 
+// makes src url for team img
 func (t Team) MakeLogoUrl() string {
 	lg := strings.ToLower(t.League)
 	return ("https://cdn." + lg + ".com/logos/" + 

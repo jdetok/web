@@ -122,7 +122,7 @@ function searchListener() {
 function randomListener() {
     const btn = document.getElementById('randBtn');
     btn.addEventListener('click', async (event) => {
-        event.preventDefault();
+           event.preventDefault();
         // get random player json from api
         json = await getRandomPlayer();
 
@@ -132,7 +132,6 @@ function randomListener() {
         await search();
     });
 };
-
 
 
 // get headshot & stats based on element values
@@ -152,6 +151,7 @@ async function search() {
     
     const hdrEl = document.getElementById('playerteam');
     const hsEl = document.getElementById('hs');
+    const tmEl = document.getElementById('tm');
     
     // hsEl.innerHTML = '';
     hdrEl.innerHTML = '';
@@ -166,6 +166,13 @@ async function search() {
 
         hsEl.style.display = 'flex';
         await appendImg(data[1], 'hs');
+
+        // TEAM LOGO
+        // const response = await fetch(base + "/teams")
+        // await appendImg(data[1], 'hs');
+
+        // tmEl.style.display = 'flex';
+        
     } else {
         // hide the image div to not case layout shifting when player=all
         // let hdr =`Career ${sType} - All ${lg} Players`;
