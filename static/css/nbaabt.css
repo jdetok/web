@@ -1,0 +1,40 @@
+/* stack flexels horizontally for desktop, vertically for phone */
+
+/* .flexels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5%;
+} */
+
+/* for items to place vertically outside of flexels */
+/* .emphitem {
+    margin: auto;
+    width: 50%;
+    max-width: 60%;
+    text-align: center;
+    align-items: center;
+} */
+
+/* .flexel {
+    width: 25%;
+    max-width: 100%;
+    text-align: center;
+} */
+
+/* @media (max-width: 600px) {
+    .flexels {
+    flex-direction: column; 
+    align-items: center;
+    display: flex;
+
+    }
+
+    .flexel,
+    .emphitem {
+        width: 90%;
+        max-width: 100%;
+    }
+} */
+
