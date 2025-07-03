@@ -5,7 +5,7 @@ tmp_dir = "tmp"
   cmd = "go build -buildvcs=false -o ./tmp/main ./api"
   bin = "tmp/main"
   include_ext = ["go", "tpl", "html", "env", "css", "js"]
-  exclude_dir = ["tmp", "vendor", "testdata"]
+  exclude_dir = ["tmp", "vendor", "testdata", "test"]
   delay = 1000
 
 [log]
@@ -22,4 +22,4 @@ tmp_dir = "tmp"
     "./www/src"
   ]
 
-  exclude = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.svg"]
+  exclude = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.svg", "**/test*.go"]

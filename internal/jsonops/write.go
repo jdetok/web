@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jdetok/web/internal/errs"
+	"github.com/jdetok/go-api-jdeko.me/internal/errs"
 )
 
 // save returned json to file (from HTTP response body)

@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/jdetok/web/internal/env"
-	"github.com/jdetok/web/internal/errs"
-	"github.com/jdetok/web/internal/jsonops"
-	"github.com/jdetok/web/internal/logs"
-	"github.com/jdetok/web/internal/mariadb"
-	"github.com/jdetok/web/internal/store"
+	"github.com/jdetok/go-api-jdeko.me/internal/env"
+	"github.com/jdetok/go-api-jdeko.me/internal/errs"
+	"github.com/jdetok/go-api-jdeko.me/internal/jsonops"
+	"github.com/jdetok/go-api-jdeko.me/internal/logs"
+	"github.com/jdetok/go-api-jdeko.me/internal/mariadb"
+	"github.com/jdetok/go-api-jdeko.me/internal/store"
 )
 
 func (app *application) getSeasons(w http.ResponseWriter, r *http.Request) {

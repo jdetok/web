@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/jdetok/web/internal/jsonops"
+	"github.com/jdetok/go-api-jdeko.me/internal/jsonops"
 )
 
 func main() {

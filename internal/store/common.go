@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jdetok/web/internal/errs"
-	"github.com/jdetok/web/internal/mariadb"
+	"github.com/jdetok/go-api-jdeko.me/internal/errs"
+	"github.com/jdetok/go-api-jdeko.me/internal/mariadb"
 )
 
 type Player struct {

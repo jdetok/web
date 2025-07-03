@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jdetok/web/internal/store"
+	"github.com/jdetok/go-api-jdeko.me/internal/store"
 )
 
 type application struct {

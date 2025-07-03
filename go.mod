@@ -1,4 +1,4 @@
-module github.com/jdetok/web
+module github.com/jdetok/go-api-jdeko.me
 
 go 1.24
 

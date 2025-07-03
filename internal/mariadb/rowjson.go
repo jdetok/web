@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/jdetok/web/internal/errs"
+	"github.com/jdetok/go-api-jdeko.me/internal/errs"
 )
 
 type OrderedRow []OrderedField 

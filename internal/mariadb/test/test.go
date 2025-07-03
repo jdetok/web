@@ -3,8 +3,8 @@
 package main
 
 import (
-	"github.com/jdetok/web/internal/mariadb"
-	"github.com/jdetok/web/internal/store"
+	"github.com/jdetok/go-api-jdeko.me/internal/mariadb"
+	"github.com/jdetok/go-api-jdeko.me/internal/store"
 )
 
 

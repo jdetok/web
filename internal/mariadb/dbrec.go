@@ -6,8 +6,8 @@ package mariadb
 // 	"net/http"
 
 // 	_ "github.com/go-sql-driver/mysql"
-// 	"github.com/jdetok/web/internal/env"
-// 	"github.com/jdetok/web/internal/errs"
+// 	"github.com/jdetok/go-api-jdeko.me/internal/env"
+// 	"github.com/jdetok/go-api-jdeko.me/internal/errs"
 // )
 
 // func InitDB() *sql.DB {

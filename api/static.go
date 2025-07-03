@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/jdetok/web/internal/env"
-	"github.com/jdetok/web/internal/logs"
+	"github.com/jdetok/go-api-jdeko.me/internal/env"
+	"github.com/jdetok/go-api-jdeko.me/internal/logs"
 )
 
 var fsPath string = env.GetString("STATIC_PATH")

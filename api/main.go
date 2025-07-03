@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/jdetok/web/internal/env"
-	"github.com/jdetok/web/internal/mariadb"
-	"github.com/jdetok/web/internal/store"
+	"github.com/jdetok/go-api-jdeko.me/internal/env"
+	"github.com/jdetok/go-api-jdeko.me/internal/mariadb"
+	"github.com/jdetok/go-api-jdeko.me/internal/store"
 	"github.com/joho/godotenv"
 ) 
 

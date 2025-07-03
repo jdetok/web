@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jdetok/web/internal/env"
-	"github.com/jdetok/web/internal/errs"
-	"github.com/jdetok/web/internal/jsonops"
-	"github.com/jdetok/web/internal/mariadb"
+	"github.com/jdetok/go-api-jdeko.me/internal/env"
+	"github.com/jdetok/go-api-jdeko.me/internal/errs"
+	"github.com/jdetok/go-api-jdeko.me/internal/jsonops"
+	"github.com/jdetok/go-api-jdeko.me/internal/mariadb"
 )
 
 var cachePath string = env.GetString("CACHE_PATH")

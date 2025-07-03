@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/jdetok/web/internal/errs"
+	"github.com/jdetok/go-api-jdeko.me/internal/errs"
 )
 
 func ValiPlayer(db *sql.DB, w *http.ResponseWriter, player string) []byte {
