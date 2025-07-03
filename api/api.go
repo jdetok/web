@@ -14,7 +14,6 @@ type application struct {
 	database *sql.DB
 	StartTime time.Time
 	lastUpdate time.Time
-	logFile string
 	players []store.Player
 	seasons []store.Season
 	teams []store.Team
@@ -53,10 +52,7 @@ func (app *application) mount() *http.ServeMux {
 	mux.HandleFunc("GET /bball/players/id", app.getPlayerId)
 	mux.HandleFunc("GET /bball/players/random", app.getRandomPlayer)
 	mux.HandleFunc("GET /bball/seasons", app.getSeasons)
-	// mux.HandleFunc("GET /bball/seasons/szn", app.getSeason)
 	mux.HandleFunc("GET /bball/teams", app.getTeams)
-	// mux.HandleFunc("GET /bball/teams/team", app.getTeam)
-	// mux.HandleFunc("GET /bball/players/headshot", app.getHeadShot)
 
 // SERVES STATIC SITE IN WEB DIRECTORY, DON'T CACHE JS & CSS
 	mux.Handle("/js/", http.HandlerFunc(app.jsNoCache))
