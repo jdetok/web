@@ -1,4 +1,4 @@
-create or replace view v_szn_avgs as
+create or replace view v_szn_totals as
 select 
 	a.player, 
 	b.team,
@@ -10,12 +10,12 @@ select
         then e.wseason_desc
         else e.season_desc
     end as season,
-	avg(c.pts) as pts, 
-	avg(c.ast) as ast,
-	avg(c.reb) as reb,
-	avg(d.fgm) as fgm,
-	avg(d.fg3m) as fg3m,
-	avg(d.ftm) as ftm
+	sum(c.pts) as pts, 
+	sum(c.ast) as ast,
+	sum(c.reb) as reb,
+	sum(d.fgm) as fgm,
+	sum(d.fg3m) as fg3m,
+	sum(d.ftm) as ftm
 	from player a
 	inner join team b on b.team_id = a.team_id
 	inner join p_box c on c.player_id = a.player_id

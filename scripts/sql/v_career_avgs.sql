@@ -1,15 +1,8 @@
-create or replace view v_szn_avgs as
+create or replace view v_career_avgs as
 select 
 	a.player, 
 	b.team,
     a.lg,
-    a.active,
-    e.season_id,
-    case 
-        when a.lg = "WNBA"
-        then e.wseason_desc
-        else e.season_desc
-    end as season,
 	avg(c.pts) as pts, 
 	avg(c.ast) as ast,
 	avg(c.reb) as reb,
@@ -24,5 +17,5 @@ select
 	inner join season e on e.season_id = c.season_id
  	where a.lg <> "GNBA"
 	and LEFT(e.season_id, 1) = 2
-	group by a.player, b.team, a.lg, e.season_id, season
+	group by a.player, b.team, a.lg
 	order by pts desc;

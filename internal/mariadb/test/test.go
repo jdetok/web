@@ -8,7 +8,11 @@ import (
 
 func main() {
 	db := mariadb.InitDB()
-	resp, err := mariadb.DBJSONResposne(db, "select * from v_szn_totals")
+	q := `
+		select * from v_szn_avgs
+		where season = ?
+	`
+	resp, err := mariadb.DBJSONResposne(db, q, "2016-2017 Regular Season")
 	if err != nil {
 		fmt.Printf("Error occured querying db: %v\n", err)
 	}
