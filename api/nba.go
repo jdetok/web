@@ -46,18 +46,8 @@ func (app *application) getTeams(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-
-	// w.Header().Set("Content-Type", "application/json") 
-	// json.NewEncoder(w).Encode(app.teams)
 }
-// func (app *application) getTeam(w http.ResponseWriter, r *http.Request) {
-// 	logs.LogHTTP(r)
-// 	team := r.URL.Query().Get("team")
-// 	// logs.LogDebug("Team Requested: " + team)
 
-// 	w.Header().Set("Content-Type", "application/json") 
-// 	json.NewEncoder(w).Encode(`team: ${team}`)
-// }
 func (app *application) getRandomPlayer(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 	numPlayers := len(app.players)
@@ -76,7 +66,6 @@ func (app *application) getPlayerId(w http.ResponseWriter, r *http.Request) {
 	logs.LogHTTP(r)
 	player := r.URL.Query().Get("player")
 	logs.LogDebug("Player Requested: " + player)
-	// playerId := db.ValiPlayer(app.database, &w, player)
 	
 	playerId := store.SearchPlayers(app.players, player)
 	logs.LogDebug("PlayerId Return: " + playerId)

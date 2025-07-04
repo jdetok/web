@@ -16,6 +16,63 @@ type OrderedField struct {
 	Value any
 }
 
+func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
+	e := errs.ErrInfo{Prefix: "sql.Rows -> json conversion"}
+	
+	colTypes, err := rows.ColumnTypes()
+	if err != nil {
+		e.Msg = "couldn't get column types"
+		return nil, e.Error(err)
+	}
+	
+	finalRows := []any{};
+
+	for rows.Next() {
+		scanArgs, err := convertTypes(colTypes)
+		if err != nil {
+			e.Msg = "couldn't convert sql types to Go types"
+			return nil, e.Error(err)
+		}
+
+		err = rows.Scan(scanArgs...)
+		if err != nil {
+			e.Msg = "scanning for args failed"
+			return nil, e.Error(err)
+		}
+
+		var rowOrdered OrderedRow
+		for i, v := range colTypes {
+			val, err := getDBType(scanArgs[i], map[string]any{}, v)
+			if err != nil {
+				e.Msg = "getDBType() failed"
+				return nil, e.Error(err)
+			}
+			rowOrdered = append(rowOrdered,  OrderedField{
+				Key: v.Name(),
+				Value: val,
+			})
+		}
+		finalRows = append(finalRows, rowOrdered)
+	}
+// indented json if indent == true
+	if indent {
+		js, err :=  json.MarshalIndent(finalRows, "", "  ")	
+		if err != nil {
+			e.Msg = "json.MarshalIndent() failed"
+			return nil, e.Error(err)
+		}
+		return js, nil
+	}
+	
+// unindented json if indent == false
+	js, err :=  json.Marshal(finalRows)	
+	if err != nil {
+		e.Msg = "json.Marshal() failed"
+		return nil, e.Error(err)
+	}
+	return js, nil
+}
+
 // writes bytes directly to ensure the order of the json objects is the same as the select order
 // was originally using a map but it reordered the columns
 func (row OrderedRow) MarshalJSON() ([]byte, error) {
@@ -93,62 +150,3 @@ func getDBType(arg any, data map[string]any, col *sql.ColumnType) (any, error) {
 	return data[col.Name()], nil
 }
 
-func RowsToJSON(rows *sql.Rows, indent bool) ([]byte, error) {
-	e := errs.ErrInfo{Prefix: "sql.Rows -> json conversion"}
-	
-	colTypes, err := rows.ColumnTypes()
-	if err != nil {
-		e.Msg = "couldn't get column types"
-		return nil, e.Error(err)
-	}
-	
-	finalRows := []any{};
-
-	for rows.Next() {
-		scanArgs, err := convertTypes(colTypes)
-		if err != nil {
-			e.Msg = "couldn't convert sql types to Go types"
-			return nil, e.Error(err)
-		}
-
-		err = rows.Scan(scanArgs...)
-		if err != nil {
-			e.Msg = "scanning for args failed"
-			return nil, e.Error(err)
-		}
-
-		var rowOrdered OrderedRow
-		for i, v := range colTypes {
-			val, err := getDBType(scanArgs[i], map[string]any{}, v)
-			if err != nil {
-				e.Msg = "getDBType() failed"
-				return nil, e.Error(err)
-			}
-			rowOrdered = append(rowOrdered,  OrderedField{
-				Key: v.Name(),
-				Value: val,
-			})
-		}
-		finalRows = append(finalRows, rowOrdered)
-	}
-// indented json if indent == true
-	if indent {
-		js, err :=  json.MarshalIndent(finalRows, "", "  ")	
-		if err != nil {
-			e.Msg = "json.MarshalIndent() failed"
-			return nil, e.Error(err)
-		}
-		return js, nil
-	}
-	
-// unindented json if indent == false
-	js, err :=  json.Marshal(finalRows)	
-	if err != nil {
-		e.Msg = "json.Marshal() failed"
-		return nil, e.Error(err)
-	}
-	return js, nil
-
-
-
-}

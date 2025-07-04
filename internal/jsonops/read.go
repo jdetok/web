@@ -42,13 +42,3 @@ func MapJSONFile(path string) (map[string]any, error) {
 
 	return res, nil
 }
-
-// jsonFile, err := os.Open(path)
-
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// defer jsonFile.Close()
-
-	// byteVal, err := io.ReadAll(jsonFile)
