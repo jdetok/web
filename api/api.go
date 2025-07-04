@@ -47,6 +47,9 @@ func (app *application) run(mux *http.ServeMux) error {
 func (app *application) mount() *http.ServeMux {
 	mux := http.NewServeMux()
 	
+// DEV ENDPOINTS 07/04
+	mux.HandleFunc("GET /bball/leaders", app.getLeaders)
+
 // ENDPOINTS 06/19
 	mux.HandleFunc("GET /bball/players", app.getStats)
 	mux.HandleFunc("GET /bball/players/id", app.getPlayerId)

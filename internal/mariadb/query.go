@@ -11,6 +11,8 @@ type Queries struct {
 	DbQueries []Query
 }
 
+
+
 // var Avgs25 = Query{
 // 	"select * from v_nba_rs25_avgs"
 // }

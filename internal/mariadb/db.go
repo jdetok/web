@@ -41,8 +41,8 @@ func InitDB() *sql.DB {
 }
 
 // run funcs below to query db and return a json []byte
-func DBJSONResposne(db *sql.DB, q string, args ...string) ([]byte, error) {
-	rows, cols, err := Select(db, q, args)
+func DBJSONResposne(db *sql.DB, q string, args ...any) ([]byte, error) {
+	rows, cols, err := Select(db, q, args...)
 	if err != nil {
 		fmt.Printf("Error occured querying db: %v\n", err)
 		return nil, err
