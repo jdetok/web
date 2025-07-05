@@ -41,7 +41,17 @@ async function search() {
         throw new Error(`HTTP Error: ${response.status}`)
     } // CONVERT SUCCESSFUL RESPONSE TO JSON & CLEAR LOADMSG
     const data = await response.json();
-    console.log(data)
+    const d = document.getElementById('nbasumtest')
+    d.innerHTML = ""
+    // d.innerHTML = data[0].team;
+    const keys = Object.keys(data[0]);
+    for (const obj of data) { 
+        for (let i = 0; i < keys.length; i++) {
+            let k = document.createElement('p');
+            k.textContent = `${keys[i]}: ${obj[keys[i]]}\n`;
+            d.append(k)
+        }
+    }
 }
 
 function searchListener() {
@@ -92,6 +102,10 @@ async function loadSeasonOpts() {
         }
 
         const slct = document.getElementById('season');
+        const defaultOpt = document.createElement('option');
+        defaultOpt.textContent = `2024-2025 Regular Season`;
+        defaultOpt.value = '22024'
+        slct.appendChild(defaultOpt);
         // each player
         let i;
         for (i=0; i<data.length; i++){
